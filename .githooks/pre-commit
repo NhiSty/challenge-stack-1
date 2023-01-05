@@ -11,7 +11,7 @@ printf "${reset}"
 vendor/bin/phpcs src/
 
 printf "${green}No errors found\n"
-printf "${reset}"
+printf "\n${reset}"
 
 printf "${blue}***Run phpunit***\n"
 printf "\n${reset}"
