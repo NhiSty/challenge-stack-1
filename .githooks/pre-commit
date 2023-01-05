@@ -17,3 +17,7 @@ printf "${blue}***Run phpunit***\n"
 printf "\n${reset}"
 
 vendor/bin/phpunit
+
+status=$?
+
+exit $status
