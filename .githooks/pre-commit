@@ -1,0 +1,23 @@
+#!/bin/sh
+
+red="\e[31m"
+green="\e[32m"
+blue="\e[34m"
+reset="\e[0m"
+
+printf "${blue}***Run phpcs***\n"
+printf "${reset}"
+
+vendor/bin/phpcs src/
+
+printf "${green}No errors found\n"
+printf "\n${reset}"
+
+printf "${blue}***Run phpunit***\n"
+printf "\n${reset}"
+
+vendor/bin/phpunit
+
+status=$?
+
+exit $status
