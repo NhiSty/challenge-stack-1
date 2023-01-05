@@ -47,3 +47,7 @@ ehthumbs_vista.db
 .idea/
 .idea_modules/
 ###< IDE gitignore ###
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###
