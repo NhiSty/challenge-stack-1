@@ -1,0 +1,5 @@
+blue="\e[34m"
+reset="\e[0m"
+
+printf "${blue}***Run phpcs***\n"
+printf "\n${reset}"
