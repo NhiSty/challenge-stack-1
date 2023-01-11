@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IndexController!{% endblock %}
+
+{% block body %}
+
+
+<div class="example-wrapper">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% if not app.user.verified %}
+    <div class="alert alert-danger">
+            Your account is not verified. Please check your email for a verification link.
+            if your link has expired you can click <a href="{{ path('app_send_verification_email') }}">here</a> to resend the verification email.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
