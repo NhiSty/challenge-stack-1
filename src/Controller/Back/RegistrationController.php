@@ -24,8 +24,11 @@ class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier, UserAuthenticatorInterface $userAuthenticator, AppAuthenticator $authenticator)
-    {
+    public function __construct(
+        EmailVerifier $emailVerifier,
+        UserAuthenticatorInterface $userAuthenticator,
+        AppAuthenticator $authenticator,
+    ) {
         $this->emailVerifier = $emailVerifier;
         $this->userAuthenticator = $userAuthenticator;
         $this->authenticator = $authenticator;
@@ -99,7 +102,9 @@ class RegistrationController extends AbstractController
     #[Route(path: '/sendConfirmation', name: 'app_send_verification_email', methods: ['GET'])]
     public function sendConfirmation(userInterface $user): RedirectResponse
     {
-        $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+        $this->emailVerifier->sendEmailConfirmation(
+            'app_verify_email',
+            $user,
             (new TemplatedEmail())
                 ->from(new Address('nhisty.dev@gmail.com', 'Inscription'))
                 ->to($user->getEmail())
@@ -109,5 +114,4 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('app_front_home');
     }
-
 }

@@ -18,7 +18,7 @@ class IndexController extends AbstractController
 
 
     #[Route('/home', name: 'app_front_home')]
-    public function index_unverified(): Response
+    public function indexUnverified(): Response
     {
         return $this->render('Front/index/home.html.twig', [
             'controller_name' => 'IndexController',
