@@ -29,8 +29,10 @@ RUN apk add --no-cache \
 		file \
 		gettext \
 		git \
-		linux-headers \
-	;
+        linux-headers \
+        npm \
+    ;
+
 
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
