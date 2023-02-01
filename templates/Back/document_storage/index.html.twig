@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DocumentStorage index{% endblock %}
+
+{% block body %}
+    <h1>DocumentStorage index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for document_storage in document_storages %}
+            <tr>
+                <td>{{ document_storage.id }}</td>
+                <td>{{ document_storage.name }}</td>
+                <td>{{ document_storage.description }}</td>
+                <td>
+                    <a href="{{ path('admin_app_document_storage_show', {'id': document_storage.id}) }}">show</a>
+                    <a href="{{ path('admin_app_document_storage_edit', {'id': document_storage.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_app_document_storage_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New DocumentStorage{% endblock %}
+
+{% block body %}
+    <h1>Create new DocumentStorage</h1>
+
+    {{ include('/Back/document_storage/_form.html.twig') }}
+
+    <a href="{{ path('admin_app_document_storage_index') }}">back to list</a>
+{% endblock %}
