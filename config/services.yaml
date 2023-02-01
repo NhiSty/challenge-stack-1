@@ -22,3 +22,21 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    app.maker.make_back_crud:
+        class: App\Maker\BackCrudMaker
+        arguments: [ '@maker.doctrine_helper', '@maker.renderer.form_type_renderer' ]
+        calls:
+            - [ configureCommand, [ '@security.command.user_password_hash', '@?' ] ]
+            - [ interact, [ '@?', '@?', '@security.command.user_password_hash' ] ]
+        tags:
+            - { name: maker.command }
+
+    app.maker.make_front_crud:
+        class: App\Maker\FrontCrudMaker
+        arguments: [ '@maker.doctrine_helper', '@maker.renderer.form_type_renderer' ]
+        calls:
+            - [ configureCommand, [ '@security.command.user_password_hash', '@?' ] ]
+            - [ interact, [ '@?', '@?', '@security.command.user_password_hash' ] ]
+        tags:
+            - { name: maker.command }
