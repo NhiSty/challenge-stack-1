@@ -51,11 +51,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?DocumentStorage $documentStorage = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Clinic $clinic_id = null;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Clinic $clinic = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Speciality $speciality = null;
 
     public function __construct()
@@ -227,12 +227,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getClinicId(): ?Clinic
     {
-        return $this->clinic_id;
+        return $this->clinic;
     }
 
-    public function setClinicId(?Clinic $clinic_id): self
+    public function setClinicId(?Clinic $clinic): self
     {
-        $this->clinic_id = $clinic_id;
+        $this->clinic = $clinic;
 
         return $this;
     }

@@ -27,7 +27,7 @@ class Clinic
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
-    #[ORM\OneToMany(mappedBy: 'clinic_id', targetEntity: User::class)]
+    #[ORM\OneToMany(mappedBy: 'clinic', targetEntity: User::class)]
     private Collection $users;
 
     public function __construct()

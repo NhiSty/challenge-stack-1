@@ -22,13 +22,13 @@ class Appointment
     #[ORM\Column(type: Types::INTEGER)]
     private int $patient_id;
 
-    #[ORM\ManyToMany(targetEntity: User::class)]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'appointments')]
     private Collection $practitioner_id;
 
     #[ORM\ManyToOne]
     private ?Drug $drug_id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'appointments')]
+    #[ORM\ManyToOne(targetEntity: Consultation::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Consultation $consultation_id = null;
 
