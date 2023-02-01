@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Add a custom class in order to add padding after the navbar */
+.space-after-navbar {
+  @apply pt-20;
+}
