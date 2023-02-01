@@ -44,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 1)]
     private ?string $gender = null;
 
-    #[ORM\ManyToMany(targetEntity: Appointment::class, mappedBy: 'patient_id')]
+    #[ORM\ManyToMany(targetEntity: Appointment::class, mappedBy: 'practitioner_id')]
     private Collection $appointments;
 
     #[ORM\OneToOne(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
@@ -193,7 +193,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->appointments->contains($appointment)) {
             $this->appointments->add($appointment);
-            $appointment->addPatientId($this);
+            $appointment->addPractitionerId($this);
         }
 
         return $this;
@@ -202,7 +202,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAppointment(Appointment $appointment): self
     {
         if ($this->appointments->removeElement($appointment)) {
-            $appointment->removePatientId($this);
+            $appointment->removePractitionerId($this);
         }
 
         return $this;

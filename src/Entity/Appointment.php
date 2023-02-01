@@ -19,8 +19,8 @@ class Appointment
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'appointments')]
-    private Collection $patient_id;
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $patient_id;
 
     #[ORM\ManyToMany(targetEntity: User::class)]
     private Collection $practitioner_id;
@@ -34,7 +34,6 @@ class Appointment
 
     public function __construct()
     {
-        $this->patient_id = new ArrayCollection();
         $this->practitioner_id = new ArrayCollection();
     }
 
@@ -58,23 +57,14 @@ class Appointment
     /**
      * @return Collection<int, User>
      */
-    public function getPatientId(): Collection
+    public function getPatientId(): int
     {
         return $this->patient_id;
     }
 
-    public function addPatientId(User $patientId): self
+    public function setPatientId(int $patient_id): self
     {
-        if (!$this->patient_id->contains($patientId)) {
-            $this->patient_id->add($patientId);
-        }
-
-        return $this;
-    }
-
-    public function removePatientId(User $patientId): self
-    {
-        $this->patient_id->removeElement($patientId);
+        $this->patient_id = $patient_id;
 
         return $this;
     }
