@@ -2,31 +2,49 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Clinic;
 use App\Entity\Speciality;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
-class Users extends Fixture
+class UserFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
+        $faker = Factory::create('fr_FR');
+
         // PWD = test123!
         $pwd = '$2y$13$Fs05Q7OWSMIj6ZwxXitCiu9m5fmqp35aSrMNmlV0xND1rY6DnPWUO';
 
         $specialitys = $manager->getRepository(Speciality::class)->findAll();
+        $clinics = $manager->getRepository(Clinic::class)->findAll();
 
-        $spec1 = $specialitys[0];
-        $spec2 = $specialitys[1];
-        $spec3 = $specialitys[2];
+
+        for ($i=0; $i<10; $i++) {
+            $object = (new User())
+                ->setEmail($faker->email)
+                ->setRoles($faker->randomElement([['ROLE_USER'], ['ROLE_ADMIN'], ['ROLE_PRATICIEN']]))
+                ->setPassword($pwd)
+                ->setIsVerified($faker->boolean)
+                ->setClinicId($faker->randomElement($clinics))
+                ->setSpeciality($faker->randomElement($specialitys))
+                ->setFirstname($faker->firstName)
+                ->setLastname($faker->lastName)
+                ->setGender($faker->randomElement(['h', 'f']))
+            ;
+            $manager->persist($object);
+        }
 
         $object = (new User())
             ->setEmail('nico.bar2012@gmail.com')
             ->setRoles(['ROLE_USER'])
             ->setPassword($pwd)
             ->setIsVerified(true)
-            ->setClinicId(null)
-            ->setSpeciality($spec1)
+            ->setClinicId($faker->randomElement($clinics))
+            ->setSpeciality($faker->randomElement($specialitys))
             ->setFirstname("Nicolas")
             ->setLastname("Barbarisi")
             ->setGender("h")
@@ -38,8 +56,8 @@ class Users extends Fixture
             ->setRoles(['ROLE_ADMIN'])
             ->setPassword($pwd)
             ->setIsVerified(true)
-            ->setClinicId(null)
-            ->setSpeciality($spec2)
+            ->setClinicId($faker->randomElement($clinics))
+            ->setSpeciality($faker->randomElement($specialitys))
             ->setFirstname("Thomas")
             ->setLastname("Jallu")
             ->setGender("h")
@@ -48,15 +66,14 @@ class Users extends Fixture
 
         $object = (new User())
             ->setEmail('serkan.dev67@gmail.com')
-            ->setRoles(['ROLE_PRACTICIEN'])
+            ->setRoles(['ROLE_PRATICIEN'])
             ->setPassword($pwd)
             ->setIsVerified(true)
-            ->setClinicId(null)
-            ->setSpeciality($spec3)
+            ->setClinicId($faker->randomElement($clinics))
+            ->setSpeciality($faker->randomElement($specialitys))
             ->setFirstname("Serkan")
             ->setLastname("Deveci")
             ->setGender("h")
-
         ;
         $manager->persist($object);
 
@@ -65,7 +82,8 @@ class Users extends Fixture
     public function getDependencies()
     {
         return [
-            Speciality::class
+            SpecialityFixture::class,
+            ClinicFixture::class
         ];
     }
 }
