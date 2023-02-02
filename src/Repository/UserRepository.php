@@ -55,7 +55,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->add($user, true);
     }
-
+    
     /**
      * @return User[] Returns an array of User objects
      */
@@ -81,8 +81,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
           ->getQuery()
           ->getResult();
     }
+    
+//    /**
+//     * @return UserFixture[] Returns an array of UserFixture objects
+//     */
+//    public function findByExampleField($value): array
+//    {
+//        return $this->createQueryBuilder('u')
+//            ->andWhere('u.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('u.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
 
-//    public function findOneBySomeField($value): ?User
+//    public function findOneBySomeField($value): ?UserFixture
 //    {
 //        return $this->createQueryBuilder('u')
 //            ->andWhere('u.exampleField = :val')
