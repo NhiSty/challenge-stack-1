@@ -22,14 +22,12 @@ class SearchController extends AbstractController
         $usersByFirstName = [];
         $usersByLastName = [];
 
-        dump(gettype($query), $data);
-
         if ($query && gettype($query) === "string") {
             if ($data) {
                 $usersBySpeciality = $userRepository->findBy(['speciality' => $data->getId()]);
             }
             $usersByFirstName = $userRepository->findUsersByFistName($query);
-            $usersByLastName = $userRepository->findUsersByFistName($query);
+            $usersByLastName = $userRepository->findUsersByLastName($query);
         }
 
         return $this->render('search/index.html.twig', [

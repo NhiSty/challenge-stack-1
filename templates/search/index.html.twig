@@ -4,13 +4,44 @@
 
 {% block body %}
 
-<div class="example-wrapper">
+  <div class="example-wrapper">
     <h1>Hello Hamidou! ✅</h1>
 
-    {{ dump(users) }}
-    {{ dump(usersByFirstName) }}
-    {{ dump(usersByLastName) }}
-    {{ dump(clinics) }}
+    {% if users is defined and users|length > 0 %}
+      <h2>Users</h2>
+      <ul>
+        {% for user in users %}
+          <li>{{ user.firstname }} {{ user.lastname }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
 
-</div>
+    {% if usersByFirstName is defined and usersByFirstName|length > 0 %}
+      <h2>Users</h2>
+      <ul>
+        {% for user in usersByFirstName %}
+          <li>{{ user.firstname }} {{ user.lastname }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if usersByLastName is defined and usersByLastName|length > 0 %}
+      <h2>Users</h2>
+      <ul>
+        {% for user in usersByLastName %}
+          <li>{{ user.firstname }} {{ user.lastname }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if clinics is defined and clinics|length > 0 %}
+      <h2>Clinics</h2>
+      <ul>
+        {% for clinic in clinics %}
+          <li>{{ clinic.name }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+  </div>
 {% endblock %}
