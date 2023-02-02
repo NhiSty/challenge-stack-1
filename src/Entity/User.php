@@ -50,11 +50,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
     private ?DocumentStorage $documentStorage = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Clinic $clinic = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Speciality $speciality = null;
 
