@@ -11,9 +11,9 @@
     <div class="absolute container px-16 mx-auto" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
         <h2 class="text-5xl font-bold text-black">Darktolib</h2>
         <p class="my-5 text-gray-600 text-lg">{{ 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'|trans }}</p>
-        <form action="#" method="get">
+        <form action="{{ path('app_search') }}" method="POST">
             <div class="flex">
-                <input type="text" name="query" class="w-full rounded-l-lg border-t mr-0 border-b border-l pl-4 text-gray-800 border-gray-200 bg-white" placeholder="{{ 'Nom, spécialité, ville, etc.'|trans }}" />
+                <input type="text" name="query" class="w-full rounded-l-lg border-t mr-0 border-b border-l pl-4 text-gray-800 border-gray-200 bg-white" placeholder="{{ 'Nom, spécialité, ville'|trans }}" />
                 <button type="submit" class="hidden px-8 rounded-r-lg text-white font-bold p-4 uppercase bg-gradient-to-r from-blue-400 to-blue-300 hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400 sm:block transition-all duration-300 ease-in-out">
                     {{ 'Rechercher'|trans }}</button>
                 <button type="submit" class="sm:hidden block rounded-r-lg text-white font-bold p-4 uppercase bg-gradient-to-r from-blue-400 to-blue-300 hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
