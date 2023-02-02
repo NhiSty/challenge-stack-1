@@ -58,6 +58,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?Speciality $speciality = null;
 
+    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
+    private ?Agenda $agenda = null;
+
     public function __construct()
     {
         $this->appointments = new ArrayCollection();
@@ -245,6 +248,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSpeciality(?Speciality $speciality): self
     {
         $this->speciality = $speciality;
+
+        return $this;
+    }
+
+    public function getAgenda(): ?Agenda
+    {
+        return $this->agenda;
+    }
+
+    public function setAgenda(Agenda $agenda): self
+    {
+        // set the owning side of the relation if necessary
+        if ($agenda->getOwner() !== $this) {
+            $agenda->setOwner($this);
+        }
+
+        $this->agenda = $agenda;
 
         return $this;
     }
