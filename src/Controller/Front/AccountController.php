@@ -16,11 +16,8 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-      // get current user
+      // Get current user
         $user = $this->getUser();
-        dump($user);
-      // get user's speciality
-
 
         return $this->render('account/index.html.twig', [
           'user' => $user,
