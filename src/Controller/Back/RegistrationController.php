@@ -2,6 +2,7 @@
 
 namespace App\Controller\Back;
 
+use App\Entity\DocumentStorage;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\AppAuthenticator;
@@ -38,6 +39,13 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $documentStorage = new DocumentStorage();
+        $documentStorage->setName($user->getId() . $user->getLastname());
+
+
+
+        $user->setDocumentStorage($documentStorage);
+
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -106,7 +114,7 @@ class RegistrationController extends AbstractController
             'app_verify_email',
             $user,
             (new TemplatedEmail())
-                ->from(new Address('nhisty.dev@gmail.com', 'Inscription'))
+                ->from(new Address('nhisty.dev@gmail.com', 'NhiSty'))
                 ->to($user->getEmail())
                 ->subject('Please Confirm your Email')
                 ->htmlTemplate('Back/registration/confirmation_email.html.twig')

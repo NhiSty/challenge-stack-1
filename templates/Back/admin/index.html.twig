@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<ul>
+    <li><a href="{{ path('admin_app_user_index') }}">Utilisateurs </a></li>
+    <li><a href="{{ path('admin_app_clinic_index') }}">Clinic</a></li>
+    <li><a href="{{ path('admin_app_consultation_index') }}">Consultation</a></li>
+    <li><a href="{{ path('admin_app_document_storage_index') }}">espace personnelle</a></li>
+    <li><a href="{{ path('admin_app_drug_index') }}">Drug</a></li>
+    <li><a href="{{ path('admin_app_speciality_index') }}">Spécialité</a></li>
+    <li><a href="{{ path('admin_app_appointment_index') }}">Rendez-vous</a></li>
+</ul>
+{% endblock %}

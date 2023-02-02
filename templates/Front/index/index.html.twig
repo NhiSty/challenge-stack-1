@@ -1,25 +1,101 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    {{ encore_entry_link_tags('app') }}
-{% endblock %}
+{% block title %}Darktolib{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1 class="text-3xl font-bold underline">Hello {{ controller_name }}! ✅</h1>
+<section class="relative space-after-navbar bg-red-500">
+    <img src="{{ asset('assets/img/Hero.png') }}" alt="Hero background" class="w-max h-[45rem] object-cover object-center">
+    <div class="absolute container px-16 mx-auto" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <h2 class="text-5xl font-bold text-black">Darktolib</h2>
+        <p class="my-5 text-gray-600 text-lg">{{ 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.'|trans }}</p>
+        <form action="#" method="get">
+            <div class="flex">
+                <input type="text" name="query" class="w-full rounded-l-lg border-t mr-0 border-b border-l pl-4 text-gray-800 border-gray-200 bg-white" placeholder="{{ 'Nom, spécialité, ville, etc.'|trans }}" />
+                <button type="submit" class="hidden px-8 rounded-r-lg text-white font-bold p-4 uppercase bg-gradient-to-r from-blue-400 to-blue-300 hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400 sm:block transition-all duration-300 ease-in-out">
+                    {{ 'Rechercher'|trans }}</button>
+                <button type="submit" class="sm:hidden block rounded-r-lg text-white font-bold p-4 uppercase bg-gradient-to-r from-blue-400 to-blue-300 hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </form>
+    </div>
+</section>
 
-    This friendly message is coming from:
-    <ul>
-        <a href="{{ path('app_register') }}"> Inscription</a>
-        <a href="{{ path('app_login') }}"> login</a>
-    </ul>
-</div>
+<section class="my-10">
+    <h3 class="text-3xl font-bold text-center pb-10">{{ 'Nos services'|trans }}</h3>
+    <div class="container mx-auto px-16">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="bg-white rounded-lg shadow-lg p-4 border">
+                <div class="flex justify-center">
+                    <i class="fa-sharp fa-solid fa-user-md text-5xl text-blue-400"></i>
+                </div>
+                <h4 class="text-2xl font-bold text-center my-5">{{ 'Trouver un médecin'|trans }}</h4>
+                <p class="text-center">{{ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet commodo aliquet, nunc nisl aliquam purus, et ultricies nunc lorem eget dolor.'|trans }}</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-4 border">
+                <div class="flex justify-center">
+                    <i class="fa-sharp fa-solid fa-hospital text-5xl text-blue-400"></i>
+                </div>
+                <h4 class="text-2xl font-bold text-center my-5">{{ 'Trouver un hôpital'|trans }}</h4>
+                <p class="text-center">{{ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet commodo aliquet, nunc nisl aliquam purus, et ultricies nunc lorem eget dolor.'|trans }}</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-4 border">
+                <div class="flex justify-center">
+                    <i class="fa-sharp fa-solid fa-notes-medical text-5xl text-blue-400"></i>
+                </div>
+                <h4 class="text-2xl font-bold text-center my-5">{{ 'Trouver un laboratoire'|trans }}</h4>
+                <p class="text-center">{{ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet commodo aliquet, nunc nisl aliquam purus, et ultricies nunc lorem eget dolor.'|trans }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-blue-400 pb-10">
+    <h3 class="text-3xl font-bold text-center py-10">{{ 'Trouvez votre spécialiste'|trans }}</h3>
+    <div class="container mx-auto px-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="relative">
+                <img src="https://images.ctfassets.net/hrltx12pl8hq/3j5RylRv1ZdswxcBaMi0y7/b84fa97296bd2350db6ea194c0dce7db/Music_Icon.jpg" alt="Doctor 1" class="absolute w-50 h-[10rem] object-cover object-center top-0 rounded-lg hover:h-[11rem] transition-all duration-300 ease-in-out" style="left: 50%; transform: translateX(-50%);">
+                <div class="w-full bg-white rounded px-4 pb-4 pt-16 mt-28">
+                    <h4 class="text-2xl font-bold text-center">Injection de superpouvoir</h4>
+                    <button class="bg-white text-blue-500 border border-blue-400 px-4 py-2 rounded-lg mt-4 w-full hover:bg-blue-400 hover:text-white transition-all duration-100 ease-in-out">Voir plus</button>
+                </div>
+            </div>
+            <div class="relative">
+                <img src="https://images.ctfassets.net/hrltx12pl8hq/3j5RylRv1ZdswxcBaMi0y7/b84fa97296bd2350db6ea194c0dce7db/Music_Icon.jpg" alt="Doctor 1" class="absolute w-50 h-[10rem] object-cover object-center top-0 rounded-lg hover:h-[11rem] transition-all duration-300 ease-in-out" style="left: 50%; transform: translateX(-50%);">
+                <div class="w-full bg-white rounded px-4 pb-4 pt-16 mt-28">
+                    <h4 class="text-2xl font-bold text-center">Cardiologue</h4>
+                    <button class="bg-white text-blue-500 border border-blue-400 px-4 py-2 rounded-lg mt-4 w-full hover:bg-blue-400 hover:text-white transition-all duration-100 ease-in-out">Voir plus</button>
+                </div>
+            </div>
+            <div class="relative">
+                <img src="https://images.ctfassets.net/hrltx12pl8hq/3j5RylRv1ZdswxcBaMi0y7/b84fa97296bd2350db6ea194c0dce7db/Music_Icon.jpg" alt="Doctor 1" class="absolute w-50 h-[10rem] object-cover object-center top-0 rounded-lg hover:h-[11rem] transition-all duration-300 ease-in-out" style="left: 50%; transform: translateX(-50%);">
+                <div class="w-full bg-white rounded px-4 pb-4 pt-16 mt-28">
+                    <h4 class="text-2xl font-bold text-center">Généraliste</h4>
+                    <button class="bg-white text-blue-500 border border-blue-400 px-4 py-2 rounded-lg mt-4 w-full hover:bg-blue-400 hover:text-white transition-all duration-100 ease-in-out">Voir plus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mx-auto px-16 my-16">
+    <h3 class="text-2xl font-bold mb-4">Vous êtes praticien ?</h3>
+    <div class="md:flex">
+        <div class="content">
+            <p class="text-gray-600 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc sit amet commodo aliquet, nunc nisl aliquam purus, et ultricies nunc lorem eget dolor. Sed euismod, nunc sit amet commodo aliquet, nunc nisl aliquam purus, et ultricies nunc lorem eget dolor.</p>
+            <ul class="list-disc list-inside text-gray-600">
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+            </ul>
+        </div>
+        <div class="image">
+            <img src="{{ asset('assets/img/darktolib_kid_2.png') }}" alt="Doctor 1" class="w-1/2 md:w-full object-cover object-center mx-auto mt-8 md:mt-0">
+        </div>
+    </div>
+    <button class="w-full md:w-auto text-white bg-gradient-to-r from-blue-400 to-blue-300 hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400 px-4 py-2 rounded-lg mt-4 transition-all duration-100 ease-in-out">Inscrivez-vous</button>
+</section>
+
+{% include 'footer.html.twig' %}
+
 {% endblock %}
