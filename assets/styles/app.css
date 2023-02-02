@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Add a custom class in order to add padding after the navbar */
-.space-after-navbar {
-  @apply pt-20;
+.form-input {
+    @apply bg-gray-50 p-1.5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+}
+
+.form-input-error {
+    @apply text-red-500 text-xs
 }
