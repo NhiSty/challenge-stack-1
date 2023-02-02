@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
@@ -14,65 +14,30 @@
     {% endblock %}
 </head>
 {% block navbar %}
-    <nav class="bg-blue-400 sticky top-0 w-full z-50">
-        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div class="relative flex items-center justify-between">
-                <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                    <!-- Mobile menu button-->
-                    <button type="button" id="toggleMobile"
-                            class="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                            aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <!--
-                          Icon when menu is closed.
-
-                          Heroicon name: outline/bars-3
-
-                          Menu open: "hidden", Menu closed: "block"
-                        -->
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                             stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
-                        </svg>
-                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                             stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="flex flex-1 items-center justify-center py-2 sm:items-stretch sm:justify-start">
-                    <div class="flex flex-shrink-0 items-center">
-                        <img class="block h-16 w-auto lg:hidden" src="{{ asset('assets/img/logo.png') }}" alt="logo">
-                        <img class="hidden h-16 w-auto lg:block" src="{{ asset('assets/img/logo.png') }}" alt="logo">
-                    </div>
-                </div>
-                <div class="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 hidden sm:ml-6 sm:flex hidden">
-                    {% if is_granted('ROLE_USER') %}
-                        <a href="#"
-                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-                           aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
-                        <a href="#"
-                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-                           aria-current="page"><i class="fa-sharp fa-solid fa-file-medical"></i> Mes documents</a>
-                        <a href="#"
-                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-                           aria-current="page"><i class="fa-regular fa-user"></i> Mon compte</a>
-                        <a href="{{ path('app_logout') }}"
-                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-                           aria-current="page"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
-                    {% else %}
-                        <a href="#" class="bg-white text-blue-500 px-3 py-2 rounded-md text-sm font-medium mr-2"
-                           aria-current="page">Vous êtes praticien ?</a>
-                        <a href="{{ path('app_login') }}"
-                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-                           aria-current="page">Connexion</a>
-                        <a href="{{ path('app_register') }}"
-                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-                           aria-current="page">Inscription</a>
-                    {% endif %}
-                </div>
-            </div>
+  <nav class="bg-blue-400 sticky top-0 w-full z-50">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between">
+        <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+          <!-- Mobile menu button-->
+          <button type="button" id="toggleMobile"
+                  class="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                  aria-controls="mobile-menu" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <!--
+              Icon when menu is closed.
+              Heroicon name: outline/bars-3
+              Menu open: "hidden", Menu closed: "block"
+            -->
+            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+            </svg>
+            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
         </div>
         <div class="flex flex-1 items-center justify-center py-2 sm:items-stretch sm:justify-start">
           <div class="flex flex-shrink-0 items-center">
@@ -138,7 +103,7 @@
     </div>
   </nav>
 {% endblock %}
-<body class="h-screen flex flex-col bg-indigo-50">
+<body class="h-screen flex flex-col">
 <section class="relative mb-auto flex-shrink-0">
     {% block body %}
 
@@ -156,10 +121,10 @@
                     <div class="w-full md:w-6/12 px-4 mt-6">
                         <div class="flex flex-wrap items-top mb-6">
                             <div class="w-full md:w-5/12 px-4 ml-auto mb-6">
-                <span
-                        class="block uppercase text-gray-200 text-sm font-semibold mb-2">
-                  {{ 'Trouvez votre spécialiste'|trans }}
-                </span>
+            <span
+                    class="block uppercase text-gray-200 text-sm font-semibold mb-2">
+              {{ 'Trouvez votre spécialiste'|trans }}
+            </span>
                                 <ul class="list-unstyled">
                                     <li>
                                         <a
@@ -185,10 +150,10 @@
                                 </ul>
                             </div>
                             <div class="w-full md:w-5/12 px-4">
-                <span
-                        class="block uppercase text-gray-200 text-sm font-semibold mb-2">
-                  {{ 'À propos de nous'|trans }}
-                </span>
+            <span
+                    class="block uppercase text-gray-200 text-sm font-semibold mb-2">
+              {{ 'À propos de nous'|trans }}
+            </span>
                                 <ul class="list-unstyled">
                                     <li>
                                         <a
