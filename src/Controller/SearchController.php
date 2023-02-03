@@ -17,25 +17,33 @@ class SearchController extends AbstractController
     public function index(Request $request, UserRepository $userRepository, SpecialityRepository $specialityRepository, ClinicRepository $clinicRepository): Response
     {
         $query = $request->request->get('query');
-        $data = $specialityRepository->findOneBy(['name' => $query]);
-        $usersBySpeciality = [];
-        $usersByFirstName = [];
-        $usersByLastName = [];
+        $data = $specialityRepository->findBySpeciality($query);
+        $users = [];
 
         if ($query && gettype($query) === "string") {
             if ($data) {
-                $usersBySpeciality = $userRepository->findBy(['speciality' => $data->getId()]);
+                foreach ($data as $speciality) {
+                    $users = [...$users, ...$userRepository->findBy(['speciality' => $speciality->getId()])];
+                }
             }
-            $usersByFirstName = $userRepository->findUsersByFistName($query);
-            $usersByLastName = $userRepository->findUsersByLastName($query);
+            $users = [...$users, ...$userRepository->findUsersByFistName($query)];
+            $users = [...$users, ...$userRepository->findUsersByLastName($query)];
+        }
+
+        $uniqueUsers = [];
+
+        foreach ($users as $user) {
+            if (in_array($user, $uniqueUsers)) {
+                continue;
+            } else {
+                $uniqueUsers[] = $user;
+            }
         }
 
         return $this->render('search/index.html.twig', [
             'search' => $query,
-            'specialities' => $usersBySpeciality,
-            'usersByFirstName' => $usersByFirstName,
-            'usersByLastName' => $usersByLastName,
-            'clinics' => $clinicRepository->findBy(['name' => $query]),
+            'users' => $uniqueUsers,
+            'clinics' => $clinicRepository->findByClinic($query),
         ]);
     }
 }
