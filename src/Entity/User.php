@@ -61,6 +61,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
     private ?Agenda $agenda = null;
 
+    #[ORM\OneToOne(mappedBy: 'applicant', cascade: ['persist', 'remove'])]
+    private ?Demand $demand = null;
+
     public function __construct()
     {
         $this->appointments = new ArrayCollection();
@@ -265,6 +268,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->agenda = $agenda;
+
+        return $this;
+    }
+
+    public function getDemand(): ?Demand
+    {
+        return $this->demand;
+    }
+
+    public function setDemand(Demand $demand): self
+    {
+        // set the owning side of the relation if necessary
+        if ($demand->getApplicant() !== $this) {
+            $demand->setApplicant($this);
+        }
+
+        $this->demand = $demand;
 
         return $this;
     }
