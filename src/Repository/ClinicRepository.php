@@ -39,6 +39,18 @@ class ClinicRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+      * @return Clinic[] Returns an array of Clinic objects
+     */
+    public function findByClinic(string $query): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.name LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Clinic[] Returns an array of Clinic objects
 //     */
