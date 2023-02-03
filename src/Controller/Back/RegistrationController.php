@@ -2,6 +2,8 @@
 
 namespace App\Controller\Back;
 
+use App\Entity\Agenda;
+use App\Entity\DocumentStorage;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\AppAuthenticator;
@@ -38,6 +40,18 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
+        $documentStorage = new DocumentStorage();
+        $documentStorage->setName('document storage');
+        $documentStorage->setDescription("L'espace personnelle de stockage");
+        $entityManager->persist($documentStorage);
+
+        $user->setDocumentStorage($documentStorage);
+        $entityManager->persist($user);
+
+        $agenda = new Agenda();
+        $agenda->setOwner($user);
+        $entityManager->persist($agenda);
+
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -50,6 +64,8 @@ class RegistrationController extends AbstractController
                 )
             );
 
+
+            $entityManager->persist($agenda);
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -78,7 +94,7 @@ class RegistrationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // validate email confirmation link, sets User::isVerified=true and persists
+        // validate email confirmation link, sets UserFixture::isVerified=true and persists
         $user = $this->getUser();
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
@@ -106,7 +122,7 @@ class RegistrationController extends AbstractController
             'app_verify_email',
             $user,
             (new TemplatedEmail())
-                ->from(new Address('nhisty.dev@gmail.com', 'Inscription'))
+                ->from(new Address('nhisty.dev@gmail.com', 'NhiSty'))
                 ->to($user->getEmail())
                 ->subject('Please Confirm your Email')
                 ->htmlTemplate('Back/registration/confirmation_email.html.twig')

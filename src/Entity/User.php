@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -32,6 +34,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\Column(length: 255)]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lastname = null;
+
+    #[ORM\Column(length: 1)]
+    private ?string $gender = null;
+
+    #[ORM\ManyToMany(targetEntity: Appointment::class, mappedBy: 'practitioner_id')]
+    private Collection $appointments;
+
+    #[ORM\OneToOne(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
+    private ?DocumentStorage $documentStorage = null;
+
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Clinic $clinic = null;
+
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Speciality $speciality = null;
+
+    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
+    private ?Agenda $agenda = null;
+
+    #[ORM\OneToOne(mappedBy: 'applicant', cascade: ['persist', 'remove'])]
+    private ?Demand $demand = null;
+
+    public function __construct()
+    {
+        $this->appointments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -111,6 +147,144 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getAppointments(): Collection
+    {
+        return $this->appointments;
+    }
+
+    public function addAppointment(Appointment $appointment): self
+    {
+        if (!$this->appointments->contains($appointment)) {
+            $this->appointments->add($appointment);
+            $appointment->addPractitionerId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppointment(Appointment $appointment): self
+    {
+        if ($this->appointments->removeElement($appointment)) {
+            $appointment->removePractitionerId($this);
+        }
+
+        return $this;
+    }
+
+    public function getDocumentStorage(): ?DocumentStorage
+    {
+        return $this->documentStorage;
+    }
+
+    public function setDocumentStorage(DocumentStorage $documentStorage): self
+    {
+        // set the owning side of the relation if necessary
+        if ($documentStorage->getUserId() !== $this) {
+            $documentStorage->setUserId($this);
+        }
+
+        $this->documentStorage = $documentStorage;
+
+        return $this;
+    }
+
+    public function getClinicId(): ?Clinic
+    {
+        return $this->clinic;
+    }
+
+    public function setClinicId(?Clinic $clinic): self
+    {
+        $this->clinic = $clinic;
+
+        return $this;
+    }
+
+    public function getSpeciality(): ?Speciality
+    {
+        return $this->speciality;
+    }
+
+    public function setSpeciality(?Speciality $speciality): self
+    {
+        $this->speciality = $speciality;
+
+        return $this;
+    }
+
+    public function getAgenda(): ?Agenda
+    {
+        return $this->agenda;
+    }
+
+    public function setAgenda(Agenda $agenda): self
+    {
+        // set the owning side of the relation if necessary
+        if ($agenda->getOwner() !== $this) {
+            $agenda->setOwner($this);
+        }
+
+        $this->agenda = $agenda;
+
+        return $this;
+    }
+
+    public function getDemand(): ?Demand
+    {
+        return $this->demand;
+    }
+
+    public function setDemand(Demand $demand): self
+    {
+        // set the owning side of the relation if necessary
+        if ($demand->getApplicant() !== $this) {
+            $demand->setApplicant($this);
+        }
+
+        $this->demand = $demand;
 
         return $this;
     }
