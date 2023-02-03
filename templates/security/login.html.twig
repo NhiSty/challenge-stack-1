@@ -2,43 +2,75 @@
 
 {% block title %}Log in!{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+
 {% block body %}
 
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <div class="flex items-center justify-center py-5 px-4">
+        <div class="bg-white w-[30%] rounded-lg">
+            <div>
+                <h2 class="mt-6 text-center font-bold tracking-tight text-gray-900">J'ai déjà un compte DarktoLib</h2>
+            </div>
+            <form class="mt-8" method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+
+                <div class="pb-3 text-center">
+                    <label class="text-center">
+                        {{ 'Email :' | trans() }}
+                    </label>
+                </div>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control border rounded-lg" placeholder="Adresse Email" autocomplete="email" required>
+
+
+                <div class="pt-3 text-center">
+                    <label class="text-center">
+                        {{ 'Saisir mot de passe :' | trans() }}
+                    </label>
+                </div>
+                <input type="password" name="password" id="inputPassword" class="form-control border rounded-lg" placeholder="Mot de passe" autocomplete="current-password" required>
+
+
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}" >
+
+                <div class="flex justify-center pt-3">
+                    <button type="submit" class="border border-transparent rounded-full bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        Se connecter
+                    </button>
+                </div>
+
+                <div class="bg-red text-center">
+                    <div class="text-sm">
+                        <a href="{{ path('app_forgot_password_request') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                            Mot de passe oublié
+                        </a>
+                    </div>
+                </div>
+            </form>
         </div>
-    {% endif %}
-
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
+    </div>
+    <div class="flex items-center justify-center px-8">
+        <div class="bg-white w-full rounded-lg">
+            <div>
+                <h2 class="mt-2 text-center font-bold tracking-tight text-gray-900">Nouveau sur Darktolib ?</h2>
+            </div>
+            <div class="flex justify-center">
+                <a href="{{ path('app_register') }}" class="text-indigo-900 py-2 px-4 text-sm font-medium">
+                    S'inscrire
+                </a>
+            </div>
         </div>
-    #}
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-    <a href="{{ path('app_forgot_password_request') }}"> I forgot my password</a>
-</form>
+    </div>
 {% endblock %}
