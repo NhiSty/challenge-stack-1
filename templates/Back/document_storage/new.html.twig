@@ -7,5 +7,9 @@
 
     {{ include('/Back/document_storage/_form.html.twig') }}
 
-    <a href="{{ path('admin_app_document_storage_index') }}">back to list</a>
+    {# si admin on affiche #}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_app_document_storage_index') }}">back to list</a>
+
+    {% endif %}
 {% endblock %}

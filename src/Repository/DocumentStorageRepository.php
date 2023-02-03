@@ -23,6 +23,7 @@ class DocumentStorageRepository extends ServiceEntityRepository
 
     public function save(DocumentStorage $entity, bool $flush = false): void
     {
+
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -38,6 +39,7 @@ class DocumentStorageRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
 
 //    /**
 //     * @return DocumentStorage[] Returns an array of DocumentStorage objects

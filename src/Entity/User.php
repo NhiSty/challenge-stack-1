@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Appointment::class, mappedBy: 'practitioner_id')]
     private Collection $appointments;
 
-    #[ORM\OneToOne(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
+    #[ORM\oneToMany(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
     private ?DocumentStorage $documentStorage = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
