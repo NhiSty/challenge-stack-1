@@ -16,8 +16,16 @@ class PractitionerController extends AbstractController
     {
         $practitioner = $em->getRepository(User::class)->find($id);
 
+        if ($practitioner) {
+            if (!$practitioner->isVerified()) {
+                return $this->redirectToRoute('app_front_index_index');
+            }
+        } else {
+            return $this->redirectToRoute('app_front_index_index');
+        }
+
         return $this->render('practitioner/index.html.twig', [
-        'practitioner' => $practitioner,
+          'practitioner' => $practitioner,
         ]);
     }
 }
