@@ -31,9 +31,13 @@
           <h2 class="text-2xl font-bold mt-2">{{ 'Spécialités'|trans }}</h2>
           <p class="text-md font-medium mt-6">{{ practitioner.speciality.name }}</p>
           <h2 class="text-2xl font-bold mt-2">{{ 'Informations d\'accès'|trans }}</h2>
-          <p class="text-md font-medium mt-6">{{ practitioner.speciality.name }}</p>
-          <h2 class="text-2xl font-bold mt-2">{{ 'Spécialités'|trans }}</h2>
-          <p class="text-md font-medium mt-6">{{ practitioner.speciality.name }}</p>
+          <p class="text-md font-medium mt-6">
+            {{ practitioner.clinicId.name is not null ? practitioner.clinicId.name ~ ' -' : '' }}
+            {{ practitioner.clinicId.address is not null ? practitioner.clinicId.address ~ ',' : '' }}
+            {{ practitioner.clinicId.city is not null ? practitioner.clinicId.city ~ ',' : '' }}
+            {{ practitioner.clinicId.country is not null ? practitioner.clinicId.country : '' }}</p>
+          <h2 class="text-2xl font-bold mt-2">{{ 'Tarifs'|trans }}</h2>
+          <p class="text-md font-medium mt-6">{{ 'À venir'|trans }}</p>
         </div>
         <div class="p-6 bg-white rounded-lg shadow-xl h-full" style="flex: 1">
           <div class="flex flex-col">
@@ -51,8 +55,8 @@
             <div
                 class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4"
                 role="alert">
-              <strong class="font-bold">This practitioner is not verified!</strong>
-              <span class="block sm:inline">Please contact the administrator to verify this practitioner.</span>
+              <strong class="font-bold">{{ 'Ce praticien n\'est pas vérifié !'|trans }}</strong>
+              <span class="block sm:inline">{{ 'Vous ne pouvez pas prendre rendez-vous avec ce praticien tant qu\'il ne sera pas vérifié.'|trans }}</span>
             </div>
             {% else %}
               <a href="#" class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-400 border border-transparent rounded-md hover:bg-blue-500">Prendre RDV</a>
