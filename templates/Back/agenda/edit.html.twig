@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Agenda{% endblock %}
+
+{% block body %}
+    <h1>Edit Agenda</h1>
+
+    {{ include('/Back/agenda/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('admin_app_agenda_index') }}">back to list</a>
+
+    {{ include('/Back/agenda/_delete_form.html.twig') }}
+{% endblock %}

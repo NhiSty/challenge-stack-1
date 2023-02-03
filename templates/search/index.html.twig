@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ search }}{% endblock %}
+
+{% set result = specialities|length + usersByFirstName|length + usersByLastName|length + clinics|length %}
+
+{% block body %}
+
+  <div class="container mx-auto">
+    <h2 class=" mt-5 font-bold text-2xl">Search results for "{{ search }}"</h2>
+    {% if result == 0 %}
+      <p class="container mx-auto my-3">No results found</p>
+    {% else %}
+      <p class="container mx-auto my-3">{{ result }} results found</p>
+    {% endif %}
+
+    {% if specialities is defined and specialities|length > 0 %}
+      {% for speciality in specialities %}
+        <div
+            class="bg-white rounded-lg hover:shadow-lg p-4 border transition-all duration-300 ease-in-out mb-5 mx-auto sm:w-auto w-11/12">
+          <div class="flex flex-row items-center mb-4">
+            {% if speciality.avatar is defined %}
+              <img src="{{ asset('uploads/' ~ speciality.avatar) }}"
+                   alt="Avatar" class="w-20 h-20 rounded-full">
+            {% else %}
+              {% if speciality.gender is same as('f') %}
+                <img
+                    src="https://media.gettyimages.com/id/1331335241/vector/female-avatar-icon.jpg?s=1024x1024&w=gi&k=20&c=f5cDRTXP8cDqBaZFQIH9MVEctDupqQV4YaVYsmRZSl8="
+                    alt="Avatar female" class="w-20 h-20 rounded-full">
+              {% else %}
+                <img src="https://www.w3schools.com/howto/img_avatar.png"
+                     alt="Avatar" class="w-20 h-20 rounded-full">
+              {% endif %}
+            {% endif %}
+            <div class="flex flex-col ml-4">
+              <a href="/practitioner/{{ speciality.id }}" class="font-bold text-blue-500 mb-1">{{ speciality.firstname }} {{ speciality.lastname }}</a>
+              <p class="text-gray-500 font-semibold">{{ speciality.speciality.name }}</p>
+            </div>
+          </div>
+          <p>{{ speciality.clinicId.address }}</p>
+          <p>{{ speciality.clinicId.city }}</p>
+        </div>
+      {% endfor %}
+    {% elseif usersByFirstName is defined and usersByFirstName|length > 0 %}
+      {% for user in usersByFirstName %}
+        <div
+            class="bg-white rounded-lg hover:shadow-lg p-4 border transition-all duration-300 ease-in-out mb-5 mx-auto sm:w-auto w-11/12">
+          <div class="flex flex-row items-center mb-4">
+            {% if user.avatar is defined %}
+              <img src="{{ asset('uploads/' ~ user.avatar) }}" alt="Avatar"
+                   class="w-20 h-20 rounded-full">
+            {% else %}
+              {% if user.gender is same as('f') %}
+                <img
+                    src="https://media.gettyimages.com/id/1331335241/vector/female-avatar-icon.jpg?s=1024x1024&w=gi&k=20&c=f5cDRTXP8cDqBaZFQIH9MVEctDupqQV4YaVYsmRZSl8="
+                    alt="Avatar female" class="w-20 h-20 rounded-full">
+              {% else %}
+                <img src="https://www.w3schools.com/howto/img_avatar.png"
+                     alt="Avatar" class="w-20 h-20 rounded-full">
+              {% endif %}
+            {% endif %}
+            <div class="flex flex-col ml-4">
+              <a href="/practitioner/{{ user.id }}" class="font-bold text-blue-500 mb-1">{{ user.firstname }} {{ user.lastname }}</a>
+              <p class="text-gray-500 font-semibold">{{ user.speciality.name }}</p>
+            </div>
+          </div>
+          <p>{{ user.clinicId.address }}</p>
+          <p>{{ user.clinicId.city }}</p>
+        </div>
+      {% endfor %}
+    {% elseif usersByLastName is defined and usersByLastName|length > 0 %}
+      {% for user in usersByLastName %}
+        <div
+            class="bg-white rounded-lg hover:shadow-lg p-4 border transition-all duration-300 ease-in-out mb-5 mx-auto sm:w-auto w-11/12">
+          <div class="flex flex-row items-center mb-4">
+            {% if user.avatar is defined %}
+              <img src="{{ asset('uploads/' ~ user.avatar) }}" alt="Avatar"
+                   class="w-20 h-20 rounded-full">
+            {% else %}
+              {% if user.gender is same as('f') %}
+                <img
+                    src="https://media.gettyimages.com/id/1331335241/vector/female-avatar-icon.jpg?s=1024x1024&w=gi&k=20&c=f5cDRTXP8cDqBaZFQIH9MVEctDupqQV4YaVYsmRZSl8="
+                    alt="Avatar female" class="w-20 h-20 rounded-full">
+              {% else %}
+                <img src="https://www.w3schools.com/howto/img_avatar.png"
+                     alt="Avatar" class="w-20 h-20 rounded-full">
+              {% endif %}
+            {% endif %}
+            <div class="flex flex-col ml-4">
+              <a href="/practitioner/{{ user.id }}" class="font-bold text-blue-500 mb-1">{{ user.firstname }} {{ user.lastname }}</a>
+              <p class="text-gray-500 font-semibold">{{ user.speciality.name }}</p>
+            </div>
+          </div>
+          <p>{{ user.clinicId.address }}</p>
+          <p>{{ user.clinicId.city }}</p>
+        </div>
+      {% endfor %}
+    {% elseif clinics is defined and clinics|length > 0 %}
+      {% for clinic in clinics %}
+        <div
+            class="bg-white rounded-lg hover:shadow-lg p-4 border transition-all duration-300 ease-in-out mb-5 mx-auto sm:w-auto w-11/12">
+          <div class="flex flex-row items-center mb-4">
+            {% if speciality.avatar is defined %}
+              <img src="{{ asset('uploads/' ~ speciality.avatar) }}"
+                   alt="Avatar" class="w-20 h-20 rounded-full">
+            {% else %}
+              <img src="{{ asset('assets/img/clinic_default.png') }}"
+                   alt="Avatar" class="w-20 h-20 rounded-full">
+            {% endif %}
+            <div class="flex flex-col ml-4">
+              <p class="font-bold text-blue-500 mb-1">{{ clinic.name }}</p>
+            </div>
+          </div>
+          <p>{{ clinic.address }}</p>
+          <p>{{ clinic.city }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endblock %}
