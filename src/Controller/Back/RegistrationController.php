@@ -2,6 +2,7 @@
 
 namespace App\Controller\Back;
 
+use App\Entity\Agenda;
 use App\Entity\DocumentStorage;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
@@ -40,11 +41,16 @@ class RegistrationController extends AbstractController
     {
         $user = new User();
         $documentStorage = new DocumentStorage();
-        $documentStorage->setName($user->getId() . $user->getLastname());
-
-
+        $documentStorage->setName('document storage');
+        $documentStorage->setDescription("L'espace personnelle de stockage");
+        $entityManager->persist($documentStorage);
 
         $user->setDocumentStorage($documentStorage);
+        $entityManager->persist($user);
+
+        $agenda = new Agenda();
+        $agenda->setOwner($user);
+        $entityManager->persist($agenda);
 
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -58,6 +64,8 @@ class RegistrationController extends AbstractController
                 )
             );
 
+
+            $entityManager->persist($agenda);
             $entityManager->persist($user);
             $entityManager->flush();
 
