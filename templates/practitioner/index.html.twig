@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PractitionerController!{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    {{ dump(practitioner) }}
+
+  {% if practitioner is null and  %}
+    <h1>Practitioner not found</h1>
+  {% else %}
+    <p>Coucou</p>
+  {% endif %}
+</div>
+{% endblock %}
