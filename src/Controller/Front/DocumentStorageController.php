@@ -22,14 +22,31 @@ class DocumentStorageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+                $this->getUser()->setDocumentStorage($documentStorage);
+            }
             $documentStorageRepository->save($documentStorage, true);
 
             return $this->redirectToRoute('app_front_document_storage_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('/Back/document_storage/new.html.twig', [
-            'document_storage' => $documentStorage,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/index', name: 'app_front_document_storage_index')]
+    public function index(Request $request, DocumentStorageRepository $documentStorageRepository): Response
+    {
+        // get all users document storages
+        //$documentStorages = $documentStorageRepository->findBy(['user_id_id' => $this->getUser()->getId()]);
+
+        // find current users document storage
+        $documentStorages = $documentStorageRepository->findBy(['user_id' => $this->getUser()->getId()]);
+
+
+        return $this->render('/Front/storage/index.html.twig', [
+            'document_storages' => $documentStorages,
         ]);
     }
 }

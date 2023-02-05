@@ -1,4 +1,25 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+        <div class="pb-3">
+            <label class="pb-3" for="description">{{ 'Description du document' | trans }}</label>
+            {{ form_widget(form.description) }}
+        </div>
+
+        <div class="pb-3">
+            {% if is_granted('ROLE_ADMIN') %}
+                <p>toto</p>
+                <label for="affectTo">{{ 'Affecter le document à ' | trans }}</label>
+                {{ form_widget(form.user_id) }}
+            {% endif %}
+        </div>
+
+        <div class="pb-3">
+            {{ form_widget(form.docFile) }}
+        </div>
+
+        <div class="flex flex-row justify-center pb-3">
+            <button class="bg-gradient-to-r from-blue-400 to-blue-200 py-2 px-4 rounded-lg text-white font-bold text-sm hover:from-blue-200 hover:to-blue-400 transition-all duration-300 ease-in-out mt-6">
+                {{ button_label|default('Ajouter') }}
+            </button>
+        </div>
 {{ form_end(form) }}

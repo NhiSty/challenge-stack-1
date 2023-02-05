@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Listes de mes documents {% endblock %}
+
+{% block body %}
+
+    <h1>Mes documents</h1>
+
+    {# list of all my document storages #}
+    {% for docs in document_storages %}
+        {% set separating_name_ext = docs.name | split('.') %}
+        {% set extension = separating_name_ext[1] %}
+
+        {{ docs.name }} <br />
+        {{ docs.description }} <br />
+
+        {% if extension == 'PNG' or extension == 'JPEG' %}
+            <img src="{{ vich_uploader_asset(docs, 'docFile') }}" alt="{{ docs.name }}">
+
+        {% else %}
+            <a href="{{ vich_uploader_asset(docs, 'docFile') }}">Ouvrir le document</a>
+        {% endif %}
+
+    {% else %}
+        no documents was found
+    {% endfor %}
+
+    <p class="text-center pt-3">
+        <a class="text-indigo-900 text-sm font-medium" href="{{ path('app_front_document_storage_new') }}">
+            {{ "Nouveau document" }}
+        </a>
+    </p>
+
+{% endblock %}

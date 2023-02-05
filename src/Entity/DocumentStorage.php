@@ -31,12 +31,13 @@ class DocumentStorage
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user_id = null;
 
+
     #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'name')]
-    #[Assert\Image(
+    #[Assert\File(
         maxSize: '2M',
-        mimeTypes: ['image/png', 'image/jpeg'],
+        mimeTypes: ['application/pdf', 'image/png', 'image/jpeg'],
         maxSizeMessage: 'Votre fichier fait {{ size }} et ne doit pas dépasser {{ limit }}',
-        mimeTypesMessage: 'Fichier accepté : png / jpeg'
+        mimeTypesMessage: 'Fichier accepté : pdf / png / jpeg'
     )]
     private ?File $docFile = null;
 
