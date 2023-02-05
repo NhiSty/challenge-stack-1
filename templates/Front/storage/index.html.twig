@@ -8,18 +8,26 @@
 
     {# list of all my document storages #}
     {% for docs in document_storages %}
-        {% set separating_name_ext = docs.name | split('.') %}
-        {% set extension = separating_name_ext[1] %}
 
-        {{ docs.name }} <br />
-        {{ docs.description }} <br />
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ docs.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ docs.description }}</td>
+            </tr>
+            <tr>
+                <th>Fichier :</th>
+                <td>
+                    <a href="{{ vich_uploader_asset(docs, 'docFile') }}" target="_blank">Ouvrir le document {{ loop.index }}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-        {% if extension == 'PNG' or extension == 'JPEG' %}
-            <img src="{{ vich_uploader_asset(docs, 'docFile') }}" alt="{{ docs.name }}">
-
-        {% else %}
-            <a href="{{ vich_uploader_asset(docs, 'docFile') }}">Ouvrir le document</a>
-        {% endif %}
 
     {% else %}
         no documents was found

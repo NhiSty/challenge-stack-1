@@ -2,6 +2,11 @@
 
 {% block title %}DocumentStorage{% endblock %}
 
+
+{% set separating_name_ext = document_storage.name | split('.') %}
+{% set extension = separating_name_ext[1] %}
+
+
 {% block body %}
     <h1>DocumentStorage</h1>
 
@@ -22,7 +27,18 @@
         </tbody>
     </table>
 
-    <img src="{{ vich_uploader_asset(document_storage, 'docFile') }}" alt="documents">
+
+
+    {% if extension == 'PNG' or extension == 'JPEG' %}
+        <img src="{{ vich_uploader_asset(document_storage, 'docFile') }}" alt="{{ document_storage.name }}">
+
+    {% elseif (extension == 'pdf' or extension == 'PDF')  %}
+        <a href="{{ vich_uploader_asset(document_storage, 'docFile') }}" target="_blank">Ouvrir le document</a>
+
+    {% else %}
+        <p>Extension ni png ni jpeg ni pdf</p>
+
+    {% endif %}
 
     <a href="{{ path('admin_app_document_storage_index') }}">back to list</a>
 

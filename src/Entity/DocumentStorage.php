@@ -31,7 +31,6 @@ class DocumentStorage
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user_id = null;
 
-
     #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'name')]
     #[Assert\File(
         maxSize: '2M',
@@ -39,7 +38,7 @@ class DocumentStorage
         maxSizeMessage: 'Votre fichier fait {{ size }} et ne doit pas dépasser {{ limit }}',
         mimeTypesMessage: 'Fichier accepté : pdf / png / jpeg'
     )]
-    private ?File $docFile = null;
+    private $docFile;
 
 
     public function getId(): ?int
@@ -52,9 +51,6 @@ class DocumentStorage
         return $this->name;
     }
 
-    /**
-     * @return File|null
-     */
     public function getDocFile(): ?File
     {
         return $this->docFile;

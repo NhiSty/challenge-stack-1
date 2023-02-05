@@ -21,14 +21,17 @@ class DocumentStorageController extends AbstractController
         $form = $this->createForm(DocumentStorageType::class, $documentStorage);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
             if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
-                $this->getUser()->setDocumentStorage($documentStorage);
+                $user = $this->getUser();
+                $documentStorage->setUserId($user);
             }
             $documentStorageRepository->save($documentStorage, true);
 
             return $this->redirectToRoute('app_front_document_storage_index', [], Response::HTTP_SEE_OTHER);
         }
+
 
         return $this->renderForm('/Back/document_storage/new.html.twig', [
             'form' => $form,

@@ -6,6 +6,7 @@ use App\Entity\DocumentStorage;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -33,12 +34,9 @@ class DocumentStorageType extends AbstractType
                     'required' => false,
                 ]);
             }
-            $builder->add('docFile', VichImageType::class, [
+            $builder->add('docFile', FileType::class, [
                 "label" => "Documents",
                 'required' => false,
-                'allow_delete' => true,
-                'delete_label' => 'Suppression de l\'image',
-                'download_label' => 'Télécharger l\'image',
             ])
         ;
     }
