@@ -2,18 +2,20 @@
 
         <div class="pb-3">
             <label class="pb-3" for="description">{{ 'Description du document' | trans }}</label>
+            <span class="form-input-error">{{ form_errors(form.description) }}</span>
             {{ form_widget(form.description) }}
         </div>
 
         <div class="pb-3">
             {% if is_granted('ROLE_ADMIN') %}
-                <p>toto</p>
                 <label for="affectTo">{{ 'Affecter le document à ' | trans }}</label>
+                <span class="form-input-error">{{ form_errors(form.user_id) }}</span>
                 {{ form_widget(form.user_id) }}
             {% endif %}
         </div>
 
         <div class="pb-3">
+            <span class="form-input-error">{{ form_errors(form.docFile) }}</span>
             {{ form_widget(form.docFile) }}
         </div>
 
