@@ -32,7 +32,6 @@ class DocumentStorageController extends AbstractController
             return $this->redirectToRoute('app_front_document_storage_index', [], Response::HTTP_SEE_OTHER);
         }
 
-
         return $this->renderForm('/Back/document_storage/new.html.twig', [
             'form' => $form,
         ]);

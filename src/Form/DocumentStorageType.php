@@ -36,7 +36,7 @@ class DocumentStorageType extends AbstractType
             }
             $builder->add('docFile', FileType::class, [
                 "label" => "Documents",
-                'required' => false,
+                'required' => true,
             ])
         ;
     }

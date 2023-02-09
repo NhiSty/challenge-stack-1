@@ -29,14 +29,17 @@ class DocumentStorage
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message : "Vous devez sélectionner un utilisateur")]
     private ?User $user_id = null;
 
     #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'name')]
+    #[Assert\NotBlank(message : "Vous devez sélectionner un fichier")]
     #[Assert\File(
         maxSize: '2M',
         mimeTypes: ['application/pdf', 'image/png', 'image/jpeg'],
         maxSizeMessage: 'Votre fichier fait {{ size }} et ne doit pas dépasser {{ limit }}',
-        mimeTypesMessage: 'Fichier accepté : pdf / png / jpeg'
+        mimeTypesMessage: 'Fichier accepté : pdf / png / jpeg',
+        uploadErrorMessage: 'Une erreur est survenue lors de l\'envoi du fichier'
     )]
     private $docFile;
 
