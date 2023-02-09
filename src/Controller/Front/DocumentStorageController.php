@@ -40,8 +40,6 @@ class DocumentStorageController extends AbstractController
     #[Route('/index', name: 'app_front_document_storage_index')]
     public function index(Request $request, DocumentStorageRepository $documentStorageRepository): Response
     {
-        // get all users document storages
-        //$documentStorages = $documentStorageRepository->findBy(['user_id_id' => $this->getUser()->getId()]);
 
         // find current users document storage
         $documentStorages = $documentStorageRepository->findBy(['user_id' => $this->getUser()->getId()]);
