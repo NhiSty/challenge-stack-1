@@ -5,8 +5,15 @@ namespace App\Entity;
 use App\Repository\DocumentStorageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 #[ORM\Entity(repositoryClass: DocumentStorageRepository::class)]
+#[Vich\Uploadable]
+
 class DocumentStorage
 {
     #[ORM\Id]
@@ -14,15 +21,28 @@ class DocumentStorage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
+    #[ORM\Column(type: Types::TEXT)]
+    private string $description = '';
 
-    #[ORM\OneToOne(inversedBy: 'documentStorage', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message : "Vous devez sélectionner un utilisateur")]
     private ?User $user_id = null;
+
+    #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'name')]
+    #[Assert\NotBlank(message : "Vous devez sélectionner un fichier")]
+    #[Assert\File(
+        maxSize: '2M',
+        mimeTypes: ['application/pdf', 'image/png', 'image/jpeg'],
+        maxSizeMessage: 'Votre fichier fait {{ size }} et ne doit pas dépasser {{ limit }}',
+        mimeTypesMessage: 'Fichier accepté : pdf / png / jpeg',
+        uploadErrorMessage: 'Une erreur est survenue lors de l\'envoi du fichier'
+    )]
+    private $docFile;
+
 
     public function getId(): ?int
     {
@@ -34,19 +54,31 @@ class DocumentStorage
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function getDocFile(): ?File
+    {
+        return $this->docFile;
+    }
+
+
+    /**
+     * @param string|null $name
+     * @return DocumentStorage
+     */
+
+    public function setName(string $name): DocumentStorage
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -62,6 +94,16 @@ class DocumentStorage
     {
         $this->user_id = $user_id;
 
+        return $this;
+    }
+
+    /**
+     * @param File|null $docFile
+     * @return DocumentStorage
+     */
+    public function setDocFile(?File $docFile): DocumentStorage
+    {
+        $this->docFile = $docFile;
         return $this;
     }
 }

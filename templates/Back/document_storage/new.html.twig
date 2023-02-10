@@ -3,9 +3,20 @@
 {% block title %}New DocumentStorage{% endblock %}
 
 {% block body %}
-    <h1>Create new DocumentStorage</h1>
 
-    {{ include('/Back/document_storage/_form.html.twig') }}
+    <div class="lg:w-1/3 md:w-1/2 container mx-auto my-10 bg-white rounded-lg py-5 px-8" >
+        <h1 class="text-center text-lg font-bold mb-4" >{{ 'Ajouter des documents' | trans }}</h1>
 
-    <a href="{{ path('admin_app_document_storage_index') }}">back to list</a>
+        {{ include('/Back/document_storage/_form.html.twig') }}
+
+        {# si admin on affiche #}
+        {% if is_granted('ROLE_ADMIN') %}
+            <p class="text-center pt-3">
+                <a class="text-indigo-900 text-sm font-medium" href="{{ path('admin_app_document_storage_index') }}">
+                    {{ "Listes des documents" }}
+                </a>
+            </p>
+    </div>
+
+    {% endif %}
 {% endblock %}
