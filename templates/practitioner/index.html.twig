@@ -4,6 +4,8 @@
 
 {% block body %}
 
+  {{ dump(practitioner.appointments) }}
+
   <div class="example-wrapper">
     {% if practitioner is defined %}
       <!-- Practitioner's profile picture, name, and speciality in a header with Tailwind CSS -->
