@@ -29,7 +29,6 @@ class DocumentStorage
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message : "Vous devez sélectionner un utilisateur")]
     private ?User $user_id = null;
 
     #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'name')]
@@ -41,7 +40,7 @@ class DocumentStorage
         mimeTypesMessage: 'Fichier accepté : pdf / png / jpeg',
         uploadErrorMessage: 'Une erreur est survenue lors de l\'envoi du fichier'
     )]
-    private $docFile;
+    private $docFile = [];
 
 
     public function getId(): ?int
@@ -54,7 +53,7 @@ class DocumentStorage
         return $this->name;
     }
 
-    public function getDocFile(): ?File
+    public function getDocFile(): ?array
     {
         return $this->docFile;
     }
@@ -101,9 +100,10 @@ class DocumentStorage
      * @param File|null $docFile
      * @return DocumentStorage
      */
-    public function setDocFile(?File $docFile): DocumentStorage
+    public function setDocFile(array $docFile): self
     {
         $this->docFile = $docFile;
         return $this;
     }
+
 }
