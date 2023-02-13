@@ -32,29 +32,30 @@ class PracticienController extends AbstractController
         $necessaryDocs = $necessaryDocumentRepository->findAll();
 
         $documentStorage = new DocumentStorage();
-        $form = $this->createForm(DocumentStorageType::class, null, [
+        $form = $this->createForm(DocumentStorageType::class, $documentStorage, [
             'necessaryDocs' => $necessaryDocs,
         ]);
         $form->handleRequest($request);
 
 
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $user = $this->getUser();
-            dump($form->getData());
 
             // loop over all uploaded docs
-            for ($i = 0; $i < count($documentStorage->getDocFile()); $i++){
+            for ($i = 0; $i < count($necessaryDocs); $i++){
 
-                $file = $documentStorage->getDocFile()[$i];
+                $documentStorage = new DocumentStorage();
+                $file = $form->get('docFile' . $i)->getData();
 
                 $documentStorage->setUserId($user);
                 $documentStorage->setDescription("Ceci est une description");
                 $documentStorage->setDocFile($file);
 
                 $documentStorageRepository->save($documentStorage, true);
-            }
 
+            }
             return $this->redirectToRoute('app_front_practicien_home', [], Response::HTTP_SEE_OTHER);
         }
 

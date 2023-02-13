@@ -32,7 +32,6 @@ class DocumentStorage
     private ?User $user_id = null;
 
     #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'name')]
-    #[Assert\NotBlank(message : "Vous devez sélectionner un fichier")]
     #[Assert\File(
         maxSize: '2M',
         mimeTypes: ['application/pdf', 'image/png', 'image/jpeg'],
@@ -40,7 +39,7 @@ class DocumentStorage
         mimeTypesMessage: 'Fichier accepté : pdf / png / jpeg',
         uploadErrorMessage: 'Une erreur est survenue lors de l\'envoi du fichier'
     )]
-    private $docFile = [];
+    private $docFile;
 
 
     public function getId(): ?int
@@ -53,7 +52,7 @@ class DocumentStorage
         return $this->name;
     }
 
-    public function getDocFile(): ?array
+    public function getDocFile(): ?File
     {
         return $this->docFile;
     }
@@ -100,10 +99,9 @@ class DocumentStorage
      * @param File|null $docFile
      * @return DocumentStorage
      */
-    public function setDocFile(array $docFile): self
+    public function setDocFile(?File $docFile): DocumentStorage
     {
         $this->docFile = $docFile;
         return $this;
     }
-
 }
