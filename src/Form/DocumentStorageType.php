@@ -31,7 +31,8 @@ class DocumentStorageType extends AbstractType
                     'label' => 'User',
                     'choice_label' => 'email',
                     'class' => User::class,
-                    'required' => false,
+                    'required' => true,
+                    'choice_value' => 'id',
                 ]);
             }
             $builder->add('docFile', FileType::class, [
