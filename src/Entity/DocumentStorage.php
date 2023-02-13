@@ -29,7 +29,6 @@ class DocumentStorage
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message : "Vous devez sélectionner un utilisateur")]
     private ?User $user_id = null;
 
     #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'name')]
