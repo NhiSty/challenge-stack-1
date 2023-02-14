@@ -24,7 +24,7 @@ class DocumentStorageType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // if i am not practicien
+        // displayed for user and admin
         if(!in_array('ROLE_PRATICIEN', $this->token->getToken()->getUser()->getRoles())){
             $builder
                 ->add('description');
@@ -37,6 +37,7 @@ class DocumentStorageType extends AbstractType
                 'choice_label' => 'email',
                 'class' => User::class,
                 'required' => false,
+                'choice_value' => 'id',
             ]);
         }
         // only practicien
@@ -49,6 +50,7 @@ class DocumentStorageType extends AbstractType
                 ]);
             }
         }
+
         // every user
         else{
             $builder->add('docFile', FileType::class, [
