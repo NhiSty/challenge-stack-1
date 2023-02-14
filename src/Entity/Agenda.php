@@ -14,28 +14,16 @@ class Agenda
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private array $availablity = [];
-
     #[ORM\OneToOne(inversedBy: 'agenda', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
+    #[ORM\Column(nullable: true)]
+    private array $availability = [];
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getAvailablity(): array
-    {
-        return $this->availablity;
-    }
-
-    public function setAvailablity(?array $availablity): self
-    {
-        $this->availablity = $availablity;
-
-        return $this;
     }
 
     public function getOwner(): ?User
@@ -46,6 +34,18 @@ class Agenda
     public function setOwner(User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getAvailability(): array
+    {
+        return $this->availability;
+    }
+
+    public function setAvailability(?array $availability): self
+    {
+        $this->availability = $availability;
 
         return $this;
     }

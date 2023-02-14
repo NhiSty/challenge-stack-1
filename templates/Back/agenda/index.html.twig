@@ -17,7 +17,7 @@
         {% for agenda in agendas %}
             <tr>
                 <td>{{ agenda.id }}</td>
-                <td>{{ agenda.availablity ? agenda.availablity|join(', ') : '' }}</td>
+                <td>{{ agenda.availability ? agenda.availability|join(', ') : '' }}</td>
                 <td>
                     <a href="{{ path('admin_app_agenda_show', {'id': agenda.id}) }}">show</a>
                     <a href="{{ path('admin_app_agenda_edit', {'id': agenda.id}) }}">edit</a>
