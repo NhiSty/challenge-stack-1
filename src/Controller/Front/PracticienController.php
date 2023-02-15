@@ -2,10 +2,12 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Demand;
 use App\Entity\DocumentStorage;
 use App\Entity\User;
 use App\Form\DocumentStorageType;
 use App\Form\UserType;
+use App\Repository\DemandRepository;
 use App\Repository\DocumentStorageRepository;
 use App\Repository\NecessaryDocumentRepository;
 use App\Repository\UserRepository;
@@ -25,7 +27,7 @@ class PracticienController extends AbstractController
         ]);
     }
     #[Route('/new', name: 'app_front_practicien_document_storage_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, DocumentStorageRepository $documentStorageRepository, NecessaryDocumentRepository $necessaryDocumentRepository): Response
+    public function new(Request $request, DocumentStorageRepository $documentStorageRepository, NecessaryDocumentRepository $necessaryDocumentRepository, DemandRepository $demandRepository): Response
     {
         // get all necessary docs
 
@@ -37,11 +39,13 @@ class PracticienController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-
+        $demand = new Demand();
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $user = $this->getUser();
+
+            $files_demand = [];
 
             // loop over all uploaded docs
             for ($i = 0; $i < count($necessaryDocs); $i++){
@@ -53,9 +57,17 @@ class PracticienController extends AbstractController
                 $documentStorage->setDescription("Ceci est une description");
                 $documentStorage->setDocFile($file);
 
+                $files_demand[] = $file->getClientOriginalName();
+
                 $documentStorageRepository->save($documentStorage, true);
 
             }
+            $demand->setFileNames($files_demand);
+            $demand->setApplicant($user);
+            $demand->setState(false);
+
+            $demandRepository->save($demand, true);
+
             return $this->redirectToRoute('app_front_practicien_home', [], Response::HTTP_SEE_OTHER);
         }
 

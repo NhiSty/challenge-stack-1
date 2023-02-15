@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demand index{% endblock %}
+
+{% block body %}
+    <h1>Demand index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>State</th>
+                <th>FileNames</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for demand in demands %}
+            <tr>
+                <td>{{ demand.id }}</td>
+                <td>{{ demand.state ? 'Accepté' : 'En attente' }}</td>
+                <td>{{ demand.fileNames ? demand.fileNames|json_encode : '' }}</td>
+                <td>
+                    <a href="{{ path('admin_app_demand_show', {'id': demand.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

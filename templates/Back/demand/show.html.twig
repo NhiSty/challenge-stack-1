@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demand{% endblock %}
+
+{% block body %}
+    <h1>Demand</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ demand.id }}</td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>{{ demand.state ? 'Accepté' : 'En attente' }}</td>
+            </tr>
+            <tr>
+                <th>FileNames</th>
+                <td>{{ demand.fileNames ? demand.fileNames|json_encode : '' }}</td>
+            </tr>
+
+            {% for file in user_document_storage %}
+            <tr>
+                <th>Fichiers :</th>
+                <td>
+                    <a href="{{ vich_uploader_asset(file, 'docFile') }}" target="_blank">Ouvrir le document {{ loop.index }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if not demand.state %}
+        <div class="flex flex-row justify-center pb-3">
+            <form method="POST" action="{{ path('admin_app_demand_accept', { 'id': demand.id }) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ demand.id) }}">
+                <button class="btn">{{ 'Accepter la demande' | trans }}</button>
+            </form>
+            <form class="pt-3" method="POST" action="{{ path('admin_app_demand_reject', { 'id': demand.id }) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('reject' ~ demand.id) }}">
+                <button class="btn">{{ 'Rejeter la demande' | trans }}</button>
+            </form>
+        </div>
+    {% endif %}
+
+    <a href="{{ path('admin_app_demand_index') }}">back to list</a>
+
+    {{ include('/Back/demand/_delete_form.html.twig') }}
+{% endblock %}
