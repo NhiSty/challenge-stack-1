@@ -23,4 +23,23 @@ class AccountController extends AbstractController
           'user' => $user,
         ]);
     }
+
+    #[Route('/account/edit', name: 'app_account_edit')]
+    public function edit(): Response
+    {
+
+      $form = $this->createForm(UserType::class, $user);
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+        $userRepository->save($user, true);
+
+        return $this->redirectToRoute('admin_app_user_index', [], Response::HTTP_SEE_OTHER);
+      }
+
+        // Call the edit form from the back controller
+        return $this->render('account/edit.html.twig', [
+
+        ]);
+    }
 }

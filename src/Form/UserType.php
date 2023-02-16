@@ -21,7 +21,7 @@ class UserType extends AbstractType
             ->add('gender')
             ->add('appointments')
             ->add('documentStorage')
-            ->add('clinic')
+            ->add('clinicId')
             ->add('speciality')
         ;
     }
