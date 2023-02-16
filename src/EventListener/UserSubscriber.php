@@ -43,8 +43,10 @@ class UserSubscriber implements EventSubscriberInterface
 
     private function updatePwd(User $object): void
     {
+      /*
         if ($object->getPlainPassword()) {
             $object->setPassword($this->passwordHasher->hashPassword($object, $object->getPlainPassword()));
         }
+      */
     }
 }
