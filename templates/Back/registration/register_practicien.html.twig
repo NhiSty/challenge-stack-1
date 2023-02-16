@@ -5,7 +5,7 @@
 {% block body %}
 
     <div class="h-full">
-        <div class="lg:w-1/3 md:w-1/2 container mx-auto my-10 bg-white rounded-lg py-5 px-8" >
+        <div class="lg:w-1/2 container mx-auto my-10 bg-white rounded-lg min-h-screen-1/2 py-5 px-8" >
             <h1 class="text-center text-lg font-bold mb-4" >{{ 'Nouveau sur Darktolib ?' | trans() }}</h1>
 
             {% for flash_error in app.flashes('verify_email_error') %}
@@ -61,6 +61,23 @@
                 {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-input' }}) }}
             </div>
 
+            <div class="pb-3">
+                <label>
+                    {{ 'Spécialité' | trans() }}
+                </label>
+                <span class="form-input-error">{{ form_errors(registrationForm.speciality) }}</span>
+                {{ form_widget(registrationForm.speciality, {'attr': {'class': 'form-input' }}) }}
+            </div>
+
+            <div class="pb-3">
+                <label>
+                    {{ 'Clinique' | trans() }}
+                </label>
+                <span class="form-input-error">{{ form_errors(registrationForm.clinicId) }}</span>
+                {{ form_widget(registrationForm.clinicId, {'attr': {'class': 'form-input' }}) }}
+            </div>
+
+
             <div class="flex flex-row justify-center">
                 <button
                         type="submit"
@@ -69,6 +86,7 @@
                     {{ "S'inscrire" | trans() }}
                 </button>
             </div>
+
 
             {{ form_end(registrationForm) }}
 

@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Appointment::class, mappedBy: 'practitioner_id')]
     private Collection $appointments;
 
-    #[ORM\OneToOne(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
+    #[ORM\oneToMany(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
     private ?DocumentStorage $documentStorage = null;
 
     #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'users')]
@@ -60,6 +60,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
     private ?Agenda $agenda = null;
+
+    #[ORM\OneToOne(mappedBy: 'applicant', cascade: ['persist', 'remove'])]
+    private ?Demand $demand = null;
 
     public function __construct()
     {
@@ -265,6 +268,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->agenda = $agenda;
+
+        return $this;
+    }
+
+    public function getDemand(): ?Demand
+    {
+        return $this->demand;
+    }
+
+    public function setDemand(Demand $demand): self
+    {
+        // set the owning side of the relation if necessary
+        if ($demand->getApplicant() !== $this) {
+            $demand->setApplicant($this);
+        }
+
+        $this->demand = $demand;
 
         return $this;
     }

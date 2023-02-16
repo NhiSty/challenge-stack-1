@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Listes de mes documents {% endblock %}
+
+{% block body %}
+
+    <h1>Mes documents</h1>
+
+    {# list of all my document storages #}
+    {% for docs in document_storages %}
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ docs.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ docs.description }}</td>
+            </tr>
+            <tr>
+                <th>Fichier :</th>
+                <td>
+                    <a href="{{ vich_uploader_asset(docs, 'docFile') }}" target="_blank">Ouvrir le document {{ loop.index }}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+    {% else %}
+        Aucun documents trouvés.
+    {% endfor %}
+
+    <p class="text-center pt-3">
+        <a class="text-indigo-900 text-sm font-medium" href="{{ path('app_front_document_storage_new') }}">
+            {{ "Nouveau document" }}
+        </a>
+    </p>
+
+{% endblock %}

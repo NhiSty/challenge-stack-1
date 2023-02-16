@@ -39,7 +39,20 @@ class SpecialityRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
+    /**
+     * @param string $query
+     * @return array Returns an array of Speciality objects
+     */
+    public function findBySpeciality(string $query): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.name LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    //    /**
 //     * @return Speciality[] Returns an array of Speciality objects
 //     */
 //    public function findByExampleField($value): array

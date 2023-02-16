@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
@@ -41,7 +41,7 @@
         </div>
         <div class="flex flex-1 items-center justify-center py-2 sm:items-stretch sm:justify-start">
           <div class="flex flex-shrink-0 items-center">
-            <a href="{{ path('app_front_index_index') }}">
+            <a href="{{ path('app_front_index') }}">
               <img class="block h-16 w-auto lg:hidden" src="{{ asset('assets/img/logo.png') }}" alt="logo">
               <img class="hidden h-16 w-auto lg:block" src="{{ asset('assets/img/logo.png') }}" alt="logo">
             </a>
@@ -52,7 +52,7 @@
             <a href="#"
                class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
                aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
-            <a href="#"
+            <a href="{{ path('app_front_document_storage_index') }}"
                class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
                aria-current="page"><i class="fa-sharp fa-solid fa-file-medical"></i> Mes documents</a>
             <a href="{{ path('app_account') }}"
@@ -62,7 +62,7 @@
                class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
                aria-current="page"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
           {% else %}
-            <a href="#" class="bg-white text-blue-500 px-3 py-2 rounded-md text-sm font-medium mr-2"
+            <a href="{{ path('app_register_physician') }}" class="bg-white text-blue-500 px-3 py-2 rounded-md text-sm font-medium mr-2"
                aria-current="page">Vous êtes praticien ?</a>
             <a href="{{ path('app_login') }}"
                class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
@@ -103,7 +103,7 @@
     </div>
   </nav>
 {% endblock %}
-<body class="h-screen flex flex-col">
+<body class="h-screen flex flex-col bg-indigo-50">
 <section class="relative mb-auto flex-shrink-0">
     {% block body %}
 

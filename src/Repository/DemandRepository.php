@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\DocumentStorage;
+use App\Entity\Demand;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<DocumentStorage>
+ * @extends ServiceEntityRepository<Demand>
  *
- * @method DocumentStorage|null find($id, $lockMode = null, $lockVersion = null)
- * @method DocumentStorage|null findOneBy(array $criteria, array $orderBy = null)
- * @method DocumentStorage[]    findAll()
- * @method DocumentStorage[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Demand|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Demand|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Demand[]    findAll()
+ * @method Demand[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DocumentStorageRepository extends ServiceEntityRepository
+class DemandRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, DocumentStorage::class);
+        parent::__construct($registry, Demand::class);
     }
 
-    public function save(DocumentStorage $entity, bool $flush = false): void
+    public function save(Demand $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class DocumentStorageRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(DocumentStorage $entity, bool $flush = false): void
+    public function remove(Demand $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -39,9 +39,8 @@ class DocumentStorageRepository extends ServiceEntityRepository
         }
     }
 
-
 //    /**
-//     * @return DocumentStorage[] Returns an array of DocumentStorage objects
+//     * @return Demand[] Returns an array of Demand objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -55,7 +54,7 @@ class DocumentStorageRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?DocumentStorage
+//    public function findOneBySomeField($value): ?Demand
 //    {
 //        return $this->createQueryBuilder('d')
 //            ->andWhere('d.exampleField = :val')

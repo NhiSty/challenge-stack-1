@@ -6,11 +6,13 @@ use App\Entity\Agenda;
 use App\Entity\DocumentStorage;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Form\RegistrationPracticienFormType;
 use App\Security\AppAuthenticator;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +27,8 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
+    private UserAuthenticatorInterface $userAuthenticator;
+    private AppAuthenticator $authenticator;
 
     public function __construct(
         EmailVerifier $emailVerifier,
@@ -36,7 +40,7 @@ class RegistrationController extends AbstractController
         $this->authenticator = $authenticator;
     }
 
-    #[Route('/register', name: 'app_register')]
+    #[Route('/signup', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -53,40 +57,27 @@ class RegistrationController extends AbstractController
         $entityManager->persist($agenda);
 
         $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+        return $this->handle_registration($form, $request, $user, $userPasswordHasher, $entityManager, $agenda, 'Back/registration/register.html.twig',['ROLE_PATIENT']);
+    }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+    #[Route('/register', name: 'app_register_physician')]
+    public function register_physician(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $user = new User();
+        $documentStorage = new DocumentStorage();
+        $documentStorage->setName('document storage');
+        $documentStorage->setDescription("L'espace personnelle de stockage");
+        $entityManager->persist($documentStorage);
 
+        $user->setDocumentStorage($documentStorage);
+        $entityManager->persist($user);
 
-            $entityManager->persist($agenda);
-            $entityManager->persist($user);
-            $entityManager->flush();
+        $agenda = new Agenda();
+        $agenda->setOwner($user);
+        $entityManager->persist($agenda);
 
-            // generate a signed url and email it to the user
-            self::sendConfirmation($user);
-            // do anything else you need here, like send an email
-
-            $this->userAuthenticator->authenticateUser(
-                $user,
-                $this->authenticator,
-                $request
-            );
-
-            // add a flash message in english
-
-            return $this->redirectToRoute('app_front_home');
-        }
-
-        return $this->render('Back/registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        $form = $this->createForm(RegistrationPracticienFormType::class, $user);
+        return $this->handle_registration($form, $request, $user, $userPasswordHasher, $entityManager, $agenda , 'Back/registration/register_practicien.html.twig',['ROLE_PRACTICIAN']);
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
@@ -109,6 +100,11 @@ class RegistrationController extends AbstractController
             $request
         );
 
+        if ($this->isGranted('ROLE_PRACTICIAN')) {
+            return $this->redirectToRoute('app_front_practicien_home');
+        }elseif ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_admin');
+        }
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
 
@@ -128,6 +124,61 @@ class RegistrationController extends AbstractController
                 ->htmlTemplate('Back/registration/confirmation_email.html.twig')
         );
 
-        return $this->redirectToRoute('app_front_home');
+        return $this->redirectToRoute('app_front_index_unverified');
+    }
+
+
+    /**
+     * @param FormInterface $form
+     * @param Request $request
+     * @param User $user
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param EntityManagerInterface $entityManager
+     * @param Agenda $agenda
+     * @param string $view
+     * @return RedirectResponse|Response
+     */
+    private function handle_registration(FormInterface $form, Request $request, User $user, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, Agenda $agenda, string $view, array $roles): Response|RedirectResponse
+    {
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+
+            $entityManager->persist($agenda);
+            $user->setIsVerified(false);
+            $user->setRoles($roles);
+            $entityManager->persist($user);
+
+
+            $entityManager->flush();
+
+            // generate a signed url and email it to the user
+            self::sendConfirmation($user);
+            // do anything else you need here, like send an email
+
+            //authenticate the user
+            $this->userAuthenticator->authenticateUser(
+                $user,
+                $this->authenticator,
+                $request
+            );
+
+            // add a flash message in english
+
+
+            return $this->redirectToRoute('app_front_index_unverified');
+        }
+
+        return $this->render($view, [
+            'registrationForm' => $form->createView(),
+        ]);
     }
 }
