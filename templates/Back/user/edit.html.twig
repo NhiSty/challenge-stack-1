@@ -15,11 +15,11 @@
                     </div>
                     <div class="flex items-center space-x-5">
                         <i class="fas fa-user-edit fa-3x text-blue-500"></i>
-                        <div class="font-bold text-xl text-gray-900">
+                        <h1 class="font-bold text-xl text-gray-900">
                             Edit {{ user.firstname }} {{ user.lastname }}
-                        </div>
+                        </h1>
                     </div>
-                    {{ include('/Back/user/_form.html.twig', {'button_label': 'Update'}) }}
+                    {{ include('/Back/user/_form.html.twig') }}
                 </div>
                 {{ include('/Back/user/_delete_form.html.twig', {'class': 'w-full'}) }}
             </div>
