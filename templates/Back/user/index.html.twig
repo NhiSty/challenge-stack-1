@@ -117,7 +117,15 @@
                                 <i class="fas fa-venus"></i>
                             {% endif %}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ 'Aucun'|trans }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% for appointment in practicien.appointments %}
+                                <a href="{{ path('admin_app_appointment_show', {'id': appointment.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ appointment.date|date('d/m/Y H:i') }}</a>
+                            {% else %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                {{ 'Pas de rendez-vous'|trans }}
+                            </span>
+                            {% endfor %}
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_clinic_show', {'id': practicien.clinicId.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ practicien.clinicId.name }}</a></td>
                         <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_speciality_show', {'id': practicien.speciality.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ practicien.speciality.name }}</a></td>
                             <td class="px-6 py-4 whitespace-nowrap">
