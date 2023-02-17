@@ -3,7 +3,7 @@
 {% block title %}Liste des utilisateurs{% endblock %}
 
 {% set patients = users|filter(u => u.roles[0] == 'ROLE_USER') %}
-{% set practciens = users|filter(u => u.roles[0] == 'ROLE_PRATICIEN') %}
+{% set practiciens = users|filter(u => u.roles[0] == 'ROLE_PRATICIEN') %}
 {% set admins = users|filter(u => u.roles[0] == 'ROLE_ADMIN') %}
 
 {% block body %}
@@ -93,12 +93,12 @@
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                {% for practcien in practciens|sort|reverse %}
+                {% for practicien in practiciens|sort|reverse %}
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ practcien.id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ practcien.email }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.email }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {% if practcien.isVerified %}
+                            {% if practicien.isVerified %}
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                 Yes
                             </span>
@@ -108,28 +108,28 @@
                             </span>
                             {% endif %}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ practcien.firstname }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ practcien.lastname }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.firstname }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.lastname }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {% if practcien.gender == 'h' %}
+                            {% if practicien.gender == 'h' %}
                                 <i class="fas fa-mars"></i>
                             {% else %}
                                 <i class="fas fa-venus"></i>
                             {% endif %}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ 'Aucun'|trans }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_clinic_show', {'id': practcien.clinicId.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ practcien.clinicId.name }}</a></td>
-                        <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_speciality_show', {'id': practcien.speciality.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ practcien.speciality.name }}</a></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_clinic_show', {'id': practicien.clinicId.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ practicien.clinicId.name }}</a></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_speciality_show', {'id': practicien.speciality.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ practicien.speciality.name }}</a></td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <ul class="px-6 py-4 whitespace-nowrap">
-                                    {% for availability in practcien.agenda.availability %}
+                                    {% for availability in practicien.agenda.availability %}
                                         <li>{{ availability }}</li>
                                     {% endfor %}
                                 </ul>
                             </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <a href="{{ path('admin_app_user_show', {'id': practcien.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
-                            <a href="{{ path('admin_app_user_edit', {'id': practcien.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                            <a href="{{ path('admin_app_user_show', {'id': practicien.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                            <a href="{{ path('admin_app_user_edit', {'id': practicien.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                         </td>
                     </tr>
                 {% else %}
