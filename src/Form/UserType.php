@@ -32,24 +32,31 @@ class UserType extends AbstractType
             ->add('isVerified')
             ->add('firstname')
             ->add('lastname')
-            ->add('gender')
+            ->add('gender', ChoiceType::class, [
+                'choices' => [
+                    'Homme' => 'h',
+                    'Femme' => 'f',
+                ],
+                'required' => true,
+            ])
             ->add('appointments', EntityType::class, [
                 'class' => Appointment::class,
                 'choice_label' => 'id',
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => false,
             ])
             ->add('documentStorage')
             ->add('clinicId', EntityType::class, [
                 'class' => Clinic::class,
                 'choice_label' => 'name',
-                'expanded' => true,
+                'multiple' => false,
+                'expanded' => false,
             ])
             ->add('speciality', EntityType::class, [
                 'class' => Speciality::class,
                 'choice_label' => 'name',
                 'multiple' => false,
-                'expanded' => true,
+                'expanded' => false,
             ])
         ;
     }
