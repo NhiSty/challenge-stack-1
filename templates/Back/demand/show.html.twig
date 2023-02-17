@@ -24,7 +24,7 @@
             <tr>
                 <th>Fichiers :</th>
                 <td>
-                    <a href="{{ vich_uploader_asset(file, 'docFile') }}" target="_blank">Ouvrir le document {{ loop.index }}</a>
+                    <a href="{{ vich_uploader_asset(file, 'docFile') }}" target="_blank">Ouvrir {{ file.name|split('_')[1] }}</a>
                 </td>
             </tr>
         {% endfor %}
