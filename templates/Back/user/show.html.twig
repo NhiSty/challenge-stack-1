@@ -3,48 +3,128 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>IsVerified</th>
-                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Firstname</th>
-                <td>{{ user.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Lastname</th>
-                <td>{{ user.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Gender</th>
-                <td>{{ user.gender }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('admin_app_user_index') }}">back to list</a>
-
-    <a href="{{ path('admin_app_user_edit', {'id': user.id}) }}">edit</a>
-
-    {{ include('/Back/user/_delete_form.html.twig') }}
+    <div class="sm:max-w-md mx-auto bg-white sm:rounded-lg overflow-hidden shadow-lg my-0 sm:my-6">
+        <div class="p-4 bg-gray-800 text-white">
+            <h1 class="text-2xl font-bold">{{ user.firstname }} {{ user.lastname }}</h1>
+            <p class="text-sm">
+            {% if user.roles.0 == 'ROLE_ADMIN' %}
+                <i class="fas fa-user-shield"></i> {{ 'Administrateur'|trans }}
+            {% elseif user.roles.0 == 'ROLE_PRATICIEN' %}
+                <i class="fas fa-briefcase-medical"></i> {{ 'Praticien'|trans }}
+            {% elseif user.roles.0 == 'ROLE_USER' %}
+                <i class="fas fa-user"></i> {{ 'Utilisateur'|trans }}
+            {% endif %}
+            </p>
+        </div>
+        <div class="p-4">
+            <div class="mb-4">
+                <a href="{{ path('admin_app_user_index') }}" class="gradient px-4 py-2 rounded-lg text-white font-bold create-new">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    {{ 'Retour à la liste'|trans }}
+                </a>
+            </div>
+            <table class="table-auto w-full">
+                <tbody>
+                <tr>
+                    <th class="border px-4 py-2">Id</th>
+                    <td class="border px-4 py-2">{{ user.id }}</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Email</th>
+                    <td class="border px-4 py-2"><a href="mailto:{{ user.email }}" class="text-blue-500 hover:text-blue-600">{{ user.email }}</a></td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Password</th>
+                    <td class="border px-4 py-2">****</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Vérifié ?</th>
+                    <td class="border px-4 py-2">
+                        {% if user.isVerified %}
+                            <i class="fas fa-check text-green-500"></i>
+                        {% else %}
+                            <i class="fas fa-times text-red-500"></i>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Firstname</th>
+                    <td class="border px-4 py-2">{{ user.firstname }}</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Lastname</th>
+                    <td class="border px-4 py-2">{{ user.lastname }}</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Gender</th>
+                    <td class="border px-4 py-2">
+                        {% if user.gender == 'h' %}
+                            <i class="fas fa-mars"></i>{{ ' Homme'|trans }}
+                        {% else %}
+                            <i class="fas fa-venus"></i>{{ ' Femme'|trans }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% if user.roles.0 == 'ROLE_PRATICIEN' %}
+                    <tr>
+                        <th class="border px-4 py-2">{{ 'Rendez-vous'|trans }}</th>
+                        <td class="border px-4 py-2">
+                            <ul>
+                                <li><strong class="text-white bg-red-500">{{ '@toto : Récupérer les rdv' }}</strong></li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="border px-4 py-2">{{ 'Clinique'|trans }}</th>
+                        <td class="border px-4 py-2">
+                            {% if user.clinicId is empty %}
+                                <p class="text-red-500">{{ 'Aucune clinique'|trans }}</p>
+                            {% else %}
+                                <a href="{{ path('admin_app_clinic_show', {'id': user.clinicId.id}) }}" class="text-blue-500 hover:text-blue-600">{{ user.clinicId.name }}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="border px-4 py-2">{{ 'Spécialité'|trans }}</th>
+                        <td class="border px-4 py-2">
+                            {% if user.speciality is empty %}
+                                <p class="text-red-500">{{ 'Aucune spécialité'|trans }}</p>
+                            {% else %}
+                                <a href="{{ path('admin_app_speciality_show', {'id': user.speciality.id}) }}" class="text-blue-500 hover:text-blue-600">{{ user.speciality.name }}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="border px-4 py-2">{{ 'Disponibilités'|trans }}</th>
+                        <td class="border px-4 py-2">
+                            {% if user.agenda.availability is empty %}
+                                <p class="text-red-500">{{ 'Aucune disponibilité'|trans }}</p>
+                            {% else %}
+                                <ul>
+                                    {% for availability in user.agenda.availability %}
+                                        <li>- {{ availability }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="border px-4 py-2">{{ 'Demande'|trans }}</th>
+                        <td class="border px-4 py-2">
+                            <ul>
+                                <li><strong class="text-white bg-red-500">{{ '@toto : Récupérer les documents' }}</strong></li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            <div class="flex justify-between mt-4 flex-col sm:flex-row">
+                <div class="flex justify-between gap-2">
+                    {{ include('/Back/user/_delete_form.html.twig') }}
+                    <a class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" href="{{ path('admin_app_user_edit', {'id': user.id}) }}">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

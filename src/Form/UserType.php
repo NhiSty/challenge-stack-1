@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Appointment;
+use App\Entity\Clinic;
 use App\Entity\Speciality;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -39,11 +40,15 @@ class UserType extends AbstractType
                 'expanded' => true,
             ])
             ->add('documentStorage')
-            ->add('clinicId')
+            ->add('clinicId', EntityType::class, [
+                'class' => Clinic::class,
+                'choice_label' => 'name',
+                'expanded' => true,
+            ])
             ->add('speciality', EntityType::class, [
                 'class' => Speciality::class,
                 'choice_label' => 'name',
-                'multiple' => true,
+                'multiple' => false,
                 'expanded' => true,
             ])
         ;
