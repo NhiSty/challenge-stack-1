@@ -3,8 +3,12 @@
 namespace App\Controller\Back;
 
 use App\Entity\Demand;
+use App\Entity\DocumentStorage;
+use App\Entity\User;
 use App\Form\DemandType;
 use App\Repository\DemandRepository;
+use App\Repository\DocumentStorageRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,53 +20,25 @@ class DemandController extends AbstractController
     #[Route('/', name: 'admin_app_demand_index', methods: ['GET'])]
     public function index(DemandRepository $demandRepository): Response
     {
-        return $this->render('Back/demand/index.html.twig', [
+        return $this->render('/Back/demand/index.html.twig', [
             'demands' => $demandRepository->findAll(),
         ]);
     }
-
-    #[Route('/new', name: 'admin_app_demand_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, DemandRepository $demandRepository): Response
-    {
-        $demand = new Demand();
-        $form = $this->createForm(DemandType::class, $demand);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $demandRepository->save($demand, true);
-
-            return $this->redirectToRoute('admin_app_demand_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('Back/demand/new.html.twig', [
-            'demand' => $demand,
-            'form' => $form,
-        ]);
-    }
-
+    
     #[Route('/{id}', name: 'admin_app_demand_show', methods: ['GET'])]
-    public function show(Demand $demand): Response
+    public function show(Demand $demand, DocumentStorageRepository $documentStorageRepository, DemandRepository $demandRepository): Response
     {
-        return $this->render('Back/demand/show.html.twig', [
-            'demand' => $demand,
+        $query = $demandRepository->findBy([
+            'applicant' => $demand->getApplicant()->getId(),
+            'state' => false,
         ]);
-    }
 
-    #[Route('/{id}/edit', name: 'admin_app_demand_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Demand $demand, DemandRepository $demandRepository): Response
-    {
-        $form = $this->createForm(DemandType::class, $demand);
-        $form->handleRequest($request);
+        $fileNamesOfApplicant = $query[0]->getFileNames();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $demandRepository->save($demand, true);
-
-            return $this->redirectToRoute('admin_app_demand_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('Back/demand/edit.html.twig', [
+        $demander_user_document_storage = $documentStorageRepository->findDemandedDocumentsOfUser($demand->getApplicant()->getId(), $fileNamesOfApplicant);
+        return $this->render('/Back/demand/show.html.twig', [
             'demand' => $demand,
-            'form' => $form,
+            'user_document_storage' => $demander_user_document_storage
         ]);
     }
 
@@ -70,6 +46,36 @@ class DemandController extends AbstractController
     public function delete(Request $request, Demand $demand, DemandRepository $demandRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$demand->getId(), $request->request->get('_token'))) {
+            $demandRepository->remove($demand, true);
+        }
+
+        return $this->redirectToRoute('admin_app_demand_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/accept', name: 'admin_app_demand_accept', methods: ['POST'])]
+    public function acceptDemand(Request $request, Demand $demand, DemandRepository $demandRepository, UserRepository $userRepository): Response
+    {
+        if ($this->isCsrfTokenValid('accept'.$demand->getId(), $request->request->get('_token'))) {
+            $demand->setState(true);
+            $demandRepository->save($demand, true);
+
+            $praticien_to_change_role = $demand->getApplicant();
+            $futur_verified_praticien = $userRepository->findBy(['id' => $praticien_to_change_role]);
+            $futur_verified_praticien = $futur_verified_praticien[0];
+
+            $futur_verified_praticien->setRoles(['ROLE_PRATICIEN_VERIFIED']);
+            $userRepository->save($futur_verified_praticien, true);
+        }
+
+        return $this->redirectToRoute('admin_app_demand_index', [], Response::HTTP_SEE_OTHER);
+
+    }
+
+
+    #[Route('/{id}/reject', name: 'admin_app_demand_reject', methods: ['POST'])]
+    public function rejectDemand(Request $request, Demand $demand, DemandRepository $demandRepository): Response
+    {
+        if ($this->isCsrfTokenValid('reject'.$demand->getId(), $request->request->get('_token'))) {
             $demandRepository->remove($demand, true);
         }
 

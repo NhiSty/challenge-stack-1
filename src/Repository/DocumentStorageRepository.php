@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Demand;
 use App\Entity\DocumentStorage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +39,19 @@ class DocumentStorageRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findDemandedDocumentsOfUser(int $user_id, $query): array
+    {
+        return $this->createQueryBuilder('docs')
+            ->select('docs')
+            ->join(Demand::class, 'dem', Join::WITH, 'dem.applicant = docs.user_id')
+            ->where('docs.user_id = :user_id')
+            ->andWhere('docs.name in (:query)')
+            ->setParameter('user_id', $user_id)
+            ->setParameter('query', $query)
+            ->getQuery()
+            ->getResult();
     }
 
 

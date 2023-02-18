@@ -3,9 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Demand;
-use App\Entity\NecessaryDocument;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,10 +13,9 @@ class DemandType extends AbstractType
     {
         $builder
             ->add('state')
-            ->add('applicant', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
+            ->add('fileNames')
+            ->add('necessaryDocuments')
+            ->add('applicant')
         ;
     }
 

@@ -13,18 +13,38 @@
             </tr>
             <tr>
                 <th>State</th>
-                <td>{{ demand.state ? 'Yes' : 'No' }}</td>
+                <td>{{ demand.state ? 'Accepté' : 'En attente' }}</td>
             </tr>
             <tr>
                 <th>FileNames</th>
-                <td>{{ demand.fileNames ? demand.fileNames|join(', ') : '' }}</td>
+                <td>{{ demand.fileNames ? demand.fileNames|json_encode : '' }}</td>
             </tr>
+
+            {% for file in user_document_storage %}
+            <tr>
+                <th>Fichiers :</th>
+                <td>
+                    <a href="{{ vich_uploader_asset(file, 'docFile') }}" target="_blank">Ouvrir {{ file.name|split('_')[1] }}</a>
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 
+    {% if not demand.state %}
+        <div class="flex flex-row justify-center pb-3">
+            <form method="POST" action="{{ path('admin_app_demand_accept', { 'id': demand.id }) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ demand.id) }}">
+                <button class="btn">{{ 'Accepter la demande' | trans }}</button>
+            </form>
+            <form class="pt-3" method="POST" action="{{ path('admin_app_demand_reject', { 'id': demand.id }) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('reject' ~ demand.id) }}">
+                <button class="btn">{{ 'Rejeter la demande' | trans }}</button>
+            </form>
+        </div>
+    {% endif %}
+
     <a href="{{ path('admin_app_demand_index') }}">back to list</a>
 
-    <a href="{{ path('admin_app_demand_edit', {'id': demand.id}) }}">edit</a>
-
-    {{ include('Back/demand/_delete_form.html.twig') }}
+    {{ include('/Back/demand/_delete_form.html.twig') }}
 {% endblock %}

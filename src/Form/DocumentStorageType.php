@@ -6,6 +6,7 @@ use App\Entity\DocumentStorage;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,29 +24,47 @@ class DocumentStorageType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('description');
+        // displayed for user and admin
+        if(!in_array('ROLE_PRATICIEN', $this->token->getToken()->getUser()->getRoles())){
+            $builder
+                ->add('description');
+        }
 
-            if(in_array('ROLE_ADMIN', $this->token->getToken()->getUser()->getRoles())){
-                $builder->add('user_id', EntityType::class, [
-                    'label' => 'User',
-                    'choice_label' => 'email',
-                    'class' => User::class,
+        // if i am admin
+        if(in_array('ROLE_ADMIN', $this->token->getToken()->getUser()->getRoles())){
+            $builder->add('user_id', EntityType::class, [
+                'label' => 'User',
+                'choice_label' => 'email',
+                'class' => User::class,
+                'required' => false,
+                'choice_value' => 'id',
+            ]);
+        }
+        // only practicien
+        if(in_array('ROLE_PRATICIEN', $this->token->getToken()->getUser()->getRoles())) {
+            for($i = 0; $i < count($options['necessaryDocs']); $i++){
+                $builder->add('docFile'.$i, FileType::class, [
+                    "label" => $options['necessaryDocs'][$i]->getName(),
                     'required' => true,
-                    'choice_value' => 'id',
+                    'mapped' => false,
                 ]);
             }
+        }
+
+        // every user
+        else{
             $builder->add('docFile', FileType::class, [
                 "label" => "Documents",
-                'required' => true,
-            ])
-        ;
+                'required' => false,
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => DocumentStorage::class,
+            'necessaryDocs' => [],
         ]);
     }
 }
