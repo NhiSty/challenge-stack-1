@@ -58,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?Speciality $speciality = null;
 
-    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     private ?Agenda $agenda = null;
 
     #[ORM\OneToOne(mappedBy: 'applicant', cascade: ['persist', 'remove'])]
