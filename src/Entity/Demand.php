@@ -22,11 +22,11 @@ class Demand
     #[ORM\Column]
     private ?bool $state = null;
 
-    #[ORM\OneToOne(inversedBy: 'demand', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'demand', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $applicant = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column]
     private array $fileNames = [];
 
     public function __construct()

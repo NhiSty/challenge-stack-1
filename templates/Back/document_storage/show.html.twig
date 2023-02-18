@@ -33,7 +33,7 @@
         <img src="{{ vich_uploader_asset(document_storage, 'docFile') }}" alt="{{ document_storage.name }}">
 
     {% elseif (extension == 'pdf' or extension == 'PDF')  %}
-        <a href="{{ vich_uploader_asset(document_storage, 'docFile') }}" target="_blank">Ouvrir le document</a>
+        <a href="{{ vich_uploader_asset(document_storage, 'docFile') }}" target="_blank">Ouvrir {{ document_storage.name|split('_')[1] }}</a>
 
     {% else %}
         <p>Extension ni png ni jpeg ni pdf</p>

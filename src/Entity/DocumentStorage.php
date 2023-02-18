@@ -32,7 +32,6 @@ class DocumentStorage
     private ?User $user_id = null;
 
     #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'name')]
-    #[Assert\NotBlank(message : "Vous devez sélectionner un fichier")]
     #[Assert\File(
         maxSize: '2M',
         mimeTypes: ['application/pdf', 'image/png', 'image/jpeg'],
