@@ -1,4 +1,82 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="mt-8">
+  {{ form_start(form) }}
+  <div class="mb-4">
+    {{ form_label(form.email, 'Email', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.email, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+    {{ form_errors(form.email, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+  <div class="mb-4">
+    {{ form_label(form.roles) }}
+    <div class="flex items-center justify-between">
+      {% for child in form.roles %}
+        <div class="form-checkbox">
+          {{ form_widget(child, {'attr': {'class': 'form-checkbox-input'}}) }}
+          {{ form_label(child, null, {'attr': {'class': 'form-checkbox-label ml-2'}}) }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="mb-4">
+    {{ form_label(form.password, 'Password', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.password, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+    {{ form_errors(form.password, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+  <div class="mb-4">
+    {{ form_label(form.isVerified, 'Vérifié ?', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.isVerified, {'attr': {'class': 'form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out'}}) }}
+    {{ form_errors(form.isVerified, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+  <div class="mb-4">
+    {{ form_label(form.firstname, 'Prénom', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.firstname, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+    {{ form_errors(form.firstname, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+  <div class="mb-4">
+    {{ form_label(form.lastname, 'Nom', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.lastname, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+    {{ form_errors(form.lastname, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+  <div class="mb-4">
+    {{ form_label(form.documentStorage, 'Document Storage', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.documentStorage, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+    {{ form_errors(form.documentStorage, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+  <div class="mb-4">
+    {{ form_label(form.gender, 'Genre', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.gender, {'attr': {'class': 'form-select mt-1 block w-full py-2 px-3 border bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5'}}) }}
+    {{ form_errors(form.gender, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+
+  <div class="mb-4">
+    {{ form_label(form.appointments, 'Appointments', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.appointments, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+    {{ form_errors(form.appointments, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+  <div class="mb-4">
+    {{ form_label(form.clinicId, 'Clinique', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.clinicId, {'attr': {'class': 'form-select mt-1 block w-full py-2 px-3 border bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5'}}) }}
+    {{ form_errors(form.clinicId, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+  <div class="mb-4">
+    {{ form_label(form.speciality, 'Spécialité', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.speciality, {'attr': {'class': 'form-select mt-1 block w-full py-2 px-3 border bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5'}}) }}
+    {{ form_errors(form.speciality, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+
+  {# Succes update button #}
+  <div class="flex items-center justify-between flex-col sm:flex-row">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4 w-full" type="submit">
+      {{ button_label|default('Sauvegarder') }}
+    </button>
+  </div>
+  {{ form_end(form) }}
+</div>
