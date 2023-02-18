@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demand{% endblock %}
+
+{% block body %}
+    <h1>Demand</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ demand.id }}</td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>{{ demand.state ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>FileNames</th>
+                <td>{{ demand.fileNames ? demand.fileNames|join(', ') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_app_demand_index') }}">back to list</a>
+
+    <a href="{{ path('admin_app_demand_edit', {'id': demand.id}) }}">edit</a>
+
+    {{ include('Back/demand/_delete_form.html.twig') }}
+{% endblock %}
