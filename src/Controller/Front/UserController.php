@@ -21,7 +21,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/home', name: 'app_front_home')]
+    #[Route('/appointement', name: 'app_front_appointement')]
     public function indexAppointement(): Response
     {
         return $this->render('Front/user/appointement.html.twig', [
