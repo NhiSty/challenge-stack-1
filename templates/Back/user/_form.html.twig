@@ -8,7 +8,7 @@
 
   <div class="mb-4">
     {{ form_label(form.roles) }}
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col justify-between">
       {% for child in form.roles %}
         <div class="form-checkbox">
           {{ form_widget(child, {'attr': {'class': 'form-checkbox-input'}}) }}
