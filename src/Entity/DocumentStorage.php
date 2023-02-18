@@ -27,7 +27,7 @@ class DocumentStorage
     #[ORM\Column(type: Types::TEXT)]
     private string $description = '';
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'], fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user_id = null;
 

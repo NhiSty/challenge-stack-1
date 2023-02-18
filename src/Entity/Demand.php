@@ -16,13 +16,13 @@ class Demand
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: NecessaryDocument::class, inversedBy: 'demands')]
+    #[ORM\ManyToMany(targetEntity: NecessaryDocument::class, inversedBy: 'demands', fetch: 'EAGER')]
     private Collection $necessaryDocuments;
 
     #[ORM\Column]
     private ?bool $state = null;
 
-    #[ORM\OneToOne(inversedBy: 'demand', cascade: ['persist'])]
+    #[ORM\OneToOne(inversedBy: 'demand', cascade: ['persist'], fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $applicant = null;
 

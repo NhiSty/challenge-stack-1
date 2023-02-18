@@ -21,7 +21,7 @@ class DemandController extends AbstractController
     public function index(DemandRepository $demandRepository): Response
     {
         return $this->render('/Back/demand/index.html.twig', [
-            'demands' => $demandRepository->findAll(),
+        'demands' => $demandRepository->findAll(),
         ]);
     }
 
@@ -29,23 +29,23 @@ class DemandController extends AbstractController
     public function show(Demand $demand, DocumentStorageRepository $documentStorageRepository, DemandRepository $demandRepository): Response
     {
         $query = $demandRepository->findBy([
-            'applicant' => $demand->getApplicant()->getId(),
-            'state' => false,
+        'applicant' => $demand->getApplicant()->getId(),
+        'state' => false,
         ]);
 
         $fileNamesOfApplicant = $query[0]->getFileNames();
 
         $demander_user_document_storage = $documentStorageRepository->findDemandedDocumentsOfUser($demand->getApplicant()->getId(), $fileNamesOfApplicant);
         return $this->render('/Back/demand/show.html.twig', [
-            'demand' => $demand,
-            'user_document_storage' => $demander_user_document_storage
+        'demand' => $demand,
+        'user_document_storage' => $demander_user_document_storage
         ]);
     }
 
     #[Route('/{id}', name: 'admin_app_demand_delete', methods: ['POST'])]
     public function delete(Request $request, Demand $demand, DemandRepository $demandRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$demand->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $demand->getId(), $request->request->get('_token'))) {
             $demandRepository->remove($demand, true);
         }
 
@@ -55,7 +55,7 @@ class DemandController extends AbstractController
     #[Route('/{id}/accept', name: 'admin_app_demand_accept', methods: ['POST'])]
     public function acceptDemand(Request $request, Demand $demand, DemandRepository $demandRepository, UserRepository $userRepository): Response
     {
-        if ($this->isCsrfTokenValid('accept'.$demand->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('accept' . $demand->getId(), $request->request->get('_token'))) {
             $demand->setState(true);
             $demandRepository->save($demand, true);
 
@@ -68,19 +68,16 @@ class DemandController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_app_demand_index', [], Response::HTTP_SEE_OTHER);
-
     }
 
 
     #[Route('/{id}/reject', name: 'admin_app_demand_reject', methods: ['POST'])]
     public function rejectDemand(Request $request, Demand $demand, DemandRepository $demandRepository): Response
     {
-        if ($this->isCsrfTokenValid('reject'.$demand->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('reject' . $demand->getId(), $request->request->get('_token'))) {
             $demandRepository->remove($demand, true);
         }
 
         return $this->redirectToRoute('admin_app_demand_index', [], Response::HTTP_SEE_OTHER);
-
     }
-
 }
