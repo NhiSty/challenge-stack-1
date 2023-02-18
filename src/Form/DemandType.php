@@ -16,6 +16,10 @@ class DemandType extends AbstractType
     {
         $builder
             ->add('state')
+            ->add('applicant', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'id',
+            ])
         ;
     }
 
