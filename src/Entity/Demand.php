@@ -21,8 +21,8 @@ class Demand
 
     #[ORM\Column]
     private ?bool $state = null;
-    
-    #[ORM\OneToOne(inversedBy: 'demand', cascade: ['persist', 'remove'], fetch: 'EAGER')]
+
+    #[ORM\OneToOne(inversedBy: 'demand', cascade: ['persist'], fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $applicant = null;
 
