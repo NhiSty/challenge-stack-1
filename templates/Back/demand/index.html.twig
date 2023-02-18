@@ -46,13 +46,12 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             {% for fileName in demand.fileNames %}
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                                    {{ fileNames ? fileNames|json_encode : '' }}
+                                    {{ fileName ? fileName|json_encode : '' }}
                                 </span>
                             {% endfor %}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <a href="{{ path('admin_app_demand_show', {'id': demand.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
-                            <a href="{{ path('admin_app_demand_edit', {'id': demand.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                         </td>
                     </tr>
                 {% else %}

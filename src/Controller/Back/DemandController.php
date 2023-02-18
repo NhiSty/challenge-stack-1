@@ -24,7 +24,7 @@ class DemandController extends AbstractController
             'demands' => $demandRepository->findAll(),
         ]);
     }
-    
+
     #[Route('/{id}', name: 'admin_app_demand_show', methods: ['GET'])]
     public function show(Demand $demand, DocumentStorageRepository $documentStorageRepository, DemandRepository $demandRepository): Response
     {
@@ -45,7 +45,7 @@ class DemandController extends AbstractController
     #[Route('/{id}', name: 'admin_app_demand_delete', methods: ['POST'])]
     public function delete(Request $request, Demand $demand, DemandRepository $demandRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$demand->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $demand->getId(), $request->request->get('_token'))) {
             $demandRepository->remove($demand, true);
         }
 
@@ -55,7 +55,7 @@ class DemandController extends AbstractController
     #[Route('/{id}/accept', name: 'admin_app_demand_accept', methods: ['POST'])]
     public function acceptDemand(Request $request, Demand $demand, DemandRepository $demandRepository, UserRepository $userRepository): Response
     {
-        if ($this->isCsrfTokenValid('accept'.$demand->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('accept' . $demand->getId(), $request->request->get('_token'))) {
             $demand->setState(true);
             $demandRepository->save($demand, true);
 
@@ -68,14 +68,13 @@ class DemandController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_app_demand_index', [], Response::HTTP_SEE_OTHER);
-
     }
 
 
     #[Route('/{id}/reject', name: 'admin_app_demand_reject', methods: ['POST'])]
     public function rejectDemand(Request $request, Demand $demand, DemandRepository $demandRepository): Response
     {
-        if ($this->isCsrfTokenValid('reject'.$demand->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('reject' . $demand->getId(), $request->request->get('_token'))) {
             $demandRepository->remove($demand, true);
         }
 
