@@ -2,8 +2,10 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\Appointment;
 use App\Repository\AppointmentRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,22 +22,17 @@ class AppointmentController extends AbstractController
         $role = $user->getRoles()[0];
         $id = $user->getId();
 
+        // @todo : afficher les rendez-vous du praticien connecté
         if ($role == 'ROLE_PRATICIEN') {
-            $appointments = $appointmentRepository->findBy(['patient_id' => $user->getId()]);
-            return $this->render('Front/appointment/index.html.twig', [
-                'appointments' => $appointments,
-            ]);
+            $appointments = $appointmentRepository->findBy(['patient_id' => $id]);
         } elseif ($role == 'ROLE_PATIENT') {
-            $appointments = $appointmentRepository->findBy(['praticien_id' => $user->getId()]);
-            return $this->render('Front/appointment/index.html.twig', [
-                'appointments' => $appointments,
-            ]);
+            $appointments = $appointmentRepository->findBy(['praticien_id' => $id]);
         } else {
             $appointments = $appointmentRepository->findAll();
-            return $this->render('Front/appointment/index.html.twig', [
-                'appointments' => $appointments,
-            ]);
         }
+        return $this->render('Front/appointment/index.html.twig', [
+          'appointments' => $appointments,
+        ]);
     }
 
     #[Route('/{id}', name: 'app_front_appointment_show')]
@@ -46,5 +43,16 @@ class AppointmentController extends AbstractController
         return $this->render('Front/appointment/show.html.twig', [
             'appointment' => $appointment,
         ]);
+    }
+
+    #[Route('/{id}/delete', name: 'app_front_appointment_delete', methods: ['POST'])]
+    public function delete(Request $request, Appointment $appointment, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $appointment->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($appointment);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_front_appointment', [], Response::HTTP_SEE_OTHER);
     }
 }

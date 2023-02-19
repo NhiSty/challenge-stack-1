@@ -3,18 +3,70 @@
 {% block title %}Hello AppointmentController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/srv/app/src/Controller/AppointmentController.php'|file_link(0) }}">src/Controller/AppointmentController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/srv/app/templates/appointment/index.html.twig'|file_link(0) }}">templates/appointment/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div class="sm:max-w-md mx-auto bg-white sm:rounded-lg overflow-hidden shadow-lg my-0 sm:my-6">
+        <div class="p-4 bg-gray-800 text-white">
+            <h1 class="text-2xl font-bold">{{ appointment.date ? appointment.date|date('d/m/Y H:i') : '' }}</h1>
+        </div>
+        <div class="p-4">
+            <div class="mb-4">
+                <a href="{{ path('app_front_appointment') }}" class="gradient px-4 py-2 rounded-lg text-white font-bold create-new">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    {{ 'Retour à la liste'|trans }}
+                </a>
+            </div>
+            <table class="table-auto w-full">
+                <tbody>
+                <tr>
+                    <th class="border px-4 py-2">Id</th>
+                    <td class="border px-4 py-2">{{ appointment.id }}</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Date</th>
+                    <td class="border px-4 py-2">{{ appointment.date ? appointment.date|date('d/m/Y H:i') : '' }}</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Practitien</th>
+                    <td class="border px-4 py-2">
+                        {% if appointment.patientId %}
+                            <a href="{{ path('admin_app_user_show', {'id': appointment.patientId}) }}" class="text-blue-500 hover:text-blue-600">{{ appointment.patientId }}</a>
+                        {% else %}
+                            <span class="text-red-500">Non défini</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Patient</th>
+                    <td class="border px-4 py-2">
+                        {% for patient in appointment.practitionerId %}
+                            <a href="{{ path('admin_app_user_show', {'id': patient.id}) }}" class="text-blue-500 hover:text-blue-600">{{ patient.firstname }} {{ patient.lastname }} ({{ patient.roles.0 }})</a>
+                        {% else %}
+                            <span class="text-red-500">Non défini</span>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Médicament</th>
+                    <td class="border px-4 py-2">
+                        <a href="{{ path('admin_app_drug_show', {'id': appointment.drugId.id}) }}" class="text-blue-500 hover:text-blue-600">{{ appointment.drugId.name }}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Type de consultation</th>
+                    <td class="border px-4 py-2">
+                        <a href="{{ path('admin_app_consultation_show', {'id': appointment.consultationId.id}) }}" class="text-blue-500 hover:text-blue-600">{{ appointment.consultationId.name }}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="flex justify-between mt-4 flex-col sm:flex-row">
+                <div class="flex justify-between gap-2">
+                    <form method="post" action="{{ path('app_front_appointment_delete', {'id': appointment.id}, 'POST') }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ appointment.id) }}">
+                        <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 {{ class|default('') }}">
+                            {{ 'Supprimer'|trans }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
