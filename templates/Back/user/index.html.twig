@@ -3,8 +3,8 @@
 {% block title %}Liste des utilisateurs{% endblock %}
 
 {% set patients = users|filter(u => u.roles[0] == 'ROLE_USER') %}
-{% set practiciens = users|filter(u => u.roles[0] == 'ROLE_PRATICIEN') %}
-{% set practiciens_ok = users|filter(u => u.roles[0] == 'ROLE_PRATICIEN_VERIFIED') %}
+{% set practiciens = users|filter(u => u.roles[0] == 'ROLE_PRACTITIONER') %}
+{% set practiciens_ok = users|filter(u => u.roles[0] == 'ROLE_PRACTITIONER_VERIFIED') %}
 {% set admins = users|filter(u => u.roles[0] == 'ROLE_ADMIN') %}
 
 {% block body %}

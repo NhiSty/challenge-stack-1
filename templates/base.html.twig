@@ -43,7 +43,10 @@
           </div>
         </div>
         <div class="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 hidden sm:ml-6 sm:flex hidden">
-          {% if is_granted('ROLE_USER') %}
+          {% if is_granted('ROLE_PRACTITIONER_VERIFIED')  %}
+            <a href="{{ path('app_front_practitioner_appointments') }}"
+               class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+               aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
             {% if is_granted('ROLE_ADMIN') %}
               <a href="{{ path('app_admin') }}"
                  class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
@@ -68,7 +71,14 @@
             <a href="{{ path('app_logout') }}"
                class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
                aria-current="page"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
-          {% else %}
+          {% elseif is_granted('ROLE_USER') %}
+            <a href="{{ path('app_front_home') }}"
+               class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+               aria-current="page"><i class="fa-regular fa-user"></i> Mon compte</a>
+            <a href="{{ path('app_logout') }}"
+               class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+               aria-current="page"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+          {% else  %}
             <a href="{{ path('app_register_physician') }}" class="bg-white text-blue-500 px-3 py-2 rounded-md text-sm font-medium mr-2"
                aria-current="page">Vous êtes praticien ?</a>
             <a href="{{ path('app_login') }}"

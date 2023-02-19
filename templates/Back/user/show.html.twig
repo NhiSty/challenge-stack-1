@@ -9,7 +9,7 @@
             <p class="text-sm">
             {% if user.roles.0 == 'ROLE_ADMIN' %}
                 <i class="fas fa-user-shield"></i> {{ 'Administrateur'|trans }}
-            {% elseif user.roles.0 == 'ROLE_PRATICIEN' %}
+            {% elseif user.roles.0 == 'ROLE_PRACTITIONER' %}
                 <i class="fas fa-briefcase-medical"></i> {{ 'Praticien'|trans }}
             {% elseif user.roles.0 == 'ROLE_USER' %}
                 <i class="fas fa-user"></i> {{ 'Utilisateur'|trans }}
@@ -65,7 +65,7 @@
                         {% endif %}
                     </td>
                 </tr>
-                {% if user.roles.0 in ['ROLE_PRATICIEN', 'ROLE_PRATICIEN_VERIFIED'] %}
+                {% if user.roles.0 in ['ROLE_PRACTITIONER', 'ROLE_PRACTITIONER_VERIFIED'] %}
                     <tr>
                         <th class="border px-4 py-2">{{ 'Rendez-vous'|trans }}</th>
                         <td class="border px-4 py-2">

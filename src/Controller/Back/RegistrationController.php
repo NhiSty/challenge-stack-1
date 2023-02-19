@@ -77,7 +77,7 @@ class RegistrationController extends AbstractController
         $entityManager->persist($agenda);
 
         $form = $this->createForm(RegistrationPracticienFormType::class, $user);
-        return $this->handle_registration($form, $request, $user, $userPasswordHasher, $entityManager, $agenda , 'Back/registration/register_practicien.html.twig',['ROLE_PRACTICIAN']);
+        return $this->handle_registration($form, $request, $user, $userPasswordHasher, $entityManager, $agenda , 'Back/registration/register_practicien.html.twig',['ROLE_PRACTITIONER']);
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
@@ -100,8 +100,8 @@ class RegistrationController extends AbstractController
             $request
         );
 
-        if ($this->isGranted('ROLE_PRACTICIAN')) {
-            return $this->redirectToRoute('app_front_practicien_home');
+        if ($this->isGranted('ROLE_PRACTITIONER')) {
+            return $this->redirectToRoute('app_front_practitioner_appointments');
         }elseif ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_admin');
         }
