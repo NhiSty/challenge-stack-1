@@ -16,19 +16,19 @@ class Appointment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: Types::INTEGER)]
     private int $patient_id;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'appointments')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'appointments', fetch: 'EAGER')]
     private Collection $practitioner_id;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Drug::class, fetch: 'EAGER')]
     private ?Drug $drug_id = null;
 
-    #[ORM\ManyToOne(targetEntity: Consultation::class)]
+    #[ORM\ManyToOne(targetEntity: Consultation::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Consultation $consultation_id = null;
 

@@ -18,10 +18,10 @@ class PractitionerController extends AbstractController
 
         if ($practitioner) {
             if (!$practitioner->isVerified()) {
-                return $this->redirectToRoute('app_front_index_index');
+                return $this->redirectToRoute('app_front_index');
             }
         } else {
-            return $this->redirectToRoute('app_front_index_index');
+            return $this->redirectToRoute('app_front_index');
         }
 
         return $this->render('practitioner/index.html.twig', [

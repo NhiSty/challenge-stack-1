@@ -44,7 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 1)]
     private ?string $gender = null;
 
-    #[ORM\ManyToMany(targetEntity: Appointment::class, mappedBy: 'practitioner_id')]
+    #[ORM\ManyToMany(targetEntity: Appointment::class, mappedBy: 'practitioner_id', fetch: 'EAGER')]
     private Collection $appointments;
 
     #[ORM\oneToMany(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
@@ -58,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?Speciality $speciality = null;
 
-    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     private ?Agenda $agenda = null;
 
     #[ORM\OneToOne(mappedBy: 'applicant', cascade: ['persist', 'remove'])]

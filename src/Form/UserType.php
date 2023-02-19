@@ -4,12 +4,14 @@ namespace App\Form;
 
 use App\Entity\Appointment;
 use App\Entity\Clinic;
+use App\Entity\Demand;
 use App\Entity\Speciality;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,7 +24,8 @@ class UserType extends AbstractType
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Admin' => 'ROLE_ADMIN',
-                    'Practitioner' => 'ROLE_PRACTITIONER',
+                    'Practitien Vérifié' => 'ROLE_PRATICIEN_VERIFIED',
+                    'Practitien' => 'ROLE_PRATICIEN',
                     'Patient' => 'ROLE_PATIENT',
                 ],
                 'multiple' => true,
@@ -58,6 +61,21 @@ class UserType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
             ])
+          /*
+            ->add('agenda', ChoiceType::class, [
+                'choices' => [
+                    'Lundi' => 'monday',
+                    'Mardi' => 'tuesday',
+                    'Mercredi' => 'wednesday',
+                    'Jeudi' => 'thursday',
+                    'Vendredi' => 'friday',
+                    'Samedi' => 'saturday',
+                    'Dimanche' => 'sunday',
+                ],
+                'multiple' => true,
+                'expanded' => true,
+            ])
+          */
         ;
     }
 
