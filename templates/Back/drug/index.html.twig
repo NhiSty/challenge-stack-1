@@ -2,40 +2,56 @@
 
 {% block title %}Drug index{% endblock %}
 
-{% block body %}
-    <h1>Drug index</h1>
+{% block body %}<div class="container mt-8 mx-auto px-4">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for drug in drugs %}
-            <tr>
-                <td>{{ drug.id }}</td>
-                <td>{{ drug.name }}</td>
-                <td>{{ drug.description }}</td>
-                <td>{{ drug.price }}</td>
-                <td>{{ drug.stock }}</td>
-                <td>
-                    <a href="{{ path('admin_app_drug_show', {'id': drug.id}) }}">show</a>
-                    <a href="{{ path('admin_app_drug_edit', {'id': drug.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="my-8">
+            <a href="{{ path('app_admin') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-arrow-left mr-2"></i>
+                {{ 'Retour à la liste'|trans }}
+            </a>
+        </div>
 
-    <a href="{{ path('admin_app_drug_new') }}">Create new</a>
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">{{ 'Liste des super pouvoirs'|trans }}</h1>
+
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 table w-full">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Name'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Description'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Price'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Stock'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {% for drug in drugs|sort %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ drug.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ drug.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ drug.description|slice(0, 50) }}...</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ drug.price|number_format(2, ',', ' ') }} €</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ drug.stock }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{{ path('admin_app_drug_show', {'id': drug.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                            <a href="{{ path('admin_app_drug_edit', {'id': drug.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap">No records found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="my-8">
+            <a href="{{ path('admin_app_drug_new') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-plus mr-2"></i>
+                {{ 'Créer un nouveau super pouvoir'|trans }}
+            </a>
+        </div>
+    </div>
 {% endblock %}

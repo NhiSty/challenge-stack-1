@@ -65,12 +65,19 @@
                         {% endif %}
                     </td>
                 </tr>
-                {% if user.roles.0 == 'ROLE_PRATICIEN' %}
+                {% if user.roles.0 in ['ROLE_PRATICIEN', 'ROLE_PRATICIEN_VERIFIED'] %}
                     <tr>
                         <th class="border px-4 py-2">{{ 'Rendez-vous'|trans }}</th>
                         <td class="border px-4 py-2">
                             <ul>
-                                <li><strong class="text-white bg-red-500">{{ '@toto : Récupérer les rdv' }}</strong></li>
+                                {% for appointment in user.appointments %}
+                                    <li class="list-disc list-inside">
+                                        <a href="{{ path('admin_app_appointment_show', {'id': appointment.id}) }}" class="text-blue-500 hover:text-blue-600">{{ appointment.date|date('d/m/Y H:i') }} - {{ appointment.patientId }}
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <p class="text-red-500">{{ 'Aucun rendez-vous'|trans }}</p>
+                                {% endfor %}
                             </ul>
                         </td>
                     </tr>
@@ -97,12 +104,14 @@
                     <tr>
                         <th class="border px-4 py-2">{{ 'Disponibilités'|trans }}</th>
                         <td class="border px-4 py-2">
-                            {% if user.agenda.availability is empty %}
+                            {% if user.agenda is empty %}
                                 <p class="text-red-500">{{ 'Aucune disponibilité'|trans }}</p>
                             {% else %}
                                 <ul>
                                     {% for availability in user.agenda.availability %}
                                         <li>- {{ availability }}</li>
+                                    {% else %}
+                                        <p class="text-red-500">{{ 'Aucune disponibilité'|trans }}</p>
                                     {% endfor %}
                                 </ul>
                             {% endif %}
@@ -111,9 +120,15 @@
                     <tr>
                         <th class="border px-4 py-2">{{ 'Demande'|trans }}</th>
                         <td class="border px-4 py-2">
-                            <ul>
-                                <li><strong class="text-white bg-red-500">{{ '@toto : Récupérer les documents' }}</strong></li>
-                            </ul>
+                            {% if user.demand is not null %}
+                                {% if user.demand.state %}
+                                    <a href="{{ path('admin_app_demand_show', {'id': user.demand.id}) }}" class="text-green-500 hover:text-green-600">{{ 'Validée'|trans }}</a>
+                                {% else %}
+                                    <a href="{{ path('admin_app_demand_show', {'id': user.demand.id}) }}" class="text-red-500 hover:text-red-600">{{ 'En cours'|trans }}</a>
+                                {% endif %}
+                            {% else %}
+                                <p class="text-red-500">{{ 'Aucune demande'|trans }}</p>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endif %}

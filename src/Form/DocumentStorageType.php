@@ -25,13 +25,13 @@ class DocumentStorageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // displayed for user and admin
-        if(!in_array('ROLE_PRATICIEN', $this->token->getToken()->getUser()->getRoles())){
+        if (!in_array('ROLE_PRATICIEN', $this->token->getToken()->getUser()->getRoles())) {
             $builder
                 ->add('description');
         }
 
         // if i am admin
-        if(in_array('ROLE_ADMIN', $this->token->getToken()->getUser()->getRoles())){
+        if (in_array('ROLE_ADMIN', $this->token->getToken()->getUser()->getRoles())) {
             $builder->add('user_id', EntityType::class, [
                 'label' => 'User',
                 'choice_label' => 'email',
@@ -58,9 +58,8 @@ class DocumentStorageType extends AbstractType
                 ]);
             }
         }
-
         // every user
-        else{
+        else {
             $builder->add('docFile', FileType::class, [
                 "label" => "Documents",
                 'required' => false,

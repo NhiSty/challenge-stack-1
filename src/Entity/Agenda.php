@@ -14,7 +14,7 @@ class Agenda
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'agenda', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'agenda', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 

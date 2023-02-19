@@ -3,35 +3,53 @@
 {% block title %}Speciality index{% endblock %}
 
 {% block body %}
-    <h1>Speciality index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for speciality in specialities %}
-            <tr>
-                <td>{{ speciality.id }}</td>
-                <td>{{ speciality.name }}</td>
-                <td>{{ speciality.description }}</td>
-                <td>
-                    <a href="{{ path('admin_app_speciality_show', {'id': speciality.id}) }}">show</a>
-                    <a href="{{ path('admin_app_speciality_edit', {'id': speciality.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container mt-8 mx-auto px-4">
 
-    <a href="{{ path('admin_app_speciality_new') }}">Create new</a>
+        <div class="my-8">
+            <a href="{{ path('app_admin') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-arrow-left mr-2"></i>
+                {{ 'Retour à la liste'|trans }}
+            </a>
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">{{ 'Liste des specialités'|trans }}</h1>
+
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 table w-full">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Name'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Description'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {% for speciality in specialities|sort %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ speciality.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ speciality.name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ speciality.description|slice(0, 50) }}...</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{{ path('admin_app_speciality_show', {'id': speciality.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                            <a href="{{ path('admin_app_speciality_edit', {'id': speciality.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap">No records found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="my-8">
+            <a href="{{ path('admin_app_speciality_new') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-plus mr-2"></i>
+                {{ 'Créer une nouvelle specialité'|trans }}
+            </a>
+        </div>
+    </div>
 {% endblock %}

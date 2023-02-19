@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user/storage')]
 class DocumentStorageController extends AbstractController
 {
-
     #[Route('/new', name: 'app_front_document_storage_new', methods: ['GET', 'POST'])]
     public function new(Request $request, DocumentStorageRepository $documentStorageRepository): Response
     {
@@ -24,7 +23,7 @@ class DocumentStorageController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+            if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
                 $user = $this->getUser();
                 $documentStorage->setUserId($user);
             }

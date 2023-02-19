@@ -30,7 +30,9 @@ class AgendaType extends AbstractType
             ])
             ->add('owner', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'firstname',
+                'choice_label' => 'email',
+                'multiple' => false,
+                'expanded' => false,
             ])
         ;
     }
