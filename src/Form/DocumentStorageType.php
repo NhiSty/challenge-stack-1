@@ -42,11 +42,19 @@ class DocumentStorageType extends AbstractType
         }
         // only practicien
         if(in_array('ROLE_PRATICIEN', $this->token->getToken()->getUser()->getRoles())) {
-            for($i = 0; $i < count($options['necessaryDocs']); $i++){
-                $builder->add('docFile'.$i, FileType::class, [
-                    "label" => $options['necessaryDocs'][$i]->getName(),
-                    'required' => true,
-                    'mapped' => false,
+            if ($options['isForDemand']){
+                for($i = 0; $i < count($options['necessaryDocs']); $i++){
+                    $builder->add('docFile'.$i, FileType::class, [
+                        "label" => $options['necessaryDocs'][$i]->getName(),
+                        'required' => true,
+                        'mapped' => false,
+                    ]);
+                }
+            }
+            else{
+                $builder->add('docFile', FileType::class, [
+                    "label" => "Documents",
+                    'required' => false,
                 ]);
             }
         }
@@ -65,6 +73,7 @@ class DocumentStorageType extends AbstractType
         $resolver->setDefaults([
             'data_class' => DocumentStorage::class,
             'necessaryDocs' => [],
+            'isForDemand'=> false,
         ]);
     }
 }

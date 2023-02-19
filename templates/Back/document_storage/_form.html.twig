@@ -1,8 +1,6 @@
 {{ form_start(form) }}
-
         <div class="pb-3">
             {% if is_granted('ROLE_PRATICIEN') == false %}
-                <p>Je suis praticien</p>
                 <label class="pb-3" for="description">{{ 'Description du document' | trans }}</label>
                 <span class="form-input-error">{{ form_errors(form.description) }}</span>
                 {{ form_widget(form.description) }}
@@ -17,13 +15,18 @@
             {% endif %}
         </div>
 
-        {% if (is_granted('ROLE_PRATICIEN')) %}
-            {% for i in 0.. necessaryDocs|length-1 %}
-            <div class="pb-3">
-                <label for="docs">{{ necessaryDocs[i].name ~ ' : ' | trans }}</label>
-                <span class="form-input-error">{{ form_errors(form['docFile'~i]) }}</span>
-                {{ form_widget(form['docFile'~i]) }}
-            {% endfor %}
+        {% if (is_granted('ROLE_PRATICIEN'))  %}
+            {% if isForDemand %}
+                {% for i in 0.. necessaryDocs|length-1 %}
+                <div class="pb-3">
+                    <label for="docs">{{ necessaryDocs[i].name ~ ' : ' | trans }}</label>
+                    <span class="form-input-error">{{ form_errors(form['docFile'~i]) }}</span>
+                    {{ form_widget(form['docFile'~i]) }}
+                {% endfor %}
+            {% else %}
+                <span class="form-input-error">{{ form_errors(form.docFile) }}</span>
+                {{ form_widget(form.docFile) }}
+            {% endif %}
         {% else %}
             <span class="form-input-error">{{ form_errors(form.docFile) }}</span>
             {{ form_widget(form.docFile) }}

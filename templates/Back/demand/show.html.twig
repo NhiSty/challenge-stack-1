@@ -21,13 +21,15 @@
             </tr>
 
             {% for file in user_document_storage %}
+
             <tr>
                 <th>Fichiers :</th>
                 <td>
                     <a href="{{ vich_uploader_asset(file, 'docFile') }}" target="_blank">Ouvrir {{ file.name|split('_')[1] }}</a>
                 </td>
             </tr>
-        {% endfor %}
+            {% endfor %}
+
         </tbody>
     </table>
 

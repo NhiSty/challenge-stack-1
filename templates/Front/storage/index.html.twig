@@ -33,10 +33,38 @@
         Aucun documents trouvés.
     {% endfor %}
 
-    <p class="text-center pt-3">
-        <a class="text-indigo-900 text-sm font-medium" href="{{ path('app_front_document_storage_new') }}">
-            {{ "Nouveau document" }}
-        </a>
-    </p>
+    {% if (is_granted('ROLE_USER')) %}
+        {% if (is_granted('ROLE_PRATICIEN')) %}
+            <p class="text-center pt-3">
+                <a class="text-indigo-900 text-sm font-medium" href="{{ path('app_front_practicien_document_storage_new') }}">
+                    {{ "Nouveau document" }}
+                </a>
+            </p>
+            {% if not alreadyDemanded %}
+                <p class="text-center pt-3">
+                    <a class="text-indigo-900 text-sm font-medium" href="{{ path('app_front_practicien_new_demand') }}">
+                        {{ "Déposer les documents pour devenir praticien certifié !" }}
+                    </a>
+                </p>
+            {% else %}
+            <p class="text-center pt-3">
+                <a class="text-indigo-900 text-sm font-medium" href="{{ path('app_front_practicien_sended_documents') }}">
+                    {{ "Voir les documents déposés pour devenir praticien certifié" }}
+                </a>
+            </p>
+            {% endif %}
+
+        {% else %}
+        <p class="text-center pt-3">
+            <a class="text-indigo-900 text-sm font-medium" href="{{ path('app_front_document_storage_new') }}">
+                {{ "Nouveau document" }}
+            </a>
+        </p>
+        {% endif %}
+    {% endif %}
+
+
+
+
 
 {% endblock %}
