@@ -3,35 +3,58 @@
 {% block title %}DocumentStorage index{% endblock %}
 
 {% block body %}
-    <h1>DocumentStorage index</h1>
+    <div class="container mt-8 mx-auto px-4">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for document_storage in document_storages %}
-            <tr>
-                <td>{{ document_storage.id }}</td>
-                <td>{{ document_storage.name }}</td>
-                <td>{{ document_storage.description }}</td>
-                <td>
-                    <a href="{{ path('admin_app_document_storage_show', {'id': document_storage.id}) }}">show</a>
-                    <a href="{{ path('admin_app_document_storage_edit', {'id': document_storage.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="my-8">
+            <a href="{{ path('app_admin') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-arrow-left mr-2"></i>
+                {{ 'Retour à la liste'|trans }}
+            </a>
+        </div>
 
-    <a href="{{ path('admin_app_document_storage_new') }}">Create new</a>
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">{{ 'Liste des documents'|trans }}</h1>
+
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 table w-full">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Nom du fichier'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Description'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Propriétaire'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {% for document_storage in document_storages|sort %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ document_storage.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                {{ document_storage.name }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ document_storage.description }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_user_show', {'id': document_storage.userId.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ document_storage.userId.firstName }} {{ document_storage.userId.lastName }}</a></td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{{ path('admin_app_document_storage_show', {'id': document_storage.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                            <a href="{{ path('admin_app_document_storage_edit', {'id': document_storage.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap">No records found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="my-8">
+            <a href="{{ path('admin_app_document_storage_new') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-plus mr-2"></i>
+                {{ 'Ajouter un document'|trans }}
+            </a>
+        </div>
+    </div>
 {% endblock %}
