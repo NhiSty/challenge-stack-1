@@ -11,9 +11,17 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserAccountType extends AbstractType
 {
+    private readonly TokenStorageInterface $token;
+
+    public function __construct(TokenStorageInterface $token)
+    {
+        $this->token = $token;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -21,12 +29,13 @@ class UserAccountType extends AbstractType
           'required' => true,
         ])
         -> add('plainPassword', RepeatedType::class, [
-          'required' => true,
+          'required' => false,
           'type' => PasswordType::class,
           'mapped' => false,
           'invalid_message' => 'Les mots de passe ne correspondent pas',
           'first_options' => [
             'label' => 'Mot de passe',
+              'empty_data' => $this->token->getToken()->getUser()->getPlainPassword(),
           ],
           'second_options' => [
             'label' => 'Confirmer le mot de passe',
