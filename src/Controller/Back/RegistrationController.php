@@ -44,13 +44,6 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $documentStorage = new DocumentStorage();
-        $documentStorage->setName('document storage');
-        $documentStorage->setDescription("L'espace personnelle de stockage");
-        $entityManager->persist($documentStorage);
-
-        $user->setDocumentStorage($documentStorage);
-        $entityManager->persist($user);
 
         $agenda = new Agenda();
         $agenda->setOwner($user);
