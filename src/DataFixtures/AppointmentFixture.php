@@ -29,6 +29,7 @@ class AppointmentFixture extends Fixture implements DependentFixtureInterface
                 ->setPatientId($users[$i]->getId())
                 ->setConsultationId($faker->randomElement($consultations))
                 ->setDrugId($faker->randomElement($drugs))
+                ->setSlot($faker->dateTime())
             ;
             $manager->persist($appointment);
         }

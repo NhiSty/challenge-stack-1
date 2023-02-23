@@ -16,7 +16,7 @@ class Appointment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: Types::INTEGER)]
@@ -31,6 +31,9 @@ class Appointment
     #[ORM\ManyToOne(targetEntity: Consultation::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Consultation $consultation_id = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $slot = null;
 
     public function __construct()
     {
@@ -113,6 +116,18 @@ class Appointment
     public function setConsultationId(?Consultation $consultation_id): self
     {
         $this->consultation_id = $consultation_id;
+
+        return $this;
+    }
+
+    public function getSlot(): ?string
+    {
+        return $this->slot;
+    }
+
+    public function setSlot(string $slot): self
+    {
+        $this->slot = $slot;
 
         return $this;
     }

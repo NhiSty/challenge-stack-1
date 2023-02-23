@@ -29,13 +29,13 @@ class AgendaType extends AbstractType
         $builder
             ->add('availabilityDays', ChoiceType::class, [
                 'choices' => [
-                    'Lundi' => 'monday',
-                    'Mardi' => 'tuesday',
-                    'Mercredi' => 'wednesday',
-                    'Jeudi' => 'thursday',
-                    'Vendredi' => 'friday',
-                    'Samedi' => 'saturday',
-                    'Dimanche' => 'sunday',
+                    'Lundi' => 'Lundi',
+                    'Mardi' => 'Mardi',
+                    'Mercredi' => 'Mercredi',
+                    'Jeudi' => 'Jeudi',
+                    'Vendredi' => 'Vendredi',
+                    'Samedi' => 'Samedi',
+                    'Dimanche' => 'Dimanche',
                 ],
                 'multiple' => true,
                 'expanded' => true,
