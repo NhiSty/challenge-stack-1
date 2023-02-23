@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Date</th>
+                <th>Créneau</th>
                 <th>Patient_id</th>
                 <th>actions</th>
             </tr>
@@ -19,10 +20,10 @@
             <tr>
                 <td>{{ appointment.id }}</td>
                 <td>{{ appointment.date ? appointment.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ appointment.slot ? appointment.slot|date(' H:i') : '' }}</td>
                 <td>{{ appointment.patientId }}</td>
                 <td>
                     <a href="{{ path('app_user_appointment_show', {'id': appointment.id}) }}">show</a>
-                    <a href="{{ path('app_user_appointment_edit', {'id': appointment.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +34,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_user_appointment_new') }}">Create new</a>
+    <a href="{{ path('app_front_index') }}">Create new</a>
 {% endblock %}

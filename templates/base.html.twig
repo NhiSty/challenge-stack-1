@@ -72,7 +72,7 @@
                class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
                aria-current="page"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
           {% elseif is_granted('ROLE_USER') %}
-              <a href="#"
+              <a href="{{ path('app_user_appointment_index') }}"
                  class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
                  aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
             <a href="{{ path('app_front_home') }}"
