@@ -34,7 +34,7 @@ class AppointmentController extends AbstractController
         $existingAppointments = $practitioner->getAppointments();
         $availableAppointments = [];
         $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-        $currentDatePlusOneMonth = new \DateTime('+2 day');
+        $currentDatePlusOneMonth = new \DateTime('+1 month');
         $index = 0;
         dump($existingAppointments);
         for ($i = $currentDate; $i < $currentDatePlusOneMonth; $i->modify('+1 day')) {
