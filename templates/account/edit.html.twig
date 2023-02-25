@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AccountController!{% endblock %}
+
+{% block body %}
+
+    <div class="h-full">
+        <div class="lg:w-1/3 md:w-1/2 container mx-auto my-10 bg-white rounded-lg py-5 px-8">
+            {{ form_start(form) }}
+
+            <div class="pb-3">
+                <span class="form-input-error">{{ form_errors(form.email) }}</span>
+                {{ form_row(form.email, {'attr': {'class': 'form-input' }}) }}
+            </div>
+
+            <div class="pb-3">
+                <span class="form-input-error">{{ form_errors(form.firstname) }}</span>
+                {{ form_row(form.firstname, {'attr': {'class': 'form-input' }}) }}
+            </div>
+
+            <div class="pb-3">
+                <span class="form-input-error">{{ form_errors(form.firstname) }}</span>
+                {{ form_row(form.lastname, {'attr': {'class': 'form-input' }}) }}
+            </div>
+
+            <div class="pb-3">
+                <span class="form-input-error">{{ form_errors(form.gender) }}</span>
+                {{ form_row(form.gender, {'attr': {'class': 'form-input' }}) }}
+            </div>
+
+            <div class="pb-5 text-center">
+                <button
+                        type="button"
+                        id="change_password"
+                        class="bg-gradient-to-r from-blue-400 to-blue-200 py-2 px-4 rounded-lg text-white font-bold text-sm hover:from-blue-200 hover:to-blue-400 transition-all duration-300 ease-in-out mt-6"
+                >
+                    {{ "Modifier le mot de passe" | trans() }}
+                </button>
+            </div>
+
+            <div class="pb-3 hidden" id="first_password">
+                <label>
+                    {{ 'Saisir mot de passe' | trans() }}
+                </label>
+                <span class="form-input-error">{{ form_errors(form.plainPassword.first) }}</span>
+                {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-input' }}) }}
+            </div>
+
+            <div class="pb-3 hidden" id="second_password">
+                <label>
+                    {{ 'Confirmer le mot de passe' | trans() }}
+                </label>
+                <span class="form-input-error">{{ form_errors(form.plainPassword.second) }}</span>
+                {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-input hidden' }}) }}
+            </div>
+
+
+            <div class="flex flex-row justify-center">
+                <button
+                        type="submit"
+                        class="bg-gradient-to-r from-blue-400 to-blue-200 py-2 px-4 rounded-lg text-white font-bold text-sm hover:from-blue-200 hover:to-blue-400 transition-all duration-300 ease-in-out mt-6"
+                >
+                    {{ "Modifier" | trans() }}
+                </button>
+            </div>
+            {{ form_end(form) }}
+
+            <p class="text-center mt-6">
+        </div>
+    </div>
+
+    <script>
+        const checkbox = document.querySelector('#change_password');
+        const firstPassword = document.querySelector('#first_password');
+        const secondPassword = document.querySelector('#second_password');
+
+        checkbox.addEventListener('click', function () {
+            firstPassword.classList.toggle('hidden')
+            secondPassword.classList.toggle('hidden')
+        });
+    </script>
+
+{% endblock %}

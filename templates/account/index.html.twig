@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AccountController!{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
+        <p>{{ user.firstname }}</p>
+        <p>{{ user.lastname }}</p>
+        <p>{{ user.email }}</p>
+        <p>{{ user.password }}</p>
+        <p>{{ user.roles[0] }}</p>
+        <p>{{ user.id }}</p>
+    {% else %}
+        <p>Vous n'avez pas accès à cette page</p>
+    {% endif %}
+</div>
+{% endblock %}
