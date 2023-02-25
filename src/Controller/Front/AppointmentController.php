@@ -34,13 +34,11 @@ class AppointmentController extends AbstractController
         $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
         $currentDatePlusOneMonth = new \DateTime('+1 month');
         $index = 0;
-        dump($existingAppointments);
         for ($i = $currentDate; $i < $currentDatePlusOneMonth; $i->modify('+1 day')) {
             $slots = [];
             foreach ($existingAppointments as $existingAppointment) {
                 if ($existingAppointment->getDate()->format('Y-m-d') == $i->format('Y-m-d')) {
                     $formattedSlot = date('H:i',strtotime($existingAppointment->getSlot()));
-                    dump($formattedSlot);
                     $slots = [
                         ...$slots,
                         $formattedSlot,
@@ -70,8 +68,7 @@ class AppointmentController extends AbstractController
                         $isAfter = $currentDate->format('H:i') < $slot;
                         return $isToday ? $isAfter : true;
                     });
-                    dump($validSlots);
-                    dump($availableSlots);
+
                     $availableAppointments[$index] = [
                         'date' => $i->format('Y-m-d'),
                         'slots' => [...$validSlots],
@@ -89,9 +86,12 @@ class AppointmentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $appointment->setPatientId($this->getUser()->getId());
             $appointment->addPractitionerId($practitioner);
+            $appointment->setPaid(false);
             $appointmentRepository->save($appointment, true);
 
-            return $this->redirectToRoute('app_user_appointment_index', [], Response::HTTP_SEE_OTHER);
+            dump($appointment, $practitioner);
+
+            return $this->redirectToRoute('checkout', ['appointment'=>$appointment->getId()], Response::HTTP_SEE_OTHER);
         }
 
         if ($appointment_type == 'injection') {

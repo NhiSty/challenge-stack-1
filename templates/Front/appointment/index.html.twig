@@ -14,10 +14,12 @@
             </thead>
             <tbody>
             {% for appointment in appointments %}
+                {% if appointment.paid %}
                 <tr>
                     <td>{{ appointment.date ? appointment.date|date('Y/m/d') : '' }}</td>
                     <td>{{ appointment.slot ? appointment.slot|date(' H:i') : '' }}</td>
                 </tr>
+                {% endif %}
             {% else %}
                 <tr>
                     <td colspan="4">no records found</td>
