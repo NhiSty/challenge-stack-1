@@ -27,6 +27,7 @@ class StripeController extends AbstractController
     #[Route('/checkout/{appointment}', name: 'checkout')]
     public function checkout(int $appointment): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         Stripe::setApiKey($this->getParameter("app.key"));
 
@@ -44,7 +45,7 @@ class StripeController extends AbstractController
             ]],
             'mode' => 'payment',
             'success_url' => $this->generateUrl('success_url', ['appointment' => $appointment], UrlGeneratorInterface::ABSOLUTE_URL),
-            'cancel_url' => $this->generateUrl('cancel_url', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('cancel_url', ['appointment' => $appointment], UrlGeneratorInterface::ABSOLUTE_URL),
         ]);
 
 
@@ -55,8 +56,17 @@ class StripeController extends AbstractController
     #[Route('/success-url/{appointment}', name: 'success_url', requirements: ['appointment' => '\d+'])]
     public function successUrl(int $appointment, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         $appointment = $em->getRepository(Appointment::class)->find($appointment);
+
+        if (!$appointment) {
+            return $this->redirectToRoute('app_user_appointment_index');
+        }
+        if ($appointment->getPatientId() != $this->getUser()->getId()) {
+            return $this->redirectToRoute('app_user_appointment_index');
+        }
+
         $appointment->setPaid(true);
         $em->persist($appointment);
         $em->flush();
@@ -66,9 +76,23 @@ class StripeController extends AbstractController
         return $this->render('payment/success.html.twig', []);
     }
 
-    #[Route('/cancel-url', name: 'cancel_url')]
-    public function cancelUrl(EntityManagerInterface $entityManager): Response
+    #[Route('/cancel-url/{appointment}', name: 'cancel_url')]
+    public function cancelUrl(int $appointment,EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+
+        $appointment = $em->getRepository(Appointment::class)->find($appointment);
+
+        if (!$appointment) {
+           return $this->redirectToRoute('app_user_appointment_index');
+        }
+        if ($appointment->getPatientId() != $this->getUser()->getId()) {
+            return $this->redirectToRoute('app_user_appointment_index');
+        }
+        $em->remove($appointment);
+        $em->flush();
+
         return $this->render('payment/cancel.html.twig', []);
     }
 
