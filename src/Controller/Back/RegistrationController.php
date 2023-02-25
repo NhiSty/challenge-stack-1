@@ -87,7 +87,7 @@ class RegistrationController extends AbstractController
         );
 
         if ($this->isGranted('ROLE_PRACTITIONER')) {
-            return $this->redirectToRoute('app_front_practicien_home');
+            return $this->redirectToRoute('app_front_practitioner_appointments');
         }elseif ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_admin');
         }

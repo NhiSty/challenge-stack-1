@@ -17,14 +17,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function Symfony\Component\Translation\t;
 
-#[Route('/practicien')]
-class PracticienController extends AbstractController
+#[Route('/practitioner')]
+class PractitionerController extends AbstractController
 {
-    #[Route('/home', name: 'app_front_practicien_home')]
+    #[Route('/appointments', name: 'app_front_practitioner_appointments')]
     public function indexVerifiedPracticien(): Response
     {
-        return $this->render('Front/practicien/home_practicien.html.twig', [
+        $agenda = $this->getUser()->getAgenda();
+
+        return $this->render('Front/practitioner/practitioner_appointments.html.twig', [
             'controller_name' => 'IndexController',
+            'agenda' => $agenda,
         ]);
     }
 

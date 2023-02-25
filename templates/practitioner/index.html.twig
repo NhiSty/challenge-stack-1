@@ -59,7 +59,8 @@
               <span class="block sm:inline">{{ 'Vous ne pouvez pas prendre rendez-vous avec ce praticien tant qu\'il ne sera pas vérifié.'|trans }}</span>
             </div>
             {% else %}
-              <a href="#" class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-400 border border-transparent rounded-md hover:bg-blue-500">Prendre RDV</a>
+              <a href="{{ path('app_user_appointment_new', { practitioner_id: practitioner.id }) }}" class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-400 border border-transparent rounded-md hover:bg-blue-500">Prendre RDV standard</a>
+              <a href="{{ path('app_user_appointment_new', { practitioner_id: practitioner.id, appointment_type: 'injection' }) }}" class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-400 border border-transparent rounded-md hover:bg-red-500">Prendre RDV super-pouvoir</a>
           {% endif %}
         </div>
       </div>

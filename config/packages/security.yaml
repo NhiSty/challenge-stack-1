@@ -32,11 +32,9 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: /login, roles: PUBLIC_ACCESS }
          - { path: ^/home, roles: ROLE_USER }
          - { path: ^/user, roles: ROLE_USER }
-         - { path: ^/practicien, roles: ROLE_PRACTITIONER }
-
+         - { path: ^/practitioner/, roles: ROLE_PRACTITIONER_VERIFIED }
 
 when@test:
     security:

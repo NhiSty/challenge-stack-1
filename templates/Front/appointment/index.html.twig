@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appointment index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Vos rendez-vous</h1>
+    <div class="text-center">
+        <table class="table ">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Créneau</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for appointment in appointments %}
+                <tr>
+                    <td>{{ appointment.date ? appointment.date|date('Y/m/d') : '' }}</td>
+                    <td>{{ appointment.slot ? appointment.slot|date(' H:i') : '' }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -7,6 +7,12 @@
     </div>
 
     <div class="mb-4">
+        {{ form_label(form.slot, 'Créneaux', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.slot, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+        {{ form_errors(form.slot, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="mb-4">
         {{ form_label(form.patient_id, 'Patient Id', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
         {{ form_widget(form.patient_id, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
         {{ form_errors(form.patient_id, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}

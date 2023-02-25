@@ -21,7 +21,7 @@ class AgendaFixture extends Fixture implements DependentFixtureInterface
         for ($i=0; $i<10; $i++) {
             $object = (new Agenda())
                 ->setOwner($users[$i])
-                ->setAvailability($faker->randomElements(["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"], $faker->numberBetween(1, 7)))
+                ->setAvailabilityDays($faker->randomElements(["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"], $faker->numberBetween(1, 7)))
             ;
             $manager->persist($object);
         }

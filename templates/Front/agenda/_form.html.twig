@@ -1,0 +1,64 @@
+{{ form_start(form) }}
+{% block javascripts %}
+    <script src="{{ asset('js/createSlots.js') }}"></script>
+{% endblock %}
+<div class="pb-3">
+    <label>
+        {{ 'Jours de disponibilité' | trans() }}
+    </label>
+    <span class="form-input-error">{{ form_errors(form.availabilityDays) }}</span>
+    <ul>
+        {% for option in form.availabilityDays %}
+            <li>
+                {{ option.vars.label }}
+                {{ form_widget(option) }}
+            </li>
+        {% endfor %}
+
+    </ul>
+</div>
+<div class="pb-3">
+    <label>
+        {{ 'Durée des créneaux (en minutes)' | trans() }}
+    </label>
+    <span class="form-input-error">{{ form_errors(form.slotsStart) }}</span>
+    {{ form_widget(form.slotsDuration) }}
+</div>
+<div class="pb-3">
+    <label>
+        {{ 'Heure du premier créneaux' | trans() }}
+    </label>
+    <span class="form-input-error">{{ form_errors(form.slotsStart) }}</span>
+    {{ form_widget(form.slotsStart) }}
+</div>
+<div class="pb-3" >
+    <label>
+        {{ 'Heure du premier créneaux' | trans() }}
+    </label>
+    <span class="form-input-error">{{ form_errors(form.slotsEnd) }}</span>
+    {{ form_widget(form.slotsEnd) }}
+</div>
+
+<div class="pb-3" id="slots-container">
+    <label>
+        {{ 'Choix des crénaux' | trans() }}
+    </label>
+    <ul id="slots-list">
+        Aucun créneau n'a été généré
+    </ul>
+</div>
+
+<div class="pb-3">
+    <button id="generate-slots">
+        Générer les créneaux
+    </button>
+</div>
+
+<div class="hidden">
+    {{ form_widget(form.slots) }}
+</div>
+
+{{ form_widget(form) }}
+
+<button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

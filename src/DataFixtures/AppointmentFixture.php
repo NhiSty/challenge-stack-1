@@ -11,9 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Faker\Factory;
 
-
 class AppointmentFixture extends Fixture implements DependentFixtureInterface
-
 {
     public function load(ObjectManager $manager): void
     {
@@ -23,12 +21,13 @@ class AppointmentFixture extends Fixture implements DependentFixtureInterface
         $consultations = $manager->getRepository(Consultation::class)->findAll();
         $drugs = $manager->getRepository(Drug::class)->findAll();
 
-        for ($i=0; $i<10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $appointment = (new Appointment())
                 ->setDate($faker->dateTime())
                 ->setPatientId($users[$i]->getId())
                 ->setConsultationId($faker->randomElement($consultations))
                 ->setDrugId($faker->randomElement($drugs))
+                ->setSlot($faker->dateTime()->format('H:i'))
             ;
             $manager->persist($appointment);
         }
