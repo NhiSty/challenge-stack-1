@@ -3,7 +3,6 @@
 namespace App\Controller\Front;
 
 use App\Entity\Appointment;
-use App\Form\Appointment1Type;
 use App\Form\AppointmentType;
 use App\Repository\AppointmentRepository;
 use App\Repository\UserRepository;
@@ -11,12 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Date;
 
 #[Route('user/appointment')]
 class AppointmentController extends AbstractController
 {
-    #[Route('/', name: 'app_user_appointment_index', methods: ['GET'])]
+    #[Route('/', name: 'app_user_appointment_index', requirements: ['patient_id' => '\d+'], methods: ['GET'])]
     public function index(AppointmentRepository $appointmentRepository): Response
     {
         $user = $this->getUser();
@@ -25,7 +23,7 @@ class AppointmentController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_user_appointment_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_user_appointment_new', requirements: ['practitioner_id' => '\d+', 'appointment_type' => '^(injection|standard)$'], methods: ['GET', 'POST'])]
     public function new(Request $request, AppointmentRepository $appointmentRepository, UserRepository $userRepository): Response
     {
         $practitioner = $userRepository->findOneBy(['id' => $request->query->get('practitioner_id')]);
@@ -83,7 +81,7 @@ class AppointmentController extends AbstractController
             $slots[] = [];
             $index++;
         }
-        dump($availableAppointments);
+
         $appointment = new Appointment();
         $form = $this->createForm(AppointmentType::class, $appointment);
         $form->handleRequest($request);
@@ -110,7 +108,7 @@ class AppointmentController extends AbstractController
         }
     }
 
-    #[Route('/{id}', name: 'app_user_appointment_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_user_appointment_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Appointment $appointment): Response
     {
         return $this->render('/Front/appointment/show.html.twig', [
@@ -118,25 +116,7 @@ class AppointmentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_appointment_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Appointment $appointment, AppointmentRepository $appointmentRepository): Response
-    {
-        $form = $this->createForm(Appointment1Type::class, $appointment);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $appointmentRepository->save($appointment, true);
-
-            return $this->redirectToRoute('app_appointment_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('/Front/appointment/edit.html.twig', [
-            'appointment' => $appointment,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_user_appointment_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_user_appointment_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, Appointment $appointment, AppointmentRepository $appointmentRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$appointment->getId(), $request->request->get('_token'))) {

@@ -50,7 +50,7 @@ class AgendaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_agenda_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_agenda_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Agenda $agenda, AgendaRepository $agendaRepository): Response
     {
         $form = $this->createForm(AgendaType::class, $agenda);
@@ -68,7 +68,7 @@ class AgendaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_agenda_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_agenda_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, Agenda $agenda, AgendaRepository $agendaRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $agenda->getId(), $request->request->get('_token'))) {
