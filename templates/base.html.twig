@@ -48,15 +48,15 @@
               <a href="{{ path('app_admin') }}"
                  class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
                  aria-current="page"><i class="fa-sharp fa-solid fa-user-shield"></i> Admin</a>
-            {% else %}
-              <a href="#"
-               class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-               aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
+            {% elseif not is_granted('ROLE_PRACTITIONER') %}
+              <a href="{{ path('app_front_practitioner_appointments') }}"
+                 class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                 aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
               <a href="{{ path('admin_app_demand_index') }}"
-               class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-               aria-current="page"><i class="fa-sharp fa-solid fa-user-plus"></i> Demandes</a>
+                 class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                 aria-current="page"><i class="fa-sharp fa-solid fa-user-plus"></i> Demandes</a>
             {% else %}
               <a href="{{ path('app_front_document_storage_index') }}"
                  class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"

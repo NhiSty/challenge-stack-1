@@ -46,7 +46,7 @@ class EmailVerifier
         $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
 
         $user->setIsVerified(true);
-        if (!in_array('ROLE_PRACTICIAN', $user->getRoles())){
+        if (!in_array('ROLE_PRACTITIONER', $user->getRoles())){
             $user->setRoles([...$user->getRoles(), 'ROLE_USER_VERIFIED']);
         }
 

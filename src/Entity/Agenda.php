@@ -18,8 +18,11 @@ class Agenda
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
-    #[ORM\Column(nullable: true)]
-    private array $availability = [];
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private array $availabilityDays = [];
+
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private array $slots = [];
 
     public function getId(): ?int
     {
@@ -38,14 +41,26 @@ class Agenda
         return $this;
     }
 
-    public function getAvailability(): array
+    public function getAvailabilityDays(): array
     {
-        return $this->availability;
+        return $this->availabilityDays;
     }
 
-    public function setAvailability(?array $availability): self
+    public function setAvailabilityDays(?array $availabilityDays): self
     {
-        $this->availability = $availability;
+        $this->availabilityDays = $availabilityDays;
+
+        return $this;
+    }
+
+    public function getSlots(): array
+    {
+        return $this->slots;
+    }
+
+    public function setSlots(?array $slots): self
+    {
+        $this->slots = $slots;
 
         return $this;
     }

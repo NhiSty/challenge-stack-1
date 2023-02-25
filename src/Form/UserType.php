@@ -24,8 +24,8 @@ class UserType extends AbstractType
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Admin' => 'ROLE_ADMIN',
-                    'Practitien Vérifié' => 'ROLE_PRATICIEN_VERIFIED',
-                    'Practitien' => 'ROLE_PRATICIEN',
+                    'Practitien Vérifié' => 'ROLE_PRACTITIONER_VERIFIED',
+                    'Practitien' => 'ROLE_PRACTITIONER',
                     'Patient' => 'ROLE_PATIENT',
                 ],
                 'multiple' => true,

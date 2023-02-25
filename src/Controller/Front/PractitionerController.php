@@ -16,14 +16,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/practicien')]
-class PracticienController extends AbstractController
+#[Route('/practitioner')]
+class PractitionerController extends AbstractController
 {
-    #[Route('/home', name: 'app_front_practicien_home')]
+    #[Route('/appointments', name: 'app_front_practitioner_appointments')]
     public function indexVerifiedPracticien(): Response
     {
-        return $this->render('Front/practicien/home_practicien.html.twig', [
+        $agenda = $this->getUser()->getAgenda();
+
+        return $this->render('Front/practitioner/practitioner_appointments.html.twig', [
             'controller_name' => 'IndexController',
+            'agenda' => $agenda,
         ]);
     }
     #[Route('/new', name: 'app_front_practicien_document_storage_new', methods: ['GET', 'POST'])]

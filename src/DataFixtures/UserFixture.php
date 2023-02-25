@@ -26,7 +26,7 @@ class UserFixture extends Fixture implements DependentFixtureInterface
         for ($i=0; $i<10; $i++) {
             $object = (new User())
                 ->setEmail($faker->email)
-                ->setRoles($faker->randomElement([['ROLE_USER'], ['ROLE_ADMIN'], ['ROLE_PRATICIEN']]))
+                ->setRoles($faker->randomElement([['ROLE_USER'], ['ROLE_ADMIN'], ['ROLE_PRACTITIONER']]))
                 ->setPassword($pwd)
                 ->setPlainPassword('test123!')
                 ->setIsVerified($faker->boolean)
@@ -69,7 +69,7 @@ class UserFixture extends Fixture implements DependentFixtureInterface
 
         $object = (new User())
             ->setEmail('serkan.dev67@gmail.com')
-            ->setRoles(['ROLE_PRATICIEN'])
+            ->setRoles(['ROLE_PRACTITIONER'])
             ->setPassword($pwd)
             ->setPlainPassword('test123!')
             ->setIsVerified(true)
