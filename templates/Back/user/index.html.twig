@@ -124,7 +124,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <ul class="px-6 py-4 whitespace-nowrap">
                                 {% if practicien.agenda %}
-                                    {% for availability in practicien.agenda.availability %}
+                                    {% for availability in practicien.agenda.availabilityDays %}
                                         <li>{{ availability }}</li>
                                     {% endfor %}
                                 {% else %}

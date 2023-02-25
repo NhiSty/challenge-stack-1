@@ -108,7 +108,7 @@
                                 <p class="text-red-500">{{ 'Aucune disponibilité'|trans }}</p>
                             {% else %}
                                 <ul>
-                                    {% for availability in user.agenda.availability %}
+                                    {% for availability in user.agenda.availabilityDays %}
                                         <li>- {{ availability }}</li>
                                     {% else %}
                                         <p class="text-red-500">{{ 'Aucune disponibilité'|trans }}</p>
