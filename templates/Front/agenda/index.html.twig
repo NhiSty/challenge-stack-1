@@ -3,33 +3,44 @@
 {% block title %}Agenda index{% endblock %}
 
 {% block body %}
-    <h1>Agenda index</h1>
+<h1>Votre agenda</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Availablity</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for agenda in agendas %}
-            <tr>
-                <td>{{ agenda.id }}</td>
-                <td>{{ agenda.availabilityDays ? agenda.availabilityDays|join(', ') : '' }}</td>
-                <td>
+<div class="flex justify-end text-2xl pt-4 px-4">
+    <button class="rounded-full w-10 h-10 hover:bg-gray-300">
+        {% if agenda.owner %}
+            <a href="{{ path('app_agenda_edit') }}">
+                <i class="fa-solid fa-gear"></i>
+            </a>
+        {% else %}
+            <a href="{{ path('app_agenda_new') }}">
+                <i class="fa-solid fa-gear"></i>
+            </a>
+        {% endif %}
+    </button>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Vos jours de disponibilités</th>
+        <th>Vos créneaux de disponibilités</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if agenda %}
+    <tr>
+        <td>{{ agenda.availabilityDays ? agenda.availabilityDays|join(', ') : '' }}</td>
+        <td>{{ agenda.slots ? agenda.slots|join(', ') : '' }}</td>
+        {#<td>
                     <a href="{{ path('app_agenda_show', {'id': agenda.id}) }}">show</a>
                     <a href="{{ path('app_agenda_edit', {'id': agenda.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_agenda_new') }}">Create new</a>
+                </td>#}
+    </tr>
+    {% else %}
+        <tr>
+            <td colspan="3">no records found</td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>
 {% endblock %}

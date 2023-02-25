@@ -5,8 +5,10 @@ namespace App\Controller\Front;
 use App\Entity\Demand;
 use App\Entity\DocumentStorage;
 use App\Entity\User;
+use App\Form\AppointmentType;
 use App\Form\DocumentStorageType;
 use App\Form\UserType;
+use App\Repository\AppointmentRepository;
 use App\Repository\DemandRepository;
 use App\Repository\DocumentStorageRepository;
 use App\Repository\NecessaryDocumentRepository;
@@ -25,11 +27,11 @@ class PractitionerController extends AbstractController
     public function indexVerifiedPracticien(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_PRACTITIONER_VERIFIED');
-        $agenda = $this->getUser()->getAgenda();
 
-        return $this->render('Front/practitioner/practitioner_appointments.html.twig', [
+        $appointments = $this->getUser()->getAppointments();
+        return $this->render('Front/appointment/index.html.twig', [
             'controller_name' => 'IndexController',
-            'agenda' => $agenda,
+            'appointments' => $appointments,
         ]);
     }
 

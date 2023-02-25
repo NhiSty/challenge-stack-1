@@ -18,7 +18,7 @@ class AgendaController extends AbstractController
     public function index(AgendaRepository $agendaRepository): Response
     {
         return $this->render('/Front/agenda/index.html.twig', [
-            'agendas' => $agendaRepository->findAll(),
+            'agenda' => $agendaRepository->findOneBy(['owner' => $this->getUser()]),
         ]);
     }
 
@@ -42,17 +42,10 @@ class AgendaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_agenda_show', methods: ['GET'])]
-    public function show(Agenda $agenda): Response
+    #[Route('/edit', name: 'app_agenda_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, AgendaRepository $agendaRepository): Response
     {
-        return $this->render('/Front/agenda/show.html.twig', [
-            'agenda' => $agenda,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_agenda_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function edit(Request $request, Agenda $agenda, AgendaRepository $agendaRepository): Response
-    {
+        $agenda = $agendaRepository->findOneBy(['owner' => $this->getUser()]);
         $form = $this->createForm(AgendaType::class, $agenda);
         $form->handleRequest($request);
 
