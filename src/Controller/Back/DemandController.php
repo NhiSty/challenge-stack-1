@@ -62,7 +62,7 @@ class DemandController extends AbstractController
             $futur_verified_praticien = $userRepository->findBy(['id' => $praticien_to_change_role]);
             $futur_verified_praticien = $futur_verified_praticien[0];
 
-            $futur_verified_praticien->setRoles(['ROLE_PRATICIEN_VERIFIED']);
+            $futur_verified_praticien->setRoles(['ROLE_PRACTITIONER_VERIFIED']);
             $userRepository->save($futur_verified_praticien, true);
         }
 

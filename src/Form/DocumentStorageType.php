@@ -25,7 +25,7 @@ class DocumentStorageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // displayed for user and admin
-        if (!in_array('ROLE_PRATICIEN', $this->token->getToken()->getUser()->getRoles())) {
+        if (!in_array('ROLE_PRACTITIONER', $this->token->getToken()->getUser()->getRoles())) {
             $builder
                 ->add('description');
         }
@@ -41,7 +41,7 @@ class DocumentStorageType extends AbstractType
             ]);
         }
         // only practicien
-        if (in_array('ROLE_PRATICIEN', $this->token->getToken()->getUser()->getRoles())) {
+        if (in_array('ROLE_PRACTITIONER', $this->token->getToken()->getUser()->getRoles())) {
             if ($options['isForDemand']) {
                 for ($i = 0; $i < count($options['necessaryDocs']); $i++) {
                     $builder->add('docFile' . $i, FileType::class, [

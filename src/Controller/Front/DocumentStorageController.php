@@ -43,7 +43,7 @@ class DocumentStorageController extends AbstractController
 
         // find current users document storage
         $documentStorages = $documentStorageRepository->findBy(['user_id' => $this->getUser()->getId()]);
-        if (in_array('ROLE_PRATICIEN', $this->getUser()->getRoles())){
+        if (in_array('ROLE_PRACTITIONER', $this->getUser()->getRoles())){
             $user = $this->getUser();
             $demand = $demandRepository->findOneBy(['applicant' => $user->getId()]);
         }

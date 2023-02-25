@@ -34,7 +34,7 @@
     {% endfor %}
 
     {% if (is_granted('ROLE_USER')) %}
-        {% if (is_granted('ROLE_PRATICIEN')) %}
+        {% if (is_granted('ROLE_PRACTITIONER')) %}
             <p class="text-center pt-3">
                 <a class="text-indigo-900 text-sm font-medium" href="{{ path('app_front_practicien_document_storage_new') }}">
                     {{ "Nouveau document" }}
