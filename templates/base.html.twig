@@ -14,101 +14,109 @@
     {% endblock %}
 </head>
 {% block navbar %}
-  <nav class="bg-blue-400 sticky top-0 w-full z-50">
+<nav class="bg-blue-400 sticky top-0 w-full z-50">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-      <div class="relative flex items-center justify-between">
-        <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-          <!-- Mobile menu button-->
-          <button type="button" id="toggleMobile"
-                  class="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                  aria-controls="mobile-menu" aria-expanded="false">
-            <span class="sr-only">Open main menu</span>
-            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                 stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
-            </svg>
-            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                 stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          </button>
+        <div class="relative flex items-center justify-between">
+            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                <!-- Mobile menu button-->
+                <button type="button" id="toggleMobile"
+                        class="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                    </svg>
+                    <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="flex flex-1 items-center justify-center py-2 sm:items-stretch sm:justify-start">
+                <div class="flex flex-shrink-0 items-center">
+                    <a href="{{ path('app_front_index') }}">
+                        <img class="block h-16 w-auto lg:hidden" src="{{ asset('assets/img/logo.png') }}" alt="logo">
+                        <img class="hidden h-16 w-auto lg:block" src="{{ asset('assets/img/logo.png') }}" alt="logo">
+                    </a>
+                </div>
+            </div>
+            <div class="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 hidden sm:ml-6 sm:flex hidden">
+                {% if is_granted('ROLE_USER') %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_admin') }}"
+                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                           aria-current="page"><i class="fa-sharp fa-solid fa-user-shield"></i> Admin</a>
+                        <a href="{{ path('admin_app_demand_index') }}"
+                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                           aria-current="page"><i class="fa-sharp fa-solid fa-user-plus"></i> Demandes</a>
+                    {% elseif is_granted('ROLE_PRACTITIONER_VERIFIED') %}
+                        <a href="{{ path('app_front_practitioner_appointments') }}"
+                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                           aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
+                        <a href="{{ path('app_front_document_storage_index') }}"
+                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                           aria-current="page"><i class="fa-sharp fa-solid fa-file-medical"></i> Mes documents</a>
+                    {% elseif is_granted('ROLE_PRACTITIONER') %}
+                        <a href="{{ path('app_front_document_storage_index') }}"
+                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                           aria-current="page"><i class="fa-sharp fa-solid fa-file-medical"></i> Mes documents</a>
+                    {% elseif is_granted('ROLE_USER_VERIFIED') %}
+                        <a href="{{ path('app_user_appointment_index') }}"
+                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                           aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
+                        <a href="{{ path('app_front_document_storage_index') }}"
+                           class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                           aria-current="page"><i class="fa-sharp fa-solid fa-file-medical"></i> Mes documents</a>
+                    {% endif %}
+                    <a href="{{ path('app_account_edit') }}"
+                       class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                       aria-current="page"><i class="fa-regular fa-user"></i> Mon compte</a>
+                    <a href="{{ path('app_logout') }}"
+                       class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                       aria-current="page"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+                {% else %}
+                    <a href="{{ path('app_register_physician') }}" class="bg-white text-blue-500 px-3 py-2 rounded-md text-sm font-medium mr-2"
+                       aria-current="page">Vous êtes praticien ?</a>
+                    <a href="{{ path('app_login') }}"
+                       class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                       aria-current="page">Connexion</a>
+                    <a href="{{ path('app_register') }}"
+                       class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
+                       aria-current="page">Inscription</a>
+                {% endif %}
+            </div>
         </div>
-        <div class="flex flex-1 items-center justify-center py-2 sm:items-stretch sm:justify-start">
-          <div class="flex flex-shrink-0 items-center">
-            <a href="{{ path('app_front_index') }}">
-              <img class="block h-16 w-auto lg:hidden" src="{{ asset('assets/img/logo.png') }}" alt="logo">
-              <img class="hidden h-16 w-auto lg:block" src="{{ asset('assets/img/logo.png') }}" alt="logo">
-            </a>
-          </div>
-        </div>
-        <div class="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 hidden sm:ml-6 sm:flex hidden">
-          {% if is_granted('ROLE_USER') %}
-            {% if is_granted('ROLE_ADMIN') %}
-              <a href="{{ path('app_admin') }}"
-                 class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-                 aria-current="page"><i class="fa-sharp fa-solid fa-user-shield"></i> Admin</a>
-            {% elseif not is_granted('ROLE_PRACTITIONER') %}
-              <a href="{{ path('app_front_practitioner_appointments') }}"
-                 class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-                 aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
-            {% endif %}
-            {% if is_granted('ROLE_ADMIN') %}
-              <a href="{{ path('admin_app_demand_index') }}"
-                 class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-                 aria-current="page"><i class="fa-sharp fa-solid fa-user-plus"></i> Demandes</a>
-            {% else %}
-              <a href="{{ path('app_front_document_storage_index') }}"
-                 class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-                 aria-current="page"><i class="fa-sharp fa-solid fa-file-medical"></i> Mes documents</a>
-            {% endif %}
-            <a href="{{ path('app_account_edit') }}"
-               class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-               aria-current="page"><i class="fa-regular fa-user"></i> Mon compte</a>
-            <a href="{{ path('app_logout') }}"
-               class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-               aria-current="page"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
-          {% else %}
-            <a href="{{ path('app_register_physician') }}" class="bg-white text-blue-500 px-3 py-2 rounded-md text-sm font-medium mr-2"
-               aria-current="page">Vous êtes praticien ?</a>
-            <a href="{{ path('app_login') }}"
-               class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-               aria-current="page">Connexion</a>
-            <a href="{{ path('app_register') }}"
-               class="text-white px-3 py-8 text-sm font-normal hover:bg-blue-200 hover:text-blue-500"
-               aria-current="page">Inscription</a>
-          {% endif %}
-        </div>
-      </div>
     </div>
 
     <!-- Mobile menu, show/hide based on menu state. -->
     <div class="hidden" id="mobile-menu">
-      <div class="space-y-1 px-2 pt-2 pb-3">
-        {% if is_granted('ROLE_USER') %}
-          <a href="#"
-             class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500"
-             aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
-          <a href="#"
-             class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500"><i
-                class="fa-sharp fa-solid fa-file-medical"></i> Mes documents</a>
-          <a href="{{ path('app_account_edit') }}"
-             class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500"><i
-                class="fa-regular fa-user"></i> Mon compte</a>
-          <a href="{{ path('app_logout') }}"
-             class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500"><i
-                class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
-        {% else %}
-          <a href="#" class="bg-white text-blue-500 block px-3 py-2 rounded-md text-base font-medium"
-             aria-current="page">Vous êtes praticien ?</a>
-          <a href="{{ path('app_login') }}"
-             class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500">Connexion</a>
-          <a href="{{ path('app_register') }}"
-             class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500">Inscription</a>
-        {% endif %}
-      </div>
+        <div class="space-y-1 px-2 pt-2 pb-3">
+            {% if is_granted('ROLE_USER') %}
+                <a href="#"
+                   class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500"
+                   aria-current="page"><i class="fa-sharp fa-solid fa-calendar-day"></i> Mes rendez-vous</a>
+                <a href="#"
+                   class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500"><i
+                            class="fa-sharp fa-solid fa-file-medical"></i> Mes documents</a>
+                <a href="{{ path('app_account_edit') }}"
+                   class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500"><i
+                            class="fa-regular fa-user"></i> Mon compte</a>
+                <a href="{{ path('app_logout') }}"
+                   class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500"><i
+                            class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+            {% else %}
+                <a href="#" class="bg-white text-blue-500 block px-3 py-2 rounded-md text-base font-medium"
+                   aria-current="page">Vous êtes praticien ?</a>
+                <a href="{{ path('app_login') }}"
+                   class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500">Connexion</a>
+                <a href="{{ path('app_register') }}"
+                   class="text-white hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-200 hover:text-blue-500">Inscription</a>
+            {% endif %}
+        </div>
     </div>
-  </nav>
+</nav>
 {% endblock %}
 <body class="h-screen flex flex-col bg-indigo-50">
 <section class="relative mb-auto flex-shrink-0">
@@ -116,96 +124,96 @@
 
     {% endblock %}
 </section>
-    {% block footer %}
-        <footer class="bg-blue-400 flex-shrink-0">
-            <div class="container mx-auto px-4">
-                <div class="flex flex-wrap">
-                    <div class="w-full md:w-6/12 pr-4 mt-6 pl-8">
-                        <img src="{{ asset('assets/img/darktolib_kid_1.png') }}" alt="logo"
-                             class="w-24 h-24 mb-2">
-                        <h4 class="text-3xl font-semibold text-white">Darktolib</h4>
-                    </div>
-                    <div class="w-full md:w-6/12 px-4 mt-6">
-                        <div class="flex flex-wrap items-top mb-6">
-                            <div class="w-full md:w-5/12 px-4 ml-auto mb-6">
+{% block footer %}
+    <footer class="bg-blue-400 flex-shrink-0">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap">
+                <div class="w-full md:w-6/12 pr-4 mt-6 pl-8">
+                    <img src="{{ asset('assets/img/darktolib_kid_1.png') }}" alt="logo"
+                         class="w-24 h-24 mb-2">
+                    <h4 class="text-3xl font-semibold text-white">Darktolib</h4>
+                </div>
+                <div class="w-full md:w-6/12 px-4 mt-6">
+                    <div class="flex flex-wrap items-top mb-6">
+                        <div class="w-full md:w-5/12 px-4 ml-auto mb-6">
             <span
                     class="block uppercase text-gray-200 text-sm font-semibold mb-2">
               {{ 'Trouvez votre spécialiste'|trans }}
             </span>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a
-                                                class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
-                                                href="#"
-                                        >{{ 'Injection de superpouvoir'|trans }}</a
-                                        >
-                                    </li>
-                                    <li>
-                                        <a
-                                                class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
-                                                href="#"
-                                        >{{ 'Cardiologue'|trans }}</a
-                                        >
-                                    </li>
-                                    <li>
-                                        <a
-                                                class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
-                                                href="https://www.github.com/creativetimofficial"
-                                        >{{ 'Généraliste'|trans }}</a
-                                        >
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="w-full md:w-5/12 px-4">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a
+                                            class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
+                                            href="#"
+                                    >{{ 'Injection de superpouvoir'|trans }}</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                            class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
+                                            href="#"
+                                    >{{ 'Cardiologue'|trans }}</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                            class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
+                                            href="https://www.github.com/creativetimofficial"
+                                    >{{ 'Généraliste'|trans }}</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="w-full md:w-5/12 px-4">
             <span
                     class="block uppercase text-gray-200 text-sm font-semibold mb-2">
               {{ 'À propos de nous'|trans }}
             </span>
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a
-                                                class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
-                                                href="#"
-                                        >{{ 'Qui sommes-nous ?'|trans }}</a
-                                        >
-                                    </li>
-                                    <li>
-                                        <a
-                                                class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
-                                                href="#"
-                                        >{{ 'Politique de confidentialité'|trans }}</a
-                                        >
-                                    </li>
-                                    <li>
-                                        <a
-                                                class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
-                                                href="#"
-                                        >{{ 'Conditions d\'utilisation'|trans }}</a
-                                        >
-                                    </li>
-                                </ul>
-                            </div>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a
+                                            class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
+                                            href="#"
+                                    >{{ 'Qui sommes-nous ?'|trans }}</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                            class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
+                                            href="#"
+                                    >{{ 'Politique de confidentialité'|trans }}</a
+                                    >
+                                </li>
+                                <li>
+                                    <a
+                                            class="text-white hover:text-gray-200 font-semibold block pb-2 text-sm"
+                                            href="#"
+                                    >{{ 'Conditions d\'utilisation'|trans }}</a
+                                    >
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-            <hr class="mt-6 border-gray-400"/>
-            <div
-                    class="flex flex-wrap items-center md:justify-between justify-center py-2 bg-blue-500">
-                <div class="w-full md:w-5/12 px-4 mx-auto text-center">
-                    <div class="text-sm text-white font-semibold py-1">
-                        ©
-                        <a
-                                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
-                                class="text-white hover:text-gray-200"
-                        >Nhisty</a
-                        >
-                        2023
-                    </div>
+        </div>
+        <hr class="mt-6 border-gray-400"/>
+        <div
+                class="flex flex-wrap items-center md:justify-between justify-center py-2 bg-blue-500">
+            <div class="w-full md:w-5/12 px-4 mx-auto text-center">
+                <div class="text-sm text-white font-semibold py-1">
+                    ©
+                    <a
+                            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
+                            class="text-white hover:text-gray-200"
+                    >Nhisty</a
+                    >
+                    2023
                 </div>
             </div>
-        </footer>
-    {% endblock %}
+        </div>
+    </footer>
+{% endblock %}
 <script src="https://kit.fontawesome.com/ca13fc92c5.js" crossorigin="anonymous"></script>
 </body>
 </html>
