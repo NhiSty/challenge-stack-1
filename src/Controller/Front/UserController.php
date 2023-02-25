@@ -24,13 +24,14 @@ class UserController extends AbstractController
     #[Route('/appointement', name: 'app_front_appointement')]
     public function indexAppointement(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER_VERIFIED');
         return $this->render('Front/user/appointement.html.twig', [
 
         ]);
     }
 
     #[Route('/account/edit', name: 'app_account_edit')]
-    public function edit(Request $request, UserRepository $userRepository,UserPasswordHasherInterface $passwordHasher): Response
+    public function edit(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserAccountType::class, $user);
@@ -42,12 +43,10 @@ class UserController extends AbstractController
             $data = $form->get('plainPassword')->getData();
 
             if ($data !== null) {
-                $user->setPassword($passwordHasher->hashPassword($user,$data));
+                $user->setPassword($passwordHasher->hashPassword($user, $data));
             }
 
             $userRepository->save($user, true);
-
-
         }
 
       // Call the edit form from the back controller

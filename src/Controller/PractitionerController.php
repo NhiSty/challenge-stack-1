@@ -8,10 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/practitioner-profile')]
 class PractitionerController extends AbstractController
 {
     // Get the practitioner's profile
-    #[Route('/practitioner-profile/{id}', name: 'practitioner-profile', requirements:['id' => '\d+'], methods: ['GET'])]
+    #[Route('/{id}', name: 'practitioner-profile', requirements:['id' => '\d+'], methods: ['GET'])]
     public function index(int $id, EntityManagerInterface $em): Response
     {
         $practitioner = $em->getRepository(User::class)->find($id);

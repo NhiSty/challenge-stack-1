@@ -20,13 +20,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function Symfony\Component\Translation\t;
 
-#[Route('/practitioner')]
 class PractitionerController extends AbstractController
 {
-    #[Route('/appointments', name: 'app_front_practitioner_appointments')]
+    #[Route('/practitioner/appointments', name: 'app_front_practitioner_appointments')]
     public function indexVerifiedPracticien(): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_PRACTITIONER_VERIFIED');
 
         $appointments = $this->getUser()->getAppointments();
         return $this->render('Front/appointment/index.html.twig', [
@@ -35,9 +33,11 @@ class PractitionerController extends AbstractController
         ]);
     }
 
-    #[Route('/index', name: 'app_front_practicien_document_storage_index')]
+    #[Route('/user/index', name: 'app_front_practicien_document_storage_index')]
     public function index(Request $request, DocumentStorageRepository $documentStorageRepository, DemandRepository $demandRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_PRACTITIONER_VERIFIED');
+        $this->denyAccessUnlessGranted('ROLE_USER');
         // find current users document storage
         $documentStorages = $documentStorageRepository->findBy(['user_id' => $this->getUser()->getId()]);
 
@@ -48,7 +48,7 @@ class PractitionerController extends AbstractController
          ]);
     }
 
-    #[Route('/demand', name: 'app_front_practicien_new_demand', methods: ['GET', 'POST'])]
+    #[Route('/user/demand', name: 'app_front_practicien_new_demand', methods: ['GET', 'POST'])]
     public function demand(Request $request, DocumentStorageRepository $documentStorageRepository, NecessaryDocumentRepository $necessaryDocumentRepository, DemandRepository $demandRepository): Response
     {
         $isForDemand = true;
@@ -100,7 +100,7 @@ class PractitionerController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_front_practicien_document_storage_new', methods: ['GET', 'POST'])]
+    #[Route('/user/new', name: 'app_front_practicien_document_storage_new', methods: ['GET', 'POST'])]
     public function new(Request $request, DocumentStorageRepository $documentStorageRepository, NecessaryDocumentRepository $necessaryDocumentRepository, DemandRepository $demandRepository): Response
     {
         $documentStorage = new DocumentStorage();
@@ -124,7 +124,7 @@ class PractitionerController extends AbstractController
         ]);
     }
 
-    #[Route('/sended_documents', name: 'app_front_practicien_sended_documents', methods: ['GET', 'POST'])]
+    #[Route('/user/sended_documents', name: 'app_front_practicien_sended_documents', methods: ['GET', 'POST'])]
     public function sendedDocuments(Request $request, DocumentStorageRepository $documentStorageRepository, NecessaryDocumentRepository $necessaryDocumentRepository, DemandRepository $demandRepository): Response
     {
         $demand = $demandRepository->findOneBy(['applicant' => $this->getUser()->getId()]);
