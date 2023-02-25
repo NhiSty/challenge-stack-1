@@ -29,8 +29,8 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">{{ agenda.id }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            {% if agenda.availability %}
-                                {{ agenda.availability ? agenda.availability|join(', ') : '' }}
+                            {% if agenda.availabilityDays %}
+                                {{ agenda.availabilityDays ? agenda.availabilityDays|join(', ') : '' }}
                             {% else %}
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                   {{ 'Aucune disponibilité'|trans }}

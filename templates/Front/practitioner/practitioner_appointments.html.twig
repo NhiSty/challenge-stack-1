@@ -1,19 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="flex justify-end text-2xl pt-4 px-4">
-        <button class="rounded-full w-10 h-10 hover:bg-gray-300">
-            {% if agenda.owner %}
-                <a href="{{ path('app_agenda_edit', { 'id': agenda.id }) }}">
-                    <i class="fa-solid fa-gear"></i>
-                </a>
-            {% else %}
-                <a href="{{ path('app_agenda_new') }}">
-                    <i class="fa-solid fa-gear"></i>
-                </a>
-            {% endif %}
-        </button>
-    </div>
+
 {% endblock %}
 
 {% block title %}
