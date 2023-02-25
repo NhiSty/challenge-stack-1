@@ -35,6 +35,9 @@ class Appointment
     #[ORM\Column(length: 50)]
     private ?string $slot = null;
 
+    #[ORM\Column]
+    private ?bool $paid = null;
+
     public function __construct()
     {
         $this->practitioner_id = new ArrayCollection();
@@ -128,6 +131,18 @@ class Appointment
     public function setSlot(string $slot): self
     {
         $this->slot = $slot;
+
+        return $this;
+    }
+
+    public function isPaid(): ?bool
+    {
+        return $this->paid;
+    }
+
+    public function setPaid(bool $paid): self
+    {
+        $this->paid = $paid;
 
         return $this;
     }
