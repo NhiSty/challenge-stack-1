@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ practitioner.firstName }} {{ practitioner.lastName }}, {{ practitioner.speciality.name }}{% endblock %}
+
+{% block body %}
+
+  <div class="example-wrapper">
+    {% if practitioner is defined %}
+      <!-- Practitioner's profile picture, name, and speciality in a header with Tailwind CSS -->
+      <div class="flex items-center p-6 bg-blue-900 text-white">
+        {% if practitioner.avatar is defined %}
+          <img src="{{ asset('uploads/' ~ practitioner.avatar) }}" alt="Avatar"
+               class="w-20 h-20 rounded-full">
+        {% else %}
+          {% if practitioner.gender is same as('f') %}
+            <img
+                src="https://media.gettyimages.com/id/1331335241/vector/female-avatar-icon.jpg?s=1024x1024&w=gi&k=20&c=f5cDRTXP8cDqBaZFQIH9MVEctDupqQV4YaVYsmRZSl8="
+                alt="Avatar female" class="w-20 h-20 rounded-full">
+          {% else %}
+            <img src="https://www.w3schools.com/howto/img_avatar.png"
+                 alt="Avatar" class="w-20 h-20 rounded-full">
+          {% endif %}
+        {% endif %}
+        <div class="flex flex-col ml-4">
+          <h1 class="text-2xl font-bold mt-2">{{ practitioner.firstName }} {{ practitioner.lastName }}</h1>
+          <h2 class="text-md font-medium mt-2">{{ practitioner.speciality.name }}</h2>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-6 p-6">
+        <div class="flex flex-col p-6 bg-white rounded-lg shadow-xl" style="flex: 2">
+          <h2 class="text-2xl font-bold mt-2">{{ 'Spécialités'|trans }}</h2>
+          <p class="text-md font-medium mt-6">{{ practitioner.speciality.name }}</p>
+          <h2 class="text-2xl font-bold mt-2">{{ 'Informations d\'accès'|trans }}</h2>
+          <p class="text-md font-medium mt-6">
+            {{ practitioner.clinicId.name is not null ? practitioner.clinicId.name ~ ' -' : '' }}
+            {{ practitioner.clinicId.address is not null ? practitioner.clinicId.address ~ ',' : '' }}
+            {{ practitioner.clinicId.city is not null ? practitioner.clinicId.city ~ ',' : '' }}
+            {{ practitioner.clinicId.country is not null ? practitioner.clinicId.country : '' }}</p>
+          <h2 class="text-2xl font-bold mt-2">{{ 'Tarifs'|trans }}</h2>
+          <p class="text-md font-medium mt-6">{{ 'À venir'|trans }}</p>
+        </div>
+        <div class="p-6 bg-white rounded-lg shadow-xl h-full" style="flex: 1">
+          <div class="flex flex-col">
+            <h1 class="text-2xl font-bold mt-2">En résumé</h1>
+            <div class="flex flex-col mt-4">
+              <p class="text-md font-medium mt-2">✅ {{ 'Disponible'|trans }}</p>
+              <p class="text-md font-medium mt-2">📍
+                {{ practitioner.clinicId.name is not null ? practitioner.clinicId.name ~ ' -' : '' }}
+                {{ practitioner.clinicId.address is not null ? practitioner.clinicId.address ~ ',' : '' }}
+                {{ practitioner.clinicId.city is not null ? practitioner.clinicId.city ~ ',' : '' }}
+                {{ practitioner.clinicId.country is not null ? practitioner.clinicId.country : '' }}
+            </div>
+          </div>
+          {% if practitioner.isVerified == false or practitioner.roles[0] == "ROLE_USER" %}
+            <div
+                class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4"
+                role="alert">
+              <strong class="font-bold">{{ 'Ce praticien n\'est pas vérifié !'|trans }}</strong>
+              <span class="block sm:inline">{{ 'Vous ne pouvez pas prendre rendez-vous avec ce praticien tant qu\'il ne sera pas vérifié.'|trans }}</span>
+            </div>
+            {% else %}
+              <a href="#" class="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-400 border border-transparent rounded-md hover:bg-blue-500">Prendre RDV</a>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -29,6 +29,10 @@ class DocumentStorageController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+                $documentStorage->setUserId($this->getUser());
+            }
+
             $documentStorageRepository->save($documentStorage, true);
 
             return $this->redirectToRoute('admin_app_document_storage_index', [], Response::HTTP_SEE_OTHER);

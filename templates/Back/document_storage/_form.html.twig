@@ -1,4 +1,57 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<div class="mt-8">
+  {{ form_start(form) }}
+  <div class="mb-4">
+    {% if is_granted('ROLE_PRATICIEN') == false %}
+      {{ form_label(form.description, 'Description du document', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+      {{ form_widget(form.description, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+      {{ form_errors(form.description, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    {% endif %}
+  </div>
+
+  {% if is_granted('ROLE_ADMIN') %}
+    <div class="mb-4">
+      {{ form_label(form.user_id, 'Affecter le document à', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+      {{ form_widget(form.user_id, {'attr': {'class': 'form-select mt-1 block w-full py-2 px-3 border bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5'}}) }}
+      {{ form_errors(form.user_id, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+  {% endif %}
+
+  {% if is_granted('ROLE_PRATICIEN') %}
+    {% for i in 0.. necessaryDocs|length-1 %}
+      <div class="mb-4">
+        {{ form_label(necessaryDocs[i].name ~ ' : ', 'Documents necessaires', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form_widget(form['docFile'~i], {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}})) }}
+        {{ form_errors(form['docFile'~i], {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+      </div>
+    {% endfor %}
+    <span class="form-input-error">{{ form_errors(form.docFile) }}</span>
+    {{ form_widget(form.docFile) }}
+  {% endif %}
+
+    <div class="mb-4 relative">
+      {{ form_widget(form.docFile, {'attr': {'class': 'opacity-0 w-full h-full top-0 left-0 absolute cursor-pointer'}, 'id': 'doc-file-input'}) }}
+      <label for="{{ form.docFile.vars.id }}" class="cursor-pointer inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        Ajouter un document
+      </label>
+      <br />
+      <span id="doc-file-label" class="ml-2">Aucun document sélectionné</span>
+      {{ form_errors(form.docFile, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+  <script>
+    const docFileInput = document.getElementById('doc-file-input');
+    const docFileLabel = document.getElementById('doc-file-label');
+
+    docFileInput.addEventListener('change', (event) => {
+      docFileLabel.innerText = event.target.value.split('\\').pop();
+    });
+  </script>
+
+
+  <div class="flex items-center justify-between flex-col sm:flex-row">
+    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4 w-full" type="submit">
+      {{ button_label|default('Enregistrer') }}
+    </button>
+  </div>
+  {{ form_end(form) }}
+</div>
