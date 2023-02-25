@@ -36,8 +36,7 @@ class PractitionerController extends AbstractController
     #[Route('/user/index', name: 'app_front_practicien_document_storage_index')]
     public function index(Request $request, DocumentStorageRepository $documentStorageRepository, DemandRepository $demandRepository): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_PRACTITIONER_VERIFIED');
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('ROLE_PRACTITIONER');
         // find current users document storage
         $documentStorages = $documentStorageRepository->findBy(['user_id' => $this->getUser()->getId()]);
 
