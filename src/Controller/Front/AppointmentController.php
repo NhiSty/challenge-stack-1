@@ -19,8 +19,9 @@ class AppointmentController extends AbstractController
     #[Route('/', name: 'app_user_appointment_index', methods: ['GET'])]
     public function index(AppointmentRepository $appointmentRepository): Response
     {
+        $user = $this->getUser();
         return $this->render('/Front/appointment/index.html.twig', [
-            'appointments' => $appointmentRepository->findAll(),
+            'appointments' => $appointmentRepository->findBy(['patient_id' => $user->getId()]),
         ]);
     }
 
@@ -28,11 +29,12 @@ class AppointmentController extends AbstractController
     public function new(Request $request, AppointmentRepository $appointmentRepository, UserRepository $userRepository): Response
     {
         $practitioner = $userRepository->findOneBy(['id' => $request->query->get('practitioner_id')]);
+        $appointment_type = $request->query->get('appointment_type');
         $agenda = $practitioner->getAgenda();
         $existingAppointments = $practitioner->getAppointments();
         $availableAppointments = [];
         $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-        $currentDatePlusOneMonth = new \DateTime('+2 day');
+        $currentDatePlusOneMonth = new \DateTime('+1 month');
         $index = 0;
         dump($existingAppointments);
         for ($i = $currentDate; $i < $currentDatePlusOneMonth; $i->modify('+1 day')) {
@@ -75,7 +77,7 @@ class AppointmentController extends AbstractController
                     $availableAppointments[$index] = [
                         'date' => $i->format('Y-m-d'),
                         'slots' => [...$validSlots],
-                        ];
+                    ];
                 }
             }
             $slots[] = [];
@@ -94,12 +96,18 @@ class AppointmentController extends AbstractController
             return $this->redirectToRoute('app_user_appointment_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('/Front/appointment/new.html.twig', [
-            'appointment' => $appointment,
-            'form' => $form,
-            'agenda' => $agenda,
-            'availableAppointments' => $availableAppointments,
-        ]);
+        if ($appointment_type == 'injection') {
+            return $this->renderForm('/Front/appointment/new-drug.html.twig', [
+                'form' => $form,
+                'availableAppointments' => $availableAppointments,
+            ]);
+        }
+        else {
+            return $this->renderForm('/Front/appointment/new.html.twig', [
+                'form' => $form,
+                'availableAppointments' => $availableAppointments,
+            ]);
+        }
     }
 
     #[Route('/{id}', name: 'app_user_appointment_show', methods: ['GET'])]
