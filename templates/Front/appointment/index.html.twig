@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appointment index{% endblock %}
+
+{% block body %}
+    <h1>Appointment index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Créneau</th>
+                <th>Patient_id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment.id }}</td>
+                <td>{{ appointment.date ? appointment.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ appointment.slot ? appointment.slot|date(' H:i') : '' }}</td>
+                <td>{{ appointment.patientId }}</td>
+                <td>
+                    <a href="{{ path('app_user_appointment_show', {'id': appointment.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_front_index') }}">Create new</a>
+{% endblock %}

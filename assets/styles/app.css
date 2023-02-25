@@ -2,6 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    background-color: lightgrey;
+.form-input {
+    @apply bg-gray-50 p-1.5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-400 focus:border-blue-400 block w-full;
+}
+
+.form-input-error {
+    @apply text-red-500 text-xs;
+}
+
+::-webkit-scrollbar {
+    width: 11px;
+    @apply rounded-full;
+}
+
+.gradient {
+    @apply bg-gradient-to-r from-blue-400 to-blue-500;
+    background-size: 400% 400%;
+    animation: gradient 4s ease infinite;
+}
+
+.create-new:hover i {
+    @apply animate-bounce;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    @apply bg-blue-300;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 rounded-full mx-1 border-blue-300 border-2 border-solid;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-blue-500;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+.document-upload ul li {
+    @apply text-red-500;
 }

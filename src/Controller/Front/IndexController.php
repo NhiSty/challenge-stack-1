@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-    #[Route('/', name: 'app_front_index_index')]
+    #[Route('/', name: 'app_front_index')]
     public function index(): Response
     {
         return $this->render('Front/index/index.html.twig', [
@@ -16,12 +16,12 @@ class IndexController extends AbstractController
         ]);
     }
 
-
-    #[Route('/home', name: 'app_front_home')]
+    #[Route('/unverified', name: 'app_front_index_unverified')]
     public function indexUnverified(): Response
     {
-        return $this->render('Front/index/home.html.twig', [
+        return $this->render('Front/index/unverified.html.twig', [
             'controller_name' => 'IndexController',
         ]);
     }
+
 }

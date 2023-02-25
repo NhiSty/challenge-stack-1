@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ search }}{% endblock %}
+
+{% set result = users|length + clinics|length %}
+
+{% block body %}
+
+  <div class="container mx-auto mt-5">
+    <form action="{{ path('app_search') }}" method="POST">
+      <div class="flex">
+        <input type="text" name="query" class="w-full rounded-l-lg border-t mr-0 border-b border-l pl-4 text-gray-800 border-gray-200 bg-white" placeholder="{{ 'Nom, spécialité, ville'|trans }}" value="{{ search }}" />
+        <button type="submit" class="hidden px-8 rounded-r-lg text-white font-bold p-4 uppercase bg-gradient-to-r from-blue-400 to-blue-300 hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400 sm:block transition-all duration-300 ease-in-out">
+          {{ 'Rechercher'|trans }}</button>
+        <button type="submit" class="sm:hidden block rounded-r-lg text-white font-bold p-4 uppercase bg-gradient-to-r from-blue-400 to-blue-300 hover:bg-gradient-to-r hover:from-blue-300 hover:to-blue-400"><i class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
+      </div>
+    </form>
+    {% if result == 0 %}
+      <p class="container mx-auto my-3">No results found</p>
+    {% else %}
+      <p class="container mx-auto my-3">{{ result }} results found</p>
+    {% endif %}
+    {% if users is defined and users|length > 0 %}
+      {% for user in users %}
+        <div
+            class="bg-white rounded-lg hover:shadow-lg p-4 border transition-all duration-300 ease-in-out mb-5 mx-auto sm:w-auto w-11/12">
+          <div class="flex flex-row items-center mb-4">
+            {% if user.avatar is defined %}
+              <img src="{{ asset('uploads/' ~ user.avatar) }}"
+                   alt="Avatar" class="w-20 h-20 rounded-full">
+            {% else %}
+              {% if user.gender is same as('f') %}
+                <img
+                    src="https://media.gettyimages.com/id/1331335241/vector/female-avatar-icon.jpg?s=1024x1024&w=gi&k=20&c=f5cDRTXP8cDqBaZFQIH9MVEctDupqQV4YaVYsmRZSl8="
+                    alt="Avatar female" class="w-20 h-20 rounded-full">
+              {% else %}
+                <img src="https://www.w3schools.com/howto/img_avatar.png"
+                     alt="Avatar" class="w-20 h-20 rounded-full">
+              {% endif %}
+            {% endif %}
+            <div class="flex flex-col ml-4">
+              <a href="/practitioner-profile/{{ user.id }}" class="font-bold text-blue-500 mb-1">{{ user.firstname }} {{ user.lastname }}</a>
+              <p class="text-gray-500 font-semibold">{{ user.speciality.name }}</p>
+            </div>
+          </div>
+          <p>{{ user.clinicId.address }}</p>
+          <p>{{ user.clinicId.city }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% if clinics is defined and clinics|length > 0 %}
+      {% for clinic in clinics %}
+        <div
+            class="bg-white rounded-lg hover:shadow-lg p-4 border transition-all duration-300 ease-in-out mb-5 mx-auto sm:w-auto w-11/12">
+          <div class="flex flex-row items-center mb-4">
+              <img src="{{ asset('assets/img/clinic_default.png') }}"
+                   alt="Avatar" class="w-20 h-20 rounded-full">
+            <div class="flex flex-col ml-4">
+              <p class="font-bold text-blue-500 mb-1">{{ clinic.name }}</p>
+            </div>
+          </div>
+          <p>{{ clinic.address }}</p>
+          <p>{{ clinic.city }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endblock %}

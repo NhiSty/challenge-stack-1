@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Appointment{% endblock %}
+
+{% block body %}
+    <div class="py-6 flex flex-col justify-center sm:py-12">
+        <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+            <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+                <div class="max-w-md mx-auto">
+                    <div class="flex items-center space-x-5">
+                        <i class="fas fa-calendar-plus fa-3x text-blue-500"></i>
+                        <h1 class="font-bold text-xl text-gray-900">
+                            {{ 'Réserver votre injection de super-pouvoir'|trans }}
+                        </h1>
+                    </div>
+                    {{ form_start(form) }}
+
+                    <select id="select-date"required>
+                        <option value="">{{ 'Choisissez une date'|trans }}</option>
+                        {% for a in availableAppointments %}
+                            <option
+                                    value="{{ a.date }}"
+                                    data-slots="{{ a.slots|json_encode() }}"
+                            >
+                                {{ a.date|date('d/m/Y') }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <select id="appointment-slot" required>
+
+                    </select>
+
+                    {{ form_widget(form) }}
+
+                    <button class="btn">{{ button_label|default('Save') }}</button>
+                    {{ form_end(form) }}
+                    {#{{ include('Front/appointment/_form.html.twig') }}#}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const selectDate = document.getElementById('select-date');
+        const formInputDate = document.getElementById('appointment_date');
+        const selectSlot = document.getElementById('appointment-slot');
+        const formInputSlot = document.getElementById('appointment_slot');
+        const option = document.createElement('option');
+
+        option.value = ''
+        option.innerText = 'Choisir une date pour commencez' ;
+        selectSlot.appendChild(option);
+        formInputSlot.value = '';
+
+        selectDate.addEventListener('input', (event) => {
+            console.log(event.target.value)
+            formInputDate.value = event.target.value;
+            selectSlot.innerHTML = '';
+
+            if (!event.target.value) {
+                const option = document.createElement('option');
+                option.value = ''
+                option.innerText = 'Choisir une date pour commencez' ;
+                selectSlot.appendChild(option);
+                return;
+            }
+            const slots = JSON.parse(event.target.selectedOptions[0].dataset.slots);
+
+            if (slots.length === 0) {
+                const option = document.createElement('option');
+                option.value = ''
+                option.innerText = 'Aucun créneau disponible' ;
+                selectSlot.appendChild(option);
+                return;
+            }
+
+            slots.forEach(slot => {
+                const option = document.createElement('option');
+                option.value = slot
+                option.innerText = slot;
+                selectSlot.appendChild(option);
+            });
+
+            formInputSlot.value = slots[0];
+        });
+
+        selectSlot.addEventListener('input', (event) => {
+            formInputSlot.value = event.target.value;
+        });
+    </script>
+{% endblock %}

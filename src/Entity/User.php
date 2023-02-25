@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\Length;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -30,7 +31,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Length(min: 8)]
     private ?string $password = null;
+
+    #[Length(min: 8)]
+    private ?string $plainPassword = null;
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
@@ -44,19 +49,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 1)]
     private ?string $gender = null;
 
-    #[ORM\ManyToMany(targetEntity: Appointment::class, mappedBy: 'practitioner_id')]
+    #[ORM\ManyToMany(targetEntity: Appointment::class, mappedBy: 'practitioner_id', fetch: 'EAGER')]
     private Collection $appointments;
 
-    #[ORM\OneToOne(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
+    #[ORM\oneToMany(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
     private ?DocumentStorage $documentStorage = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Clinic $clinic = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Speciality $speciality = null;
+
+    #[ORM\OneToOne(mappedBy: 'owner', cascade: ['persist', 'remove'], fetch: 'EAGER')]
+    private ?Agenda $agenda = null;
+
+    #[ORM\OneToOne(mappedBy: 'applicant', cascade: ['persist', 'remove'])]
+    private ?Demand $demand = null;
 
     public function __construct()
     {
@@ -245,6 +256,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSpeciality(?Speciality $speciality): self
     {
         $this->speciality = $speciality;
+
+        return $this;
+    }
+
+    public function getAgenda(): ?Agenda
+    {
+        return $this->agenda;
+    }
+
+    public function setAgenda(Agenda $agenda): self
+    {
+        // set the owning side of the relation if necessary
+        if ($agenda->getOwner() !== $this) {
+            $agenda->setOwner($this);
+        }
+
+        $this->agenda = $agenda;
+
+        return $this;
+    }
+
+    public function getDemand(): ?Demand
+    {
+        return $this->demand;
+    }
+
+    public function setDemand(Demand $demand): self
+    {
+        // set the owning side of the relation if necessary
+        if ($demand->getApplicant() !== $this) {
+            $demand->setApplicant($this);
+        }
+
+        $this->demand = $demand;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string|null $plainPassword
+     * @return User
+     */
+    public function setPlainPassword(?string $plainPassword): User
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }

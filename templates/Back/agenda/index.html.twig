@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Agenda index{% endblock %}
+
+{% block body %}
+    <div class="container mt-8 mx-auto px-4">
+
+        <div class="my-8">
+            <a href="{{ path('app_admin') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-arrow-left mr-2"></i>
+                {{ 'Retour à la liste'|trans }}
+            </a>
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">{{ 'Liste des disponibilités par practitiens'|trans }}</h1>
+
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 table w-full">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Disponibilités'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Practitien'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {% for agenda in agendas|sort %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ agenda.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if agenda.availability %}
+                                {{ agenda.availability ? agenda.availability|join(', ') : '' }}
+                            {% else %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                  {{ 'Aucune disponibilité'|trans }}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if agenda.owner %}
+                                <a href="{{ path('admin_app_user_show', {'id': agenda.owner.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ agenda.owner.firstname }} {{ agenda.owner.lastname }}</a>
+                            {% endif %}
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{{ path('admin_app_agenda_show', {'id': agenda.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                            <a href="{{ path('admin_app_agenda_edit', {'id': agenda.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap">No records found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="my-8">
+            <a href="{{ path('admin_app_agenda_new') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-plus mr-2"></i>
+                {{ 'Créer une nouvelle disponibilité'|trans }}
+            </a>
+        </div>
+    </div>
+{% endblock %}
