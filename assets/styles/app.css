@@ -51,3 +51,7 @@
         background-position: 0 50%;
     }
 }
+
+.document-upload ul li {
+    @apply text-red-500;
+}
