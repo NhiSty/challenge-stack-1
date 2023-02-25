@@ -10,22 +10,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PractitionerController extends AbstractController
 {
-  // Get the practitioner's profile
-    #[Route('/practitioner/{id}', name: 'practitioner')]
+    // Get the practitioner's profile
+    #[Route('/practitioner/{id}', name: 'practitioner', requirements:['id' => '\d+'], methods: ['GET'])]
     public function index(int $id, EntityManagerInterface $em): Response
     {
         $practitioner = $em->getRepository(User::class)->find($id);
 
-        if ($practitioner) {
-            if (!$practitioner->isVerified()) {
-                return $this->redirectToRoute('app_front_index');
-            }
-        } else {
+        if (!$practitioner) {
             return $this->redirectToRoute('app_front_index');
         }
 
         return $this->render('practitioner/index.html.twig', [
-          'practitioner' => $practitioner,
+            'practitioner' => $practitioner,
         ]);
     }
 }
