@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 use function Symfony\Component\Translation\t;
 
 #[Route('/practitioner')]
@@ -23,6 +24,7 @@ class PractitionerController extends AbstractController
     #[Route('/appointments', name: 'app_front_practitioner_appointments')]
     public function indexVerifiedPracticien(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_PRACTITIONER_VERIFIED');
         $agenda = $this->getUser()->getAgenda();
 
         return $this->render('Front/practitioner/practitioner_appointments.html.twig', [
@@ -61,14 +63,12 @@ class PractitionerController extends AbstractController
         $demand = new Demand();
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $user = $this->getUser();
 
             $files_demand = [];
 
             // loop over all uploaded docs
-            for ($i = 0; $i < count($necessaryDocs); $i++){
-
+            for ($i = 0; $i < count($necessaryDocs); $i++) {
                 $documentStorage = new DocumentStorage();
                 $file = $form->get('docFile' . $i)->getData();
 
@@ -80,7 +80,6 @@ class PractitionerController extends AbstractController
                 $documentStorageRepository->save($documentStorage, true);
 
                 $files_demand[] = $documentStorage->getName();
-
             }
 
             $demand->setFileNames($files_demand);
@@ -89,7 +88,7 @@ class PractitionerController extends AbstractController
 
             $demandRepository->save($demand, true);
 
-            return $this->redirectToRoute('app_front_practicien_home', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_front_practicien_document_storage_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('/Back/document_storage/new.html.twig', [
@@ -97,7 +96,6 @@ class PractitionerController extends AbstractController
             'necessaryDocs' => $necessaryDocs,
             'isForDemand' => $isForDemand,
         ]);
-
     }
 
     #[Route('/new', name: 'app_front_practicien_document_storage_new', methods: ['GET', 'POST'])]
@@ -109,7 +107,7 @@ class PractitionerController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())){
+            if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
                 $user = $this->getUser();
                 $documentStorage->setUserId($user);
             }
@@ -132,12 +130,8 @@ class PractitionerController extends AbstractController
 
         $demander_user_document_storage = $documentStorageRepository->findDemandedDocumentsOfUser($demand->getApplicant()->getId(), $files_demand);
 
-        return $this->render('/Front/practicien/sended_documents.html.twig', [
+        return $this->render('/Front/practitioner/sended_documents.html.twig', [
             'sended_docs' => $demander_user_document_storage,
         ]);
-
     }
-
-
-
 }
