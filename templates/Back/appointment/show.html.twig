@@ -3,6 +3,7 @@
 {% block title %}Appointment{% endblock %}
 
 {% block body %}
+    {{ dump(appointment) }}
     <div class="sm:max-w-md mx-auto bg-white sm:rounded-lg overflow-hidden shadow-lg my-0 sm:my-6">
         <div class="p-4 bg-gray-800 text-white">
             <h1 class="text-2xl font-bold">{{ appointment.date ? appointment.date|date('d/m/Y H:i') : '' }}</h1>
@@ -22,7 +23,11 @@
                 </tr>
                 <tr>
                     <th class="border px-4 py-2">Date</th>
-                    <td class="border px-4 py-2">{{ appointment.date ? appointment.date|date('d/m/Y H:i') : '' }}</td>
+                    <td class="border px-4 py-2">{{ appointment.date ? appointment.date|date('d/m/Y') : '' }}</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Créneau</th>
+                    <td class="border px-4 py-2">{{ appointment.slot ? appointment.slot : '' }}</td>
                 </tr>
                 <tr>
                     <th class="border px-4 py-2">Practitien</th>
@@ -56,6 +61,16 @@
                     <th class="border px-4 py-2">Type de consultation</th>
                     <td class="border px-4 py-2">
                         <a href="{{ path('admin_app_consultation_show', {'id': appointment.consultationId.id}) }}" class="text-blue-500 hover:text-blue-600">{{ appointment.consultationId.name }}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Payé ?</th>
+                    <td class="border px-4 py-2">
+                        {% if appointment.paid %}
+                            Ok
+                        {% else %}
+                            Non
+                        {% endif %}
                     </td>
                 </tr>
                 </tbody>
