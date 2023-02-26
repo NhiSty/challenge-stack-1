@@ -31,6 +31,7 @@ class UserType extends AbstractType
                 ],
                 'multiple' => true,
                 'expanded' => true,
+                'required' => true,
             ])
             ->add('password', TextType::class, [
                 'required' => true,
