@@ -20,6 +20,7 @@
                 <tr>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Date'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Créneau'|trans }}</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Pratitien'|trans }}</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Patient'|trans }}</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
@@ -29,7 +30,8 @@
                 {% for appointment in appointments|sort %}
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">{{ appointment.id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ appointment.date ? appointment.date|date('d/m/y H:i') : '' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ appointment.date ? appointment.date|date('d/m/y') : '' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ appointment.slot ? appointment.slot : '' }}</td>
                         <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_user_show', {'id': appointment.patientId}) }}" class="text-indigo-600 hover:text-indigo-900">{{ appointment.patientId }}</a></td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             {% for user in appointment.practitionerId %}

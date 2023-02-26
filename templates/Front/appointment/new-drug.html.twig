@@ -15,27 +15,46 @@
                     </div>
                     {{ form_start(form) }}
 
-                    <select id="select-date"required>
-                        <option value="">{{ 'Choisissez une date'|trans }}</option>
-                        {% for a in availableAppointments %}
-                            <option
-                                    value="{{ a.date }}"
-                                    data-slots="{{ a.slots|json_encode() }}"
-                            >
-                                {{ a.date|date('d/m/Y') }}
-                            </option>
-                        {% endfor %}
-                    </select>
+                    <div class="mb-4">
+                        <label title="Date" class="block text-gray-700 font-bold mb-2">Date</label>
+                        <select id="select-date" required class="form-input">
+                            <option value="">{{ 'Choisissez une date'|trans }}</option>
+                            {% for a in availableAppointments %}
+                                <option
+                                        value="{{ a.date }}"
+                                        data-slots="{{ a.slots|json_encode() }}"
+                                >
+                                    {{ a.date|date('d/m/Y') }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-                    <select id="appointment-slot" required>
+                    <div class="mb-4">
+                        <label title="Date" class="block text-gray-700 font-bold mb-2">Créneau</label>
+                        <select id="appointment-slot" required class="form-input">
 
-                    </select>
+                        </select>
+                    </div>
 
-                    {{ form_widget(form) }}
+                    <div class="mb-4">
+                        <label title="Date" class="block text-gray-700 font-bold mb-2">Type de consultation</label>
+                        {{ form_widget(form.consultation_id, {'attr': {'class': 'form-input'}}) }}
+                        {{ form_errors(form.consultation_id, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+                    </div>
 
-                    <button class="btn">{{ button_label|default('Save') }}</button>
+                    <div class="mb-4">
+                        <label title="Date" class="block text-gray-700 font-bold mb-2">Type d'injection</label>
+                        {{ form_widget(form.drug_id, {'attr': {'class': 'form-input'}}) }}
+                        {{ form_errors(form.drug_id, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+                    </div>
+
+                    <div class="flex items-center justify-between flex-col sm:flex-row">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4 w-full" type="submit">
+                            {{ button_label|default('Passer au paiement') }}
+                        </button>
+                    </div>
                     {{ form_end(form) }}
-                    {#{{ include('Front/appointment/_form.html.twig') }}#}
                 </div>
             </div>
         </div>
