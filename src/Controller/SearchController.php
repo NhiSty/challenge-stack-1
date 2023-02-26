@@ -36,7 +36,7 @@ class SearchController extends AbstractController
             if (in_array($user, $uniqueUsers)) {
                 continue;
             } else {
-                if ($user->isVerified()) {
+                if ($user->isVerified() && in_array('ROLE_PRACTITIONER_VERIFIED', $user->getRoles())) {
                     $uniqueUsers[] = $user;
                 }
             }
