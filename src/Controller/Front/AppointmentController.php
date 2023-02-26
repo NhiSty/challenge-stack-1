@@ -47,6 +47,13 @@ class AppointmentController extends AbstractController
     #[Route('/new', name: 'app_user_appointment_new', requirements: ['ekdgqcb' => '\d+', 'appointment_type' => '^(injection|standard)$'], methods: ['GET', 'POST'])]
     public function new(Request $request, AppointmentRepository $appointmentRepository, UserRepository $userRepository): Response
     {
+
+        if (!in_array('ROLE_USER_VERIFIED', $this->getUser()->getRoles())) {
+            if (!in_array('ROLE_PRACTITIONER_VERIFIED', $this->getUser()->getRoles())) {
+                return $this->redirectToRoute('app_front_home', [], Response::HTTP_SEE_OTHER);
+            }
+        }
+
         $practitioner = $userRepository->findOneBy(['id' => $request->query->get('ekdgqcb')]);
         $appointment_type = $request->query->get('appointment_type');
         $agenda = $practitioner->getAgenda();
