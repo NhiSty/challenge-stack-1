@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{% block title %} Listes des documents envoyé pour devenir praticien certifié {% endblock %}
+
+<h1>Documents</h1>
+
+{# list of all my document storages #}
+
+    {% for docs in sended_docs %}
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Nom du fichier :</th>
+                <td>
+                    <p>{{ docs.name|split('_')[1] }}</p>
+                </td>
+            </tr>
+            <tr>
+                <th>Desciption :</th>
+                <td>
+                    <p>{{ docs.description }}</p>
+                </td>
+            </tr>
+            <tr>
+                <th>Fichiers :</th>
+                <td>
+                    <a href="{{ vich_uploader_asset(docs, 'docFile') }}" target="_blank">Ouvrir {{ docs.name|split('_')[1] }}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+    {% else %}
+        Aucun documents trouvés.
+    {% endfor %}
+{% endblock %}

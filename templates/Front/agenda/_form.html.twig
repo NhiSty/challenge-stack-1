@@ -1,0 +1,65 @@
+<div class="mt-8">
+  {{ form_start(form) }}
+  {% block javascripts %}
+    <script src="{{ asset('js/createSlots.js') }}"></script>
+  {% endblock %}
+
+  <div class="mb-4">
+    {{ form_label(form.availabilityDays, 'Jours de disponibilité', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    <div class="flex flex-col justify-between">
+      {% for child in form.availabilityDays %}
+        <div class="form-checkbox">
+          {{ form_widget(child, {'attr': {'class': 'form-checkbox-input'}}) }}
+          {{ form_label(child, null, {'attr': {'class': 'form-checkbox-label ml-2'}}) }}
+        </div>
+      {% endfor %}
+    </div>
+    {{ form_errors(form.availabilityDays, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+  <div class="mb-4">
+    {{ form_label(form.slotsDuration, 'Durée des créneaux (en minutes)', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.slotsDuration, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+    {{ form_errors(form.slotsDuration, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+  <div class="mb-4">
+    {{ form_label(form.slotsStart, 'Heure du premier créneaux', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.slotsStart, {'attr': {'class': 'form-select mt-1 block w-full py-2 px-3 border bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5'}}) }}
+    {{ form_errors(form.slotsStart, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+  <div class="mb-4">
+    {{ form_label(form.slotsEnd, 'Heure du dernier créneau', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+    {{ form_widget(form.slotsEnd, {'attr': {'class': 'form-select mt-1 block w-full py-2 px-3 border bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5'}}) }}
+    {{ form_errors(form.slotsEnd, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+  </div>
+
+  <div class="mb-4" id="slots-container">
+    <label>
+      {{ 'Choix des crénaux' | trans() }}
+    </label>
+    <ul id="slots-list">
+      Aucun créneau n'a été généré
+    </ul>
+  </div>
+
+  <div class="mb-4">
+    <button id="generate-slots" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4">
+      Générer les créneaux
+    </button>
+  </div>
+
+  <div class="hidden">
+    {{ form_widget(form.slots) }}
+  </div>
+
+  {{ form_widget(form) }}
+
+  <div class="flex items-center justify-between flex-col sm:flex-row">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4 w-full" type="submit">
+      {{ button_label|default('Sauvegarder') }}
+    </button>
+  </div>
+  {{ form_end(form) }}
+</div>

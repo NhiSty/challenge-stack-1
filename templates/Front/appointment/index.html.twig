@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes rendez-vous{% endblock %}
+
+{% block body %}
+    <div class="container mt-8 mx-auto px-4">
+
+        <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">{{ 'Mes rendez-vous'|trans }}</h1>
+
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">{{ 'Prochains rendez-vous'|trans }}</h2>
+            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 table w-full">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Date'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Créneau'|trans }}</th>
+                        {% if is_granted('ROLE_PRACTITIONER_VERIFIED') %}
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Patient'|trans }}</th>
+                        {% endif %}
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Type de consultation'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Injection'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    {% for appointment in comingSoonAppointments|sort %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ appointment.date ? appointment.date|date('d/m/y') : '' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ appointment.slot ? appointment.slot : '' }}</td>
+                            {% if is_granted('ROLE_PRACTITIONER_VERIFIED') %}
+                                <td class="px-6 py-4 whitespace-nowrap">{{ appointment.getPatientId() ? appointment.getPatientId() : '' }}</td>
+                            {% endif %}
+                            <td class="px-6 py-4 whitespace-nowrap">{{ appointment.getConsultationId() ? appointment.getConsultationId().name : '' }}</td>
+                            {% if appointment.getDrugId() %}
+                            <td class="px-6 py-4 whitespace-nowrap">{{ appointment.getDrugId().name ? appointment.getDrugId().name : '' }}</td>
+                            {% else %}
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Pas d'injection</span>
+                                </td>
+                            {% endif %}
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {{ include('/Front/appointment/_delete_form.html.twig', {'class': 'w-full'}) }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr class="text-center">
+                            <td colspan="9" class="px-6 py-4 whitespace-nowrap">Vous n'avez aucun rendez-vous à venir</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">{{ 'Vos rendez-vous passés'|trans }}</h2>
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 table w-full">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Date'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Créneau'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Type de consultation'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {% for appointment in pastAppointment|sort %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ appointment.date ? appointment.date|date('d/m/y') : '' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ appointment.slot ? appointment.slot : '' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ appointment.getConsultationId() ? appointment.getConsultationId().name : '' }}</td>
+                    </tr>
+                {% else %}
+                    <tr class="text-center">
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap">Vous n'avez aucun rendez-vous passés</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="my-8">
+            <a href="{{ path('app_front_index') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-plus mr-2"></i>
+                {{ 'Prendre un nouveau rendez-vous'|trans }}
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

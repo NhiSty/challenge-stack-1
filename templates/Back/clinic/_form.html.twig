@@ -1,0 +1,33 @@
+<div class="mt-8">
+    {{ form_start(form) }}
+    <div class="mb-4">
+        {{ form_label(form.name, 'Nom', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+        {{ form_errors(form.name, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="mb-4">
+        {{ form_label(form.address, 'Adresse', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.address, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+        {{ form_errors(form.address, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="mb-4">
+        {{ form_label(form.city, 'Ville', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.city, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+        {{ form_errors(form.city, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="mb-4">
+        {{ form_label(form.country, 'Pays', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.country, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+        {{ form_errors(form.country, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="flex items-center justify-between flex-col sm:flex-row">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4 w-full" type="submit">
+            {{ button_label|default('Sauvegarder') }}
+        </button>
+    </div>
+    {{ form_end(form) }}
+</div>

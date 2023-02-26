@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demand{% endblock %}
+
+{% block body %}
+    <div class="sm:max-w-md mx-auto bg-white sm:rounded-lg overflow-hidden shadow-lg my-0 sm:my-6">
+        <div class="p-4 bg-gray-800 text-white">
+            <h1 class="text-2xl">{{ 'Demande de '|trans }} <strong>{{ demand.applicant.firstname }} {{ demand.applicant.lastname }}</strong></h1>
+        </div>
+        <div class="p-4">
+            <div class="mb-4">
+                <a href="{{ path('admin_app_demand_index') }}" class="gradient px-4 py-2 rounded-lg text-white font-bold create-new">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    {{ 'Retour à la liste'|trans }}
+                </a>
+            </div>
+            <table class="table-auto w-full">
+                <tbody>
+                <tr>
+                    <th class="border px-4 py-2">Id</th>
+                    <td class="border px-4 py-2">{{ demand.id }}</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">État</th>
+                    <td class="border px-4 py-2">
+                    {% if demand.state %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{{ 'Accepté'|trans }}</span>
+                    {% else %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ 'En attente'|trans }}</span>
+                    {% endif %}
+                </tr>
+                {% if user_document_storage %}
+                    <tr>
+                        <th class="border px-4 py-2">{{ 'Justificatifs' }}</th>
+                        <td class="border px-4 py-2">
+                            <ul>
+                                {% for file in user_document_storage %}
+                                    <li class="list-disc list-inside">
+                                        <a href="{{ vich_uploader_asset(file, 'docFile') }}" target="_blank" class="text-indigo-600 hover:text-indigo-900">Ouvrir {{ file.name|split('_')[1] }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            {% if demand.state == false %}
+            <div class="flex sm:justify-between mt-4 flex-col">
+                <div class="flex justify-between gap-2">
+                    <form method="POST" action="{{ path('admin_app_demand_accept', { 'id': demand.id }) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ demand.id) }}">
+                        <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">{{ 'Accepter' | trans }}</button>
+                    </form>
+                    <form method="POST" action="{{ path('admin_app_demand_reject', { 'id': demand.id }) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('reject' ~ demand.id) }}">
+                        <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">{{ 'Rejeter' | trans }}</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

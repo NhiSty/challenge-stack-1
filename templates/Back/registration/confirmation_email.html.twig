@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="FR">
+<head>
+    <style>
+        .title {
+            text-align: center;
+        }
+
+        .tab {
+            border: solid;
+            border-width: thin;
+            border-color: #D6D6D6;
+            border-radius: 10px;
+            padding: 30px;
+            font-family: Arial;
+            font-size: 16px;
+        }
+
+        .align-right {
+            text-align: center;
+        }
+
+        .footer {
+            text-align: justify;
+            font-size: 10px;
+            font: italic;
+            color: #BFBFBF;
+        }
+    </style>
+</head>
+<body>
+
+<div class="title">
+    <h2>Please verify your email</h2>
+</div>
+
+<div class="tab">
+    <div class="align-right">
+        <p>
+            Please click on the fellow link to verify your email : <a href="{{ signedUrl }}">Verify my email</a>.
+        </p>
+        <p>This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}. </p>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Please don't respond to this email. To reach to us : nhisty.dev@gmail.com</p>
+    <p>The information contained in this email is strictly confidential and reserved for the use of the person(s)
+        identified as the recipient(s). If you have received this message in error, please delete it and notify the
+        sender immediately. The use of the information contained in this message or the documents attached to it is
+        prohibited. The content of this message does not contain any commitment and the opinions expressed in this email
+        do not commit NhiSty.</p>
+</div>
+</body>
+</html>

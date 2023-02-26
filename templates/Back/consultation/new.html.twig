@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Consultation{% endblock %}
+
+{% block body %}<div class="py-6 flex flex-col justify-center sm:py-12">
+        <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+            <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+                <div class="max-w-md mx-auto">
+                    <div class="mb-10">
+                        <a href="{{ path('admin_app_consultation_index') }}" class="gradient px-4 py-2 rounded-lg text-white font-bold create-new">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            {{ 'Retour à la liste'|trans }}
+                        </a>
+                    </div>
+                    <div class="flex items-center space-x-5">
+                        <i class="fas fa-user-nurse fa-3x text-blue-500"></i>
+                        <h1 class="font-bold text-xl text-gray-900">
+                            {{ 'Créer une nouvelle consultation'|trans }}
+                        </h1>
+                    </div>
+                    {{ include('/Back/consultation/_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

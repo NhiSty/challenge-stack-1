@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appointment{% endblock %}
+
+{% block body %}
+    <h1>Appointment</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ appointment.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ appointment.date ? appointment.date|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Créneaux</th>
+                <td>{{ appointment.slot ? appointment.slot|date('H:i') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Patient_id</th>
+                <td>{{ appointment.patientId }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

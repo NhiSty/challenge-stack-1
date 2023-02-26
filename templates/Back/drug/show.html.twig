@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Drug{% endblock %}
+
+{% block body %}
+    <div class="sm:max-w-md mx-auto bg-white sm:rounded-lg overflow-hidden shadow-lg my-0 sm:my-6">
+        <div class="p-4 bg-gray-800 text-white">
+            <h1 class="text-2xl font-bold">{{ drug.name }}</h1>
+        </div>
+        <div class="p-4">
+            <div class="mb-4">
+                <a href="{{ path('admin_app_drug_index') }}" class="gradient px-4 py-2 rounded-lg text-white font-bold create-new">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    {{ 'Retour à la liste'|trans }}
+                </a>
+            </div>
+            <table class="table-auto w-full">
+                <tbody>
+                <tr>
+                    <th class="border px-4 py-2">Id</th>
+                    <td class="border px-4 py-2">{{ drug.id }}</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Name</th>
+                    <td class="border px-4 py-2">{{ drug.name }}</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Description</th>
+                    <td class="border px-4 py-2">{{ drug.description }}</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Prix</th>
+                    <td class="border px-4 py-2">{{ drug.price|number_format(2, ',', ' ') }} €</td>
+                </tr>
+                <tr>
+                    <th class="border px-4 py-2">Stock</th>
+                    <td class="border px-4 py-2">
+                        {% if drug.stock == 0 %}
+                            <span class="text-red-500">Stock épuisé</span>
+                        {% elseif drug.stock == 1 %}
+                            {{ drug.stock ~ ' produit restant'|trans }}
+                        {% else %}
+                            {{ drug.stock ~ ' produits restants'|trans }}
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="flex justify-between mt-4 flex-col sm:flex-row">
+                <div class="flex justify-between gap-2">
+                    {{ include('/Back/drug/_delete_form.html.twig') }}
+                    <a class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" href="{{ path('admin_app_drug_edit', {'id': drug.id}) }}">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

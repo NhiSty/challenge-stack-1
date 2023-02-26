@@ -1,0 +1,320 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% set patients = users|filter(u => u.isVerified == 0) %}
+{% set patients_verified = users|filter(u => 'ROLE_USER_VERIFIED' in u.roles) %}
+{% set practiciens = users|filter(u => 'ROLE_PRACTITIONER' in u.roles) %}
+{% set practiciens_ok = users|filter(u => 'ROLE_PRACTITIONER_VERIFIED' in u.roles) %}
+{% set admins = users|filter(u => 'ROLE_ADMIN' in u.roles) %}
+
+{% block body %}
+    <div class="container mt-8 mx-auto px-4">
+        <div class="my-8">
+            <a href="{{ path('app_admin') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-arrow-left mr-2"></i>
+                {{ 'Retour à la liste'|trans }}
+            </a>
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">{{ 'Liste des utilisateurs'|trans }}</h1>
+
+        {# Patient role #}
+        {% if patients %}
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">{{ 'Patients'|trans }}</h2>
+
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 table w-full">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Email'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">{{ 'Vérifié ?'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Prénom'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Nom'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Genre'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {% for patient in patients|sort|reverse %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ patient.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ patient.email }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if patient.isVerified %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Yes
+                            </span>
+                            {% else %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                No
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ patient.firstname }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ patient.lastname }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if patient.gender == 'h' %}
+                                <i class="fas fa-mars"></i>
+                            {% else %}
+                                <i class="fas fa-venus"></i>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{{ path('admin_app_user_show', {'id': patient.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                            <a href="{{ path('admin_app_user_edit', {'id': patient.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap">No records found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+
+        {# Patient role #}
+        {% if patients_verified %}
+            <h2 class="text-2xl font-bold text-gray-900 my-8">{{ 'Patients Vérifié'|trans }}</h2>
+
+            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 table w-full">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Email'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">{{ 'Vérifié ?'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Prénom'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Nom'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Genre'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    {% for patient in patients_verified|sort|reverse %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ patient.id }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ patient.email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% if patient.isVerified %}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Yes
+                            </span>
+                                {% else %}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                No
+                            </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ patient.firstname }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ patient.lastname }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% if patient.gender == 'h' %}
+                                    <i class="fas fa-mars"></i>
+                                {% else %}
+                                    <i class="fas fa-venus"></i>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <a href="{{ path('admin_app_user_show', {'id': patient.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                                <a href="{{ path('admin_app_user_edit', {'id': patient.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="9" class="px-6 py-4 whitespace-nowrap">No records found.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if practiciens_ok %}
+        {# Practicien verified role #}
+
+        <h2 class="text-2xl font-bold text-gray-900 my-8">{{ 'Practiciens'|trans }}</h2>
+
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 table w-full">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Email'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Prénom'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Nom'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Genre'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Rendez-vous'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Clinique'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Specialités'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Disponibilités'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {% for practicien in practiciens_ok|sort|reverse %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.email }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.firstname }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.lastname }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if practicien.gender == 'h' %}
+                                <i class="fas fa-mars"></i>
+                            {% else %}
+                                <i class="fas fa-venus"></i>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% for appointment in practicien.appointments %}
+                                <a href="{{ path('admin_app_appointment_show', {'id': appointment.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ appointment.date|date('d/m/Y') }}</a>
+                            {% else %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                {{ 'Pas de rendez-vous'|trans }}
+                            </span>
+                            {% endfor %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_clinic_show', {'id': practicien.clinicId.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ practicien.clinicId.name }}</a></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_speciality_show', {'id': practicien.speciality.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ practicien.speciality.name }}</a></td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <ul class="px-6 py-4 whitespace-nowrap">
+                                {% if practicien.agenda %}
+                                    {% for availability in practicien.agenda.availabilityDays %}
+                                        <li>{{ availability }}</li>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            {{ 'Pas de disponibilités'|trans }}
+                                        </span>
+                                {% endif %}
+                            </ul>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{{ path('admin_app_user_show', {'id': practicien.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                            <a href="{{ path('admin_app_user_edit', {'id': practicien.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap">No records found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {# Practicien role #}
+        {% if practiciens %}
+        <h2 class="text-2xl font-bold text-gray-900 my-8">{{ 'Practiciens en cours de demande'|trans }}</h2>
+
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 table w-full">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Email'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Demande'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Prénom'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Nom'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Genre'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Clinique'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Specialités'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {% for practicien in practiciens|sort|reverse %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.email }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if practicien.demand is not null %}
+                                <a href="{{ path('admin_app_demand_show', {'id': practicien.demand.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ 'Voir la demande' }}</a>
+                            {% else %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    {{ 'Pas de demande'|trans }}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.firstname }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ practicien.lastname }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if practicien.gender == 'h' %}
+                                <i class="fas fa-mars"></i>
+                            {% else %}
+                                <i class="fas fa-venus"></i>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_clinic_show', {'id': practicien.clinicId.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ practicien.clinicId.name }}</a></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><a href="{{ path('admin_app_speciality_show', {'id': practicien.speciality.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ practicien.speciality.name }}</a></td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{{ path('admin_app_user_show', {'id': practicien.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                            <a href="{{ path('admin_app_user_edit', {'id': practicien.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap">No records found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {# Admin role #}
+        <h2 class="text-2xl font-bold text-gray-900 my-8">{{ 'Admins'|trans }}</h2>
+
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 table w-full">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Email'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Prénom'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Nom'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Genre'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {% for admin in admins|sort|reverse %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ admin.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ admin.email }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ admin.firstname }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ admin.lastname }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if admin.gender == 'h' %}
+                                <i class="fas fa-mars"></i>
+                            {% else %}
+                                <i class="fas fa-venus"></i>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{{ path('admin_app_user_show', {'id': admin.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                            <a href="{{ path('admin_app_user_edit', {'id': admin.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="px-6 py-4 whitespace-nowrap">No records found.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="my-8">
+            <a href="{{ path('admin_app_user_new') }}" class="gradient py-3 px-4 rounded-lg text-white font-bold text-md mt-6 create-new">
+                <i class="fas fa-plus mr-2"></i>
+                {{ 'Créer un  nouvel utilisateur'|trans }}
+            </a>
+        </div>
+    </div>
+{% endblock %}

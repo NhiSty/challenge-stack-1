@@ -1,0 +1,45 @@
+<div class="mt-8">
+    {{ form_start(form) }}
+    <div class="mb-4">
+        {{ form_label(form.date, 'Date', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.date, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+        {{ form_errors(form.date, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="mb-4">
+        {{ form_label(form.slot, 'Créneaux', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.slot, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+        {{ form_errors(form.slot, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="mb-4">
+        {{ form_label(form.patient_id, 'Patient Id', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.patient_id, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+        {{ form_errors(form.patient_id, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="mb-4">
+        {{ form_label(form.practitioner_id, 'Practicien', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.practitioner_id, {'attr': {'class': 'appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'}}) }}
+        {{ form_errors(form.practitioner_id, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="mb-4">
+        {{ form_label(form.drug_id, 'Super pouvoir', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.drug_id, {'attr': {'class': 'form-select mt-1 block w-full py-2 px-3 border bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5'}}) }}
+        {{ form_errors(form.drug_id, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="mb-4">
+        {{ form_label(form.consultation_id, 'Type de consultation', {'attr': {'class': 'block text-gray-700 font-bold mb-2'}}) }}
+        {{ form_widget(form.consultation_id, {'attr': {'class': 'form-select mt-1 block w-full py-2 px-3 border bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5'}}) }}
+        {{ form_errors(form.consultation_id, {'attr': {'class': 'text-red-500 text-xs italic'}}) }}
+    </div>
+
+    <div class="flex items-center justify-between flex-col sm:flex-row">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4 w-full" type="submit">
+            {{ button_label|default('Sauvegarder') }}
+        </button>
+    </div>
+    {{ form_end(form) }}
+</div>
