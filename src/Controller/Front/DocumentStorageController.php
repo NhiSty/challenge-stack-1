@@ -4,6 +4,7 @@ namespace App\Controller\Front;
 
 use App\Entity\DocumentStorage;
 use App\Form\DocumentStorageType;
+use App\Repository\DemandRepository;
 use App\Repository\DocumentStorageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,8 @@ class DocumentStorageController extends AbstractController
     #[Route('/new', name: 'app_front_document_storage_new', methods: ['GET', 'POST'])]
     public function new(Request $request, DocumentStorageRepository $documentStorageRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_PRACTITIONER_VERIFIED');
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $documentStorage = new DocumentStorage();
         $form = $this->createForm(DocumentStorageType::class, $documentStorage);
         $form->handleRequest($request);
@@ -37,15 +40,23 @@ class DocumentStorageController extends AbstractController
     }
 
     #[Route('/index', name: 'app_front_document_storage_index')]
-    public function index(Request $request, DocumentStorageRepository $documentStorageRepository): Response
+    public function index(Request $request, DocumentStorageRepository $documentStorageRepository, DemandRepository $demandRepository): Response
     {
-
+        if (!in_array('ROLE_USER_VERIFIED', $this->getUser()->getRoles())) {
+           if (!in_array('ROLE_PRACTITIONER_VERIFIED', $this->getUser()->getRoles())) {
+               return $this->redirectToRoute('app_front_home', [], Response::HTTP_SEE_OTHER);
+           }
+        }
         // find current users document storage
         $documentStorages = $documentStorageRepository->findBy(['user_id' => $this->getUser()->getId()]);
-
+        if (in_array('ROLE_PRACTITIONER', $this->getUser()->getRoles())) {
+            $user = $this->getUser();
+            $demand = $demandRepository->findOneBy(['applicant' => $user->getId()]);
+        }
 
         return $this->render('/Front/storage/index.html.twig', [
             'document_storages' => $documentStorages,
+            'demand' => $demand ?? null,
         ]);
     }
 }
