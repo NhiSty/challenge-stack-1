@@ -4,9 +4,19 @@
 
 {% block body %}
 
-    <div id="wrap">
-        <div id="main" class="container-fluid text-center pt-5 mt-5">
-            <h1 class="title pt-5 mt-5 py-5">Merci pour votre achat </h1>
+    <div class="flex justify-center md:my-8">
+        <div class="w-full md:max-w-sm rounded overflow-hidden md:shadow-lg">
+            <img class="w-full" src="{{ asset('assets/img/success_payment.png') }}" alt="Success">
+            <div class="px-6 py-4">
+                <div class="font-bold text-xl mb-2">{{ 'Paiement réussi'|trans }}</div>
+                <p class="text-gray-700 text-base">
+                    {{ 'Merci pour votre achat ! Vous allez prochainement recevoir un email de confirmation.'|trans }}
+                </p>
+            </div>
+            <div class="px-6 py-4">
+                <!-- Button blue to return to homepage -->
+                <a href="{{ path('app_front_index') }}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ 'Retour à l\'accueil'|trans }}</a>
+            </div>
         </div>
     </div>
 
