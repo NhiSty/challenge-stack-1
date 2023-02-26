@@ -2,10 +2,11 @@
 
 {% block title %}Liste des utilisateurs{% endblock %}
 
-{% set patients = users|filter(u => u.roles[0] == 'ROLE_USER') %}
-{% set practiciens = users|filter(u => u.roles[0] == 'ROLE_PRACTITIONER') %}
-{% set practiciens_ok = users|filter(u => u.roles[0] == 'ROLE_PRACTITIONER_VERIFIED') %}
-{% set admins = users|filter(u => u.roles[0] == 'ROLE_ADMIN') %}
+{% set patients = users|filter(u => u.isVerified == 0) %}
+{% set patients_verified = users|filter(u => 'ROLE_USER_VERIFIED' in u.roles) %}
+{% set practiciens = users|filter(u => 'ROLE_PRACTITIONER' in u.roles) %}
+{% set practiciens_ok = users|filter(u => 'ROLE_PRACTITIONER_VERIFIED' in u.roles) %}
+{% set admins = users|filter(u => 'ROLE_ADMIN' in u.roles) %}
 
 {% block body %}
     <div class="container mt-8 mx-auto px-4">
@@ -75,6 +76,64 @@
         </div>
         {% endif %}
 
+
+        {# Patient role #}
+        {% if patients_verified %}
+            <h2 class="text-2xl font-bold text-gray-900 my-8">{{ 'Patients Vérifié'|trans }}</h2>
+
+            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 table w-full">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Id'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Email'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">{{ 'Vérifié ?'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Prénom'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Nom'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Genre'|trans }}</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    {% for patient in patients_verified|sort|reverse %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ patient.id }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ patient.email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% if patient.isVerified %}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Yes
+                            </span>
+                                {% else %}
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                No
+                            </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ patient.firstname }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ patient.lastname }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% if patient.gender == 'h' %}
+                                    <i class="fas fa-mars"></i>
+                                {% else %}
+                                    <i class="fas fa-venus"></i>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <a href="{{ path('admin_app_user_show', {'id': patient.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
+                                <a href="{{ path('admin_app_user_edit', {'id': patient.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="9" class="px-6 py-4 whitespace-nowrap">No records found.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
         {% if practiciens_ok %}
         {# Practicien verified role #}
 
@@ -112,7 +171,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             {% for appointment in practicien.appointments %}
-                                <a href="{{ path('admin_app_appointment_show', {'id': appointment.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ appointment.date|date('d/m/Y H:i') }}</a>
+                                <a href="{{ path('admin_app_appointment_show', {'id': appointment.id}) }}" class="text-indigo-600 hover:text-indigo-900">{{ appointment.date|date('d/m/Y') }}</a>
                             {% else %}
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                 {{ 'Pas de rendez-vous'|trans }}

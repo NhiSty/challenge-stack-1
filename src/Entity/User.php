@@ -50,6 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $gender = null;
 
     #[ORM\ManyToMany(targetEntity: Appointment::class, mappedBy: 'practitioner_id', fetch: 'EAGER')]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $appointments;
 
     #[ORM\oneToMany(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
