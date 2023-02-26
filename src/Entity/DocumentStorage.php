@@ -28,7 +28,7 @@ class DocumentStorage
     private string $description = '';
 
     #[ORM\ManyToOne(cascade: ['persist', 'remove'], fetch: 'EAGER')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?User $user_id = null;
 
     #[Vich\UploadableField(mapping: 'documents', fileNameProperty: 'name')]
