@@ -29,13 +29,12 @@ class DemandController extends AbstractController
     public function show(Demand $demand, DocumentStorageRepository $documentStorageRepository, DemandRepository $demandRepository): Response
     {
         $query = $demandRepository->findBy([
-        'applicant' => $demand->getApplicant()->getId(),
-        'state' => false,
+            'applicant' => $demand->getApplicant()->getId(),
         ]);
 
         $fileNamesOfApplicant = $query[0]->getFileNames();
-
         $demander_user_document_storage = $documentStorageRepository->findDemandedDocumentsOfUser($demand->getApplicant()->getId(), $fileNamesOfApplicant);
+
         return $this->render('/Back/demand/show.html.twig', [
         'demand' => $demand,
         'user_document_storage' => $demander_user_document_storage
