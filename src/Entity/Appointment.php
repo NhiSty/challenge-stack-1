@@ -26,10 +26,11 @@ class Appointment
     private Collection $practitioner_id;
 
     #[ORM\ManyToOne(targetEntity: Drug::class, fetch: 'EAGER')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Drug $drug_id = null;
 
     #[ORM\ManyToOne(targetEntity: Consultation::class, fetch: 'EAGER')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Consultation $consultation_id = null;
 
     #[ORM\Column(length: 50)]

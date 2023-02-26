@@ -17,8 +17,11 @@ class DocumentStorageController extends AbstractController
     #[Route('/new', name: 'app_front_document_storage_new', methods: ['GET', 'POST'])]
     public function new(Request $request, DocumentStorageRepository $documentStorageRepository): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_PRACTITIONER_VERIFIED');
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        if (!in_array('ROLE_USER_VERIFIED', $this->getUser()->getRoles())) {
+            if (!in_array('ROLE_PRACTITIONER_VERIFIED', $this->getUser()->getRoles())) {
+                return $this->redirectToRoute('app_front_home', [], Response::HTTP_SEE_OTHER);
+            }
+        }
         $documentStorage = new DocumentStorage();
         $form = $this->createForm(DocumentStorageType::class, $documentStorage);
         $form->handleRequest($request);
