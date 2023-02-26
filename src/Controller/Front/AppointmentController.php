@@ -44,10 +44,10 @@ class AppointmentController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_user_appointment_new', requirements: ['practitioner_id' => '\d+', 'appointment_type' => '^(injection|standard)$'], methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_user_appointment_new', requirements: ['ekdgqcb' => '\d+', 'appointment_type' => '^(injection|standard)$'], methods: ['GET', 'POST'])]
     public function new(Request $request, AppointmentRepository $appointmentRepository, UserRepository $userRepository): Response
     {
-        $practitioner = $userRepository->findOneBy(['id' => $request->query->get('practitioner_id')]);
+        $practitioner = $userRepository->findOneBy(['id' => $request->query->get('ekdgqcb')]);
         $appointment_type = $request->query->get('appointment_type');
         $agenda = $practitioner->getAgenda();
         $existingAppointments = $practitioner->getAppointments();
