@@ -3,6 +3,7 @@
 namespace App\Controller\Front;
 
 use App\Entity\Appointment;
+use App\Form\AppointmentInjectionType;
 use App\Form\AppointmentType;
 use App\Repository\AppointmentRepository;
 use App\Repository\UserRepository;
@@ -100,18 +101,32 @@ class AppointmentController extends AbstractController
         }
 
         $appointment = new Appointment();
-        $form = $this->createForm(AppointmentType::class, $appointment);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $appointment->setPatientId($this->getUser()->getId());
-            $appointment->addPractitionerId($practitioner);
-            $appointment->setPaid(false);
-            $appointmentRepository->save($appointment, true);
+        if ($appointment_type == 'injection') {
+            $form = $this->createForm(AppointmentInjectionType::class, $appointment);
+            $form->handleRequest($request);
 
-            dump($appointment, $practitioner);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $appointment->setPatientId($this->getUser()->getId());
+                $appointment->addPractitionerId($practitioner);
+                $appointment->setPaid(false);
+                $appointmentRepository->save($appointment, true);
 
-            return $this->redirectToRoute('checkout', ['appointment'=>$appointment->getId()], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('checkout', ['appointment'=>$appointment->getId()], Response::HTTP_SEE_OTHER);
+            }
+        }
+        else {
+            $form = $this->createForm(AppointmentType::class, $appointment);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $appointment->setPatientId($this->getUser()->getId());
+                $appointment->addPractitionerId($practitioner);
+                $appointment->setPaid(false);
+                $appointmentRepository->save($appointment, true);
+
+                return $this->redirectToRoute('checkout', ['appointment'=>$appointment->getId()], Response::HTTP_SEE_OTHER);
+            }
         }
 
         if ($appointment_type == 'injection') {

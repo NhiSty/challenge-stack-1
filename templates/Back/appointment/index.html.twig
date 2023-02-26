@@ -23,6 +23,7 @@
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Créneau'|trans }}</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Pratitien'|trans }}</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Patient'|trans }}</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Injection'|trans }}</th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ 'Actions'|trans }}</th>
                 </tr>
                 </thead>
@@ -40,9 +41,15 @@
                                 <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Aucune donnée</span>
                             {% endfor %}
                         </td>
+                        {% if appointment.getDrugId() %}
+                            <td class="px-6 py-4 whitespace-nowrap">{{ appointment.getDrugId().name ? appointment.getDrugId().name : '' }}</td>
+                        {% else %}
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Pas d'injection</span>
+                            </td>
+                        {% endif %}
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <a href="{{ path('admin_app_appointment_show', {'id': appointment.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Show</a>
-                            <a href="{{ path('admin_app_appointment_edit', {'id': appointment.id}) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                            <a href="{{ path('admin_app_appointment_show', {'id': appointment.id}) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Voir</a>
                         </td>
                     </tr>
                 {% else %}

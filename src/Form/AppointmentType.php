@@ -74,12 +74,6 @@ class AppointmentType extends AbstractType
                 ])
                 ->add('slot', HiddenType::class)
 
-                ->add('drug_id', EntityType::class, [
-                    'class' => Drug::class,
-                    'choice_label' => 'name',
-                    'multiple' => false,
-                    'expanded' => false,
-                ])
                 ->add('consultation_id', EntityType::class, [
                     'class' => Consultation::class,
                     'choice_label' => 'name',
