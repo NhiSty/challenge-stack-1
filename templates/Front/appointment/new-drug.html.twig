@@ -61,9 +61,9 @@
     </div>
     <script>
         const selectDate = document.getElementById('select-date');
-        const formInputDate = document.getElementById('appointment_date');
+        const formInputDate = document.getElementById('appointment_injection_date');
         const selectSlot = document.getElementById('appointment-slot');
-        const formInputSlot = document.getElementById('appointment_slot');
+        const formInputSlot = document.getElementById('appointment_injection_slot');
         const option = document.createElement('option');
 
         option.value = ''
@@ -72,7 +72,6 @@
         formInputSlot.value = '';
 
         selectDate.addEventListener('input', (event) => {
-            console.log(event.target.value)
             formInputDate.value = event.target.value;
             selectSlot.innerHTML = '';
 
