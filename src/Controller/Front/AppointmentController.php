@@ -3,6 +3,7 @@
 namespace App\Controller\Front;
 
 use App\Entity\Appointment;
+use App\Form\AppointmentInjectionType;
 use App\Form\AppointmentType;
 use App\Repository\AppointmentRepository;
 use App\Repository\UserRepository;
@@ -18,15 +19,35 @@ class AppointmentController extends AbstractController
     public function index(AppointmentRepository $appointmentRepository): Response
     {
         $user = $this->getUser();
+        $appointments = $appointmentRepository->findBy(['patient_id' => $user->getId()]);
+        $comingSoonAppointments = array_filter($appointments, function ($appointment) {
+            $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $slotHour = date('H',strtotime($appointment->getSlot()));
+            $slotMinute = date('i',strtotime($appointment->getSlot()));
+            $appointmentDate = $appointment->getDate()->setTime($slotHour, $slotMinute);
+
+            return $currentDate < $appointmentDate;
+        });
+        $pastAppointment = array_filter($appointments, function ($appointment) {
+            $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $slotHour = date('H',strtotime($appointment->getSlot()));
+            $slotMinute = date('i',strtotime($appointment->getSlot()));
+            $appointmentDate = $appointment->getDate()->setTime($slotHour, $slotMinute);
+
+            return $currentDate > $appointmentDate;
+        });
+
+
         return $this->render('/Front/appointment/index.html.twig', [
-            'appointments' => $appointmentRepository->findBy(['patient_id' => $user->getId()]),
+            'comingSoonAppointments' => $comingSoonAppointments,
+            'pastAppointment' => $pastAppointment,
         ]);
     }
 
-    #[Route('/new', name: 'app_user_appointment_new', requirements: ['practitioner_id' => '\d+', 'appointment_type' => '^(injection|standard)$'], methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_user_appointment_new', requirements: ['ekdgqcb' => '\d+', 'appointment_type' => '^(injection|standard)$'], methods: ['GET', 'POST'])]
     public function new(Request $request, AppointmentRepository $appointmentRepository, UserRepository $userRepository): Response
     {
-        $practitioner = $userRepository->findOneBy(['id' => $request->query->get('practitioner_id')]);
+        $practitioner = $userRepository->findOneBy(['id' => $request->query->get('ekdgqcb')]);
         $appointment_type = $request->query->get('appointment_type');
         $agenda = $practitioner->getAgenda();
         $existingAppointments = $practitioner->getAppointments();
@@ -80,18 +101,32 @@ class AppointmentController extends AbstractController
         }
 
         $appointment = new Appointment();
-        $form = $this->createForm(AppointmentType::class, $appointment);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $appointment->setPatientId($this->getUser()->getId());
-            $appointment->addPractitionerId($practitioner);
-            $appointment->setPaid(false);
-            $appointmentRepository->save($appointment, true);
+        if ($appointment_type == 'injection') {
+            $form = $this->createForm(AppointmentInjectionType::class, $appointment);
+            $form->handleRequest($request);
 
-            dump($appointment, $practitioner);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $appointment->setPatientId($this->getUser()->getId());
+                $appointment->addPractitionerId($practitioner);
+                $appointment->setPaid(false);
+                $appointmentRepository->save($appointment, true);
 
-            return $this->redirectToRoute('checkout', ['appointment'=>$appointment->getId()], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('checkout', ['appointment'=>$appointment->getId()], Response::HTTP_SEE_OTHER);
+            }
+        }
+        else {
+            $form = $this->createForm(AppointmentType::class, $appointment);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $appointment->setPatientId($this->getUser()->getId());
+                $appointment->addPractitionerId($practitioner);
+                $appointment->setPaid(false);
+                $appointmentRepository->save($appointment, true);
+
+                return $this->redirectToRoute('checkout', ['appointment'=>$appointment->getId()], Response::HTTP_SEE_OTHER);
+            }
         }
 
         if ($appointment_type == 'injection') {
@@ -123,6 +158,6 @@ class AppointmentController extends AbstractController
             $appointmentRepository->remove($appointment, true);
         }
 
-        return $this->redirectToRoute('app_appointment_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_user_appointment_index', [], Response::HTTP_SEE_OTHER);
     }
 }

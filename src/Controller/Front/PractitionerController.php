@@ -23,13 +23,30 @@ use function Symfony\Component\Translation\t;
 class PractitionerController extends AbstractController
 {
     #[Route('/practitioner/appointments', name: 'app_front_practitioner_appointments')]
-    public function indexVerifiedPracticien(): Response
+    public function indexVerifiedPracticien(AppointmentRepository $appointmentRepository): Response
     {
+        $appointments = $this->getUser()->getAppointments()->toArray();
+        $comingSoonAppointments = array_filter($appointments, function ($appointment) {
+            $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $slotHour = date('H',strtotime($appointment->getSlot()));
+            $slotMinute = date('i',strtotime($appointment->getSlot()));
+            $appointmentDate = $appointment->getDate()->setTime($slotHour, $slotMinute);
 
-        $appointments = $this->getUser()->getAppointments();
+            return $currentDate < $appointmentDate;
+        });
+        $pastAppointment = array_filter($appointments, function ($appointment) {
+            $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $slotHour = date('H',strtotime($appointment->getSlot()));
+            $slotMinute = date('i',strtotime($appointment->getSlot()));
+            $appointmentDate = $appointment->getDate()->setTime($slotHour, $slotMinute);
+
+            return $currentDate > $appointmentDate;
+        });
+
         return $this->render('Front/appointment/index.html.twig', [
             'controller_name' => 'IndexController',
-            'appointments' => $appointments,
+            'comingSoonAppointments' => $comingSoonAppointments,
+            'pastAppointment' => $pastAppointment,
         ]);
     }
 

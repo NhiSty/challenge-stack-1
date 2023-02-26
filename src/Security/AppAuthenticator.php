@@ -52,6 +52,11 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($this->urlGenerator->generate("app_admin"));
         }
 
+        if ($token->getUser()->isVerified() === true) {
+            return new RedirectResponse($this->urlGenerator->generate("app_front_index"));
+        }
+
+
         // For example:
          return new RedirectResponse($this->urlGenerator->generate('app_front_home'));
     }
