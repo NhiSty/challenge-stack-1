@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Drug;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,8 +15,18 @@ class DrugType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('price')
-            ->add('stock')
+            ->add('price', NumberType::class, [
+                'attr' => [
+                    'min' => '0',
+                ],
+                'html5' => true,
+            ])
+            ->add('stock', NumberType::class, [
+                'attr' => [
+                    'min' => '0',
+                ],
+                'html5' => true,
+            ])
         ;
     }
 

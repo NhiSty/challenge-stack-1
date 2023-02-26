@@ -43,7 +43,7 @@ class UserController extends AbstractController
             $data = $form->get('plainPassword')->getData();
 
             if ($data !== null) {
-                $user->setPassword($passwordHasher->hashPassword($user, $data));
+                $user->setPlainPassword($data);
             }
 
             $userRepository->save($user, true);

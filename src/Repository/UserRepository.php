@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -19,21 +21,35 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+
+    public function __construct(ManagerRegistry $registry, private readonly UserPasswordHasherInterface $passwordHasher)
     {
         parent::__construct($registry, User::class);
     }
 
     public function save(User $entity, bool $flush = false): void
     {
+        if ($entity->getPlainPassword() !== null) {
+            if ($this->passwordHasher->isPasswordValid($entity, $entity->getPlainPassword())) {
+                return;
+            } else {
+                $entity->setPassword($this->passwordHasher->hashPassword($entity, $entity->getPlainPassword()));
+            }
+        } else {
+            $entity->setPassword($this->passwordHasher->hashPassword($entity, $entity->getPassword()));
+        }
+
+
         $this->getEntityManager()->persist($entity);
+
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
     }
 
-    public function remove(User $entity, bool $flush = false): void
+    public
+    function remove(User $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -45,7 +61,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    public
+    function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
@@ -55,33 +72,35 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->add($user, true);
     }
-    
+
     /**
      * @return User[] Returns an array of User objects
      */
-    public function findUsersByLastName(string $query): array
+    public
+    function findUsersByLastName(string $query): array
     {
         return $this->createQueryBuilder('u')
-          ->andWhere('u.lastname LIKE :query')
-          ->andWhere('u.speciality IS NOT NULL')
-          ->setParameter('query', '%' . $query . '%')
-          ->getQuery()
-          ->getResult();
+            ->andWhere('u.lastname LIKE :query')
+            ->andWhere('u.speciality IS NOT NULL')
+            ->setParameter('query', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
     }
 
     /**
      * @return User[] Returns an array of User objects
      */
-    public function findUsersByFistName(string $query): array
+    public
+    function findUsersByFistName(string $query): array
     {
         return $this->createQueryBuilder('u')
-          ->andWhere('u.firstname LIKE :query')
-          ->andWhere('u.speciality IS NOT NULL')
-          ->setParameter('query', '%' . $query . '%')
-          ->getQuery()
-          ->getResult();
+            ->andWhere('u.firstname LIKE :query')
+            ->andWhere('u.speciality IS NOT NULL')
+            ->setParameter('query', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
     }
-    
+
 //    /**
 //     * @return UserFixture[] Returns an array of UserFixture objects
 //     */

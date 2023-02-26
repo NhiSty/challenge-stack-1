@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,12 +27,15 @@ class UserType extends AbstractType
                     'Admin' => 'ROLE_ADMIN',
                     'Practitien Vérifié' => 'ROLE_PRACTITIONER_VERIFIED',
                     'Practitien' => 'ROLE_PRACTITIONER',
-                    'Patient' => 'ROLE_PATIENT',
+                    'User' => 'ROLE_USER_VERIFIED',
                 ],
                 'multiple' => true,
                 'expanded' => true,
+                'required' => true,
             ])
-            ->add('password')
+            ->add('password', TextType::class, [
+                'required' => true,
+            ])
             ->add('isVerified')
             ->add('firstname')
             ->add('lastname')
@@ -47,6 +51,7 @@ class UserType extends AbstractType
                 'choice_label' => 'id',
                 'multiple' => true,
                 'expanded' => false,
+                'required' => false,
             ])
             ->add('documentStorage')
             ->add('clinicId', EntityType::class, [
