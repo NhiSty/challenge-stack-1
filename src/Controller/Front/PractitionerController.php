@@ -22,12 +22,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class PractitionerController extends AbstractController
 {
     #[Route('/appointments', name: 'app_front_practitioner_appointments')]
-    public function indexVerifiedPracticien(): Response
+    public function indexVerifiedPracticien(AppointmentRepository $appointmentRepository): Response
     {
-        $appointments = $this->getUser()->getAppointments();
+        $appointments = $this->getUser()->getAppointments()->toArray();
+        $comingSoonAppointments = array_filter($appointments, function ($appointment) {
+            $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $slotHour = date('H',strtotime($appointment->getSlot()));
+            $slotMinute = date('i',strtotime($appointment->getSlot()));
+            $appointmentDate = $appointment->getDate()->setTime($slotHour, $slotMinute);
+
+            return $currentDate < $appointmentDate;
+        });
+        $pastAppointment = array_filter($appointments, function ($appointment) {
+            $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $slotHour = date('H',strtotime($appointment->getSlot()));
+            $slotMinute = date('i',strtotime($appointment->getSlot()));
+            $appointmentDate = $appointment->getDate()->setTime($slotHour, $slotMinute);
+
+            return $currentDate > $appointmentDate;
+        });
+
         return $this->render('Front/appointment/index.html.twig', [
             'controller_name' => 'IndexController',
-            'appointments' => $appointments,
+            'comingSoonAppointments' => $comingSoonAppointments,
+            'pastAppointment' => $pastAppointment,
         ]);
     }
     #[Route('/new', name: 'app_front_practicien_document_storage_new', methods: ['GET', 'POST'])]

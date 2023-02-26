@@ -18,8 +18,28 @@ class AppointmentController extends AbstractController
     public function index(AppointmentRepository $appointmentRepository): Response
     {
         $user = $this->getUser();
+        $appointments = $appointmentRepository->findBy(['patient_id' => $user->getId()]);
+        $comingSoonAppointments = array_filter($appointments, function ($appointment) {
+            $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $slotHour = date('H',strtotime($appointment->getSlot()));
+            $slotMinute = date('i',strtotime($appointment->getSlot()));
+            $appointmentDate = $appointment->getDate()->setTime($slotHour, $slotMinute);
+
+            return $currentDate < $appointmentDate;
+        });
+        $pastAppointment = array_filter($appointments, function ($appointment) {
+            $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+            $slotHour = date('H',strtotime($appointment->getSlot()));
+            $slotMinute = date('i',strtotime($appointment->getSlot()));
+            $appointmentDate = $appointment->getDate()->setTime($slotHour, $slotMinute);
+
+            return $currentDate > $appointmentDate;
+        });
+
+
         return $this->render('/Front/appointment/index.html.twig', [
-            'appointments' => $appointmentRepository->findBy(['patient_id' => $user->getId()]),
+            'comingSoonAppointments' => $comingSoonAppointments,
+            'pastAppointment' => $pastAppointment,
         ]);
     }
 
@@ -123,6 +143,6 @@ class AppointmentController extends AbstractController
             $appointmentRepository->remove($appointment, true);
         }
 
-        return $this->redirectToRoute('app_appointment_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_user_appointment_index', [], Response::HTTP_SEE_OTHER);
     }
 }
